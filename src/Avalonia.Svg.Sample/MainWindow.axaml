@@ -1,0 +1,35 @@
+<Window x:Class="Avalonia.Svg.Sample.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:assets="clr-namespace:HSFC.Framework.BaseControls.Gallery.Assets"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:nlnet="https://nlnet.com/avalonia.svg"
+        Title="Avalonia.Svg.Sample"
+        d:DesignHeight="450"
+        d:DesignWidth="800"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d">
+    <StackPanel Orientation="Horizontal" Spacing="30">
+        <Viewbox Width="256"
+                 Height="256"
+                 Stretch="Uniform">
+            <nlnet:Icon IconSvgData="{x:Static assets:TestData.SvgData1}" ShowRenderBounds="True" />
+        </Viewbox>
+        <Viewbox Width="256"
+                 Height="256"
+                 Stretch="Uniform">
+            <nlnet:Icon IconSvgData="{x:Static assets:TestData.SvgData2}" ShowRenderBounds="True" />
+        </Viewbox>
+        <Viewbox Width="256"
+                 Height="256"
+                 Stretch="Uniform">
+            <nlnet:Icon IconSvgData="{x:Static assets:TestData.SvgData3}" ShowRenderBounds="True" />
+        </Viewbox>
+        <Viewbox Width="256"
+                 Height="256"
+                 Stretch="Uniform">
+            <nlnet:Icon IconSvgData="{x:Static assets:TestData.SvgData4}" ShowRenderBounds="True" />
+        </Viewbox>
+    </StackPanel>
+</Window>
