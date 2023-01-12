@@ -1,6 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using Avalonia.Metadata;
 
+[assembly: InternalsVisibleTo("Avalonia.Svg.Test")]
+
 // 不需要修改
 [assembly: XmlnsPrefix("https://nlnet.com/avalonia.svg", "nlnet")]
 

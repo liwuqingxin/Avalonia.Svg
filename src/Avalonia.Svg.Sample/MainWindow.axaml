@@ -1,8 +1,8 @@
 <Window x:Class="Avalonia.Svg.Sample.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:assets="clr-namespace:HSFC.Framework.BaseControls.Gallery.Assets"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Avalonia.Svg.Sample"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:nlnet="https://nlnet.com/avalonia.svg"
         Title="Avalonia.Svg.Sample"
@@ -14,22 +14,22 @@
         <Viewbox Width="256"
                  Height="256"
                  Stretch="Uniform">
-            <nlnet:Icon IconSvgData="{x:Static assets:TestData.SvgData1}" ShowRenderBounds="True" />
+            <nlnet:Icon IconSvgData="{x:Static local:TestData.SvgData1}" ShowRenderBounds="True" />
         </Viewbox>
         <Viewbox Width="256"
                  Height="256"
                  Stretch="Uniform">
-            <nlnet:Icon IconSvgData="{x:Static assets:TestData.SvgData2}" ShowRenderBounds="True" />
+            <nlnet:Icon IconSvgData="{x:Static local:TestData.SvgData2}" ShowRenderBounds="True" />
         </Viewbox>
         <Viewbox Width="256"
                  Height="256"
                  Stretch="Uniform">
-            <nlnet:Icon IconSvgData="{x:Static assets:TestData.SvgData3}" ShowRenderBounds="True" />
+            <nlnet:Icon IconSvgData="{x:Static local:TestData.SvgData3}" ShowRenderBounds="True" />
         </Viewbox>
         <Viewbox Width="256"
                  Height="256"
                  Stretch="Uniform">
-            <nlnet:Icon IconSvgData="{x:Static assets:TestData.SvgData4}" ShowRenderBounds="True" />
+            <nlnet:Icon IconSvgData="{x:Static local:TestData.SvgData4}" ShowRenderBounds="True" />
         </Viewbox>
     </StackPanel>
 </Window>

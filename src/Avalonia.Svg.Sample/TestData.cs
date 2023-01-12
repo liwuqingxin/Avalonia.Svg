@@ -1,4 +1,4 @@
-﻿namespace HSFC.Framework.BaseControls.Gallery.Assets
+﻿namespace Avalonia.Svg.Sample
 {
     internal static class TestData
     {
