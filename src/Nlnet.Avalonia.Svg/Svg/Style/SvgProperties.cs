@@ -1,4 +1,6 @@
-﻿using Avalonia.Media;
+﻿using System.Collections.Generic;
+using Avalonia;
+using Avalonia.Media;
 // ReSharper disable InconsistentNaming
 
 namespace Nlnet.Avalonia.Svg
@@ -12,9 +14,10 @@ namespace Nlnet.Avalonia.Svg
         public const string Bool      = "bool";
         public const string Int       = "int";
         public const string String    = "string";
-        public const string Brush     = nameof(IBrush);
+        public const string Brush     = nameof(global::Avalonia.Media.IBrush);
         public const string Thickness = nameof(global::Avalonia.Thickness);
         public const string Geometry  = nameof(global::Avalonia.Media.Geometry);
+        public const string PointList = "System.Collections.Generic.List<Avalonia.Point>";
     }
 
     /// <summary>

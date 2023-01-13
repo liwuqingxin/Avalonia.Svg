@@ -12,7 +12,9 @@ namespace Nlnet.Avalonia.Svg.Test.Tests
             var type1 = typeof(double).ToString();
             var type2 = typeof(Double).ToString();
 
-            Assert.Equals(type1, type2);
+            Assert.IsTrue(type1 == type2);
+
+            Console.Write("global::System.Collections.Generic.List<global::Avalonia.Point>");
         }
 
         [TestMethod]

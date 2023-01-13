@@ -20,6 +20,9 @@ public class SvgPolygonFactory : ISvgTagFactory
 }
 
 public class SvgPolygon : SvgTagBase
+    //ISvgVisual,
+    //IClassSetter,
+    //IPointsSetter,
 {
     public string? Class { get; set; }
     public string? Points { get; set; }
