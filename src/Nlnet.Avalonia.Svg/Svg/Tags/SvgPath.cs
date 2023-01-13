@@ -14,22 +14,25 @@ public class SvgPathFactory : ISvgTagFactory
             return SvgIgnore.Default;
         }
 
-        var svgPath = new SvgPath();
-        svgPath.FetchProperties(xmlNode.Attributes!);
-        
-        return svgPath;
+        var tag = new SvgPath();
+        xmlNode.Attributes?.FetchPropertiesTo(tag);
+        return tag;
     }
 }
 
-public class SvgPath : SvgTagBase, ISvgVisual, 
+public class SvgPath : SvgTagBase, 
+    ISvgVisual, 
     IClassSetter, 
-    IDataSetter,  
-    IFillSetter, 
-    IStrokeSetter, 
-    IStrokeWidthSetter, 
-    IOpacitySetter
+    IDataSetter
 {
-    public Geometry? RenderGeometry { get; private set; }
+    private Geometry? RenderGeometry { get; set; }
+
+    public string?   Class       { get; set; }
+    public Geometry? Data        { get; set; }
+    public IBrush?   Fill        { get; set; }
+    public IBrush?   Stroke      { get; set; }
+    public double?   StrokeWidth { get; set; }
+    public double?   Opacity     { get; set; }
 
     public override void ApplyResources(ISvgResourceCollector collector)
     {
@@ -92,11 +95,4 @@ public class SvgPath : SvgTagBase, ISvgVisual,
         RenderGeometry = Data.Clone();
         RenderGeometry.Transform = transform;
     }
-
-    public string?   Class       { get; set; }
-    public Geometry? Data        { get; set; }
-    public IBrush?   Fill        { get; set; }
-    public IBrush?   Stroke      { get; set; }
-    public double?   StrokeWidth { get; set; }
-    public double?   Opacity     { get; set; }
 }

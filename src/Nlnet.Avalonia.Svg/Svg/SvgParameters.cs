@@ -9,11 +9,7 @@
 #if DEBUG
             ThrowExceptionWhenTagNotRecognized = true,
             ThrowExceptionWhenTagNotImplement = true,
-            ThrowExceptionWhenAttributeNotImplement = true,
-
-            //ThrowExceptionWhenTagNotRecognized      = false,
-            //ThrowExceptionWhenTagNotImplement       = false,
-            //ThrowExceptionWhenAttributeNotImplement = false,
+            ThrowExceptionWhenAttributeNotImplement = false,
 #else
             ThrowExceptionWhenTagNotRecognized = false,
             ThrowExceptionWhenTagNotImplement = false,

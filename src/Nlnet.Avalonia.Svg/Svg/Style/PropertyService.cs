@@ -14,11 +14,16 @@ namespace Nlnet.Avalonia.Svg
         /// <summary>
         /// Try to fetch all properties of svg tag from <see cref="XmlAttributeCollection"/>.
         /// </summary>
-        /// <param name="target"></param>
         /// <param name="attrs"></param>
-        public static void FetchProperties(this ISvgTag target, XmlAttributeCollection attrs)
+        /// <param name="target"></param>
+        public static void FetchPropertiesTo(this XmlAttributeCollection? attrs, ISvgTag target)
         {
             // TODO For convenience here, temporarily use reflection to parse the implemented attribute interface, and then consider performance later.
+
+            if (attrs == null)
+            {
+                return;
+            }
 
             if (!SetterTypeCaches.TryGetValue(target.GetType(), out var list))
             {
@@ -26,7 +31,7 @@ namespace Nlnet.Avalonia.Svg
                     .GetType()
                     .GetInterfaces()
                     .Where(it => it.IsAssignableTo(typeof(IDeferredAdder)))
-                    .Select(type => type.GetMethod(nameof(IFillSetter.Parse)))  // We use one setter interface as the standard parse method host.
+                    .Select(type => type.GetMethod($"{type.Name}Parser"))  // We use one setter interface as the standard parse method host.
                     .Where(m => m != null)
                     .ToList()!;
                 SetterTypeCaches.TryAdd(target.GetType(), list);

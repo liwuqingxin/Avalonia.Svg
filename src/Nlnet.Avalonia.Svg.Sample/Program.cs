@@ -20,9 +20,6 @@ namespace Nlnet.Avalonia.Svg.Sample
             }
             catch (Exception e)
             {
-                // here we can work with the exception, for example add it to our log file
-                // TODO Log.Fatal(e, "Something very bad happened");
-
                 var location = $"{Path.GetDirectoryName(typeof(Program).Assembly.Location)}/Nlnet.Avalonia.MessageBox.exe";
                 
                 Process.Start(location, $"\"{e.Message}\" \"{e.StackTrace}\" \"发生不可恢复异常\"");
@@ -32,14 +29,14 @@ namespace Nlnet.Avalonia.Svg.Sample
                     Debugger.Log(0, nameof(Program), e.ToString());
                 }
 
-                if (Debugger.IsAttached)
-                {
-                    Debugger.Break();
-                }
-                else
-                {
-                    Debugger.Launch();
-                }
+                //if (Debugger.IsAttached)
+                //{
+                //    Debugger.Break();
+                //}
+                //else
+                //{
+                //    Debugger.Launch();
+                //}
             }
             finally
             {

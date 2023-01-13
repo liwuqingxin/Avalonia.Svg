@@ -148,7 +148,7 @@ namespace {namespaceName}
     {{
         public {propertyType}? {property} {{ get; set; }}
 
-        public void Parse(XmlAttributeCollection attrs)
+        public void I{classSymbol.Name}Parser(XmlAttributeCollection attrs)
         {{
             this.ParseOrDefer<I{classSymbol.Name}, {nullablePropertyType}>(attrs, SvgProperties.{property}, Parsers.TryTo{propertyType}, (setter, value) => setter.{property} = value);
         }}

@@ -28,7 +28,7 @@
 
 	<!-- Add this as a new ItemGroup, replacing paths and names appropriately -->
 	<ItemGroup>
-		<ProjectReference Include="..\Nlnet.Avalonia.Svg.CompileGenerator\Nlnet.Avalonia.Svg.CompileGenerator.csproj"  OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\Nlnet.Avalonia.Svg.CompileGenerator\Nlnet.Avalonia.Svg.CompileGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
 
 </Project>
