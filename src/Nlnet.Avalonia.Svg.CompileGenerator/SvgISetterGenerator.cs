@@ -57,7 +57,7 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
 
         public void Initialize(GeneratorInitializationContext context)
         {
-            Debugger.Launch();
+            //Debugger.Launch();
 
             // 注册一个语法接收器，会在每次生成时被创建
             context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());

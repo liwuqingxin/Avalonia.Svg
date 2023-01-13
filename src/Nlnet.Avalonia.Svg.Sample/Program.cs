@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using Avalonia;
 
 namespace Nlnet.Avalonia.Svg.Sample
@@ -21,6 +22,10 @@ namespace Nlnet.Avalonia.Svg.Sample
             {
                 // here we can work with the exception, for example add it to our log file
                 // TODO Log.Fatal(e, "Something very bad happened");
+
+                var location = $"{Path.GetDirectoryName(typeof(Program).Assembly.Location)}/Nlnet.Avalonia.MessageBox.exe";
+                
+                Process.Start(location, $"\"{e.Message}\" \"{e.StackTrace}\" \"发生不可恢复异常\"");
 
                 if (Debugger.IsLogging())
                 {

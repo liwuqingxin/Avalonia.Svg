@@ -1,0 +1,25 @@
+<Window x:Name="Window"
+        x:Class="Nlnet.Avalonia.MessageBox.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="消息提示"
+        Width="1200"
+        Height="800"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d">
+    <Grid RowDefinitions="Auto,*">
+        <TextBox Margin="12"
+                 BorderThickness="0"
+                 FontSize="24"
+                 Foreground="OrangeRed"
+                 Text="{Binding #Window.Message}" />
+        <TextBox Grid.Row="1"
+                 Margin="12"
+                 BorderThickness="0"
+                 FontSize="14"
+                 LineHeight="24"
+                 Text="{Binding #Window.StackTrace}" />
+    </Grid>
+</Window>

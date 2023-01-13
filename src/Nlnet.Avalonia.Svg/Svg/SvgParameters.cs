@@ -2,14 +2,18 @@
 {
     public class SvgParameters
     {
-        private const bool IfThrow = false;
+        private const bool IfThrow = true;
 
         public static SvgParameters Default { get; set; } = new SvgParameters()
         {
 #if DEBUG
-            ThrowExceptionWhenTagNotRecognized      = IfThrow,
-            ThrowExceptionWhenTagNotImplement       = IfThrow,
-            ThrowExceptionWhenAttributeNotImplement = IfThrow,
+            ThrowExceptionWhenTagNotRecognized = true,
+            ThrowExceptionWhenTagNotImplement = true,
+            ThrowExceptionWhenAttributeNotImplement = true,
+
+            //ThrowExceptionWhenTagNotRecognized      = false,
+            //ThrowExceptionWhenTagNotImplement       = false,
+            //ThrowExceptionWhenAttributeNotImplement = false,
 #else
             ThrowExceptionWhenTagNotRecognized = false,
             ThrowExceptionWhenTagNotImplement = false,
