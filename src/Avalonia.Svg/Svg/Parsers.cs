@@ -50,7 +50,7 @@ namespace Avalonia.Svg
         /// </summary>
         /// <param name="valueString"></param>
         /// <returns></returns>
-        public static IBrush ToBrush(this string valueString)
+        public static IBrush ToIBrush(this string valueString)
         {
             return Brush.Parse(valueString);
         }
@@ -61,11 +61,11 @@ namespace Avalonia.Svg
         /// <param name="valueString"></param>
         /// <param name="brush"></param>
         /// <returns></returns>
-        public static bool TryToBrush(this string valueString, out IBrush? brush)
+        public static bool TryToIBrush(this string valueString, out IBrush? brush)
         {
             try
             {
-                brush = ToBrush(valueString);
+                brush = ToIBrush(valueString);
                 return true;
             }
             catch

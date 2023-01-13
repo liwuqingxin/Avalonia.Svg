@@ -58,16 +58,12 @@ public static class SvgTagFactory
         var doc = new XmlDocument();
         doc.LoadXml(svgData);
 
-        var node = doc.FirstChild;
+        var node = doc.ChildNodes.OfType<XmlNode>().FirstOrDefault(n => n.NodeType == XmlNodeType.Element && n.Name == SvgTags.svg.ToString());
         if (node == null)
         {
-            throw new InvalidDataException("Svg data has more than one root nodes which is invalid for svg file");
+            throw new InvalidDataException("Can not find the svg tag in the svg document");
         }
-        if (node.Name != SvgTags.svg.ToString())
-        {
-            throw new InvalidDataException($"First node of svg data should be {nameof(SvgTags.svg)} but {node.Name}");
-        }
-
+        
         var svg = CreateTagFrom(node);
 
         // Collect svg resources.
@@ -89,7 +85,7 @@ public static class SvgTagFactory
 
         if (!SvgTagFactories.TryGetValue(tagDefinition, out var factory))
         {
-            throw new Exception($"Tag named{node.LocalName} does not implement");
+            throw new Exception($"Tag named '{node.LocalName}' does not implement");
         }
 
         var tag = factory.CreateTag(node);

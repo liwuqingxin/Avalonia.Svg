@@ -1,19 +1,8 @@
-﻿using System.Xml;
+﻿using Avalonia.Svg.CompileGenerator;
 
 namespace Avalonia.Svg.Setters;
 
-public interface IOpacitySetter : IDeferredAdder
-{
-    public double? Opacity { get; set; }
-
-    public void Parse(XmlAttributeCollection attrs)
-    {
-        this.ParseOrDefer<IOpacitySetter, double>(attrs, SvgProperties.Opacity, Parsers.TryToDouble, (setter, value) => setter.Opacity = value);
-    }
-}
-
-[Name(SvgProperties.Opacity)] public class OpacitySetterFactory : AbstractSetterFactory<OpacitySetter> { }
-
+[SetterGenerator(nameof(SvgProperties.Opacity), SvgTypes.Double, false)]
 public class OpacitySetter : AbstractDoubleSetter
 {
     public override void Set(ISvgTag tag)

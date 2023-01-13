@@ -31,5 +31,10 @@
                  Stretch="Uniform">
             <nlnet:Icon IconSvgData="{x:Static local:TestData.SvgData4}" ShowRenderBounds="True" />
         </Viewbox>
+        <Viewbox Width="256"
+                 Height="256"
+                 Stretch="Uniform">
+            <nlnet:Icon IconSvgData="{x:Static local:TestData.SvgData5}" ShowRenderBounds="True" />
+        </Viewbox>
     </StackPanel>
 </Window>

@@ -7,6 +7,15 @@ namespace Avalonia.Svg.Test.Tests
     public class SvgTest
     {
         [TestMethod]
+        public void TestNormal()
+        {
+            var type1 = typeof(double).ToString();
+            var type2 = typeof(Double).ToString();
+
+            Assert.Equals(type1, type2);
+        }
+
+        [TestMethod]
         public void TestIconSvgHelper()
         {
             //

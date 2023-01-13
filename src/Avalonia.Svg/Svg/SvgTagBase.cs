@@ -52,11 +52,7 @@ public abstract class SvgTagBase : ISvgTag
 
     public void AddDeferred(string property, string valueString)
     {
-        if (DeferredProperties == null)
-        {
-            DeferredProperties = new Dictionary<string, string>();
-        }
-
+        DeferredProperties ??= new Dictionary<string, string>();
         DeferredProperties.TryAdd(property, valueString);
     }
 

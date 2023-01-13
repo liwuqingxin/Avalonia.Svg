@@ -12,6 +12,11 @@ namespace Avalonia.Svg
     {
         private static readonly ConcurrentDictionary<Type, List<MethodInfo>> SetterTypeCaches = new();
 
+        /// <summary>
+        /// Try to fetch all properties of svg tag from <see cref="XmlAttributeCollection"/>.
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="attrs"></param>
         public static void FetchProperties(this ISvgTag target, XmlAttributeCollection attrs)
         {
             // TODO For convenience here, temporarily use reflection to parse the implemented attribute interface, and then consider performance later.
@@ -22,7 +27,7 @@ namespace Avalonia.Svg
                     .GetType()
                     .GetInterfaces()
                     .Where(it => it.IsAssignableTo(typeof(IDeferredAdder)))
-                    .Select(type => type.GetMethod("Parse"))
+                    .Select(type => type.GetMethod(nameof(IFillSetter.Parse)))  // We use one setter interface as the standard parse method host.
                     .Where(m => m != null)
                     .ToList()!;
                 SetterTypeCaches.TryAdd(target.GetType(), list);

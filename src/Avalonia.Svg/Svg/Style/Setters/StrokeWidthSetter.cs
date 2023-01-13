@@ -1,19 +1,8 @@
-﻿using System.Xml;
+﻿using Avalonia.Svg.CompileGenerator;
 
 namespace Avalonia.Svg.Setters;
 
-public interface IStrokeWidthSetter : IDeferredAdder
-{
-    public double? StrokeWidth { get; set; }
-
-    public void Parse(XmlAttributeCollection attrs)
-    {
-        this.ParseOrDefer<IStrokeWidthSetter, double>(attrs, SvgProperties.StrokeWidth, Parsers.TryToDouble, (setter, value) => setter.StrokeWidth = value);
-    }
-}
-
-[Name(SvgProperties.StrokeWidth)] public class StrokeWidthSetterFactory : AbstractSetterFactory<StrokeWidthSetter> { }
-
+[SetterGenerator(nameof(SvgProperties.StrokeWidth), SvgTypes.Double, false)]
 public class StrokeWidthSetter : AbstractDoubleSetter
 {
     public override void Set(ISvgTag tag)

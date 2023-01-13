@@ -1,20 +1,8 @@
-﻿using System.Xml;
-using Avalonia.Media;
+﻿using Avalonia.Svg.CompileGenerator;
 
 namespace Avalonia.Svg.Setters;
 
-public interface IFillSetter : IDeferredAdder
-{
-    public IBrush? Fill { get; set; }
-
-    public void Parse(XmlAttributeCollection attrs)
-    {
-        this.ParseOrDefer<IFillSetter, IBrush?>(attrs, SvgProperties.Fill, Parsers.TryToBrush, (setter, value) => setter.Fill = value);
-    }
-}
-
-[Name(SvgProperties.Fill)] public class FillSetterFactory : AbstractSetterFactory<FillSetter> { }
-
+[SetterGenerator(nameof(SvgProperties.Fill), SvgTypes.Brush)]
 public class FillSetter : AbstractBrushSetter
 {
     public override void Set(ISvgTag tag)

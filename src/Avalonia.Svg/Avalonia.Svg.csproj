@@ -25,4 +25,10 @@
 		<PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview4" />
 		<PackageReference Include="XamlNameReferenceGenerator" Version="1.5.1" />
 	</ItemGroup>
+
+	<!-- Add this as a new ItemGroup, replacing paths and names appropriately -->
+	<ItemGroup>
+		<ProjectReference Include="..\Avalonia.Svg.CompileGenerator\Avalonia.Svg.CompileGenerator.csproj"  OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+
 </Project>

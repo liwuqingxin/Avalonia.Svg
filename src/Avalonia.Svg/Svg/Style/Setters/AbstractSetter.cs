@@ -32,6 +32,7 @@ public abstract class AbstractBrushSetter : ISvgStyleSetter
 
     public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
     {
+        // url example : "url(#linearGradient-1)"
         var match = Regex.Match(deferredSetterValue, "url\\(\\#(.*)\\)");
         if (match.Success)
         {

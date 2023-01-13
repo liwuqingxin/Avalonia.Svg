@@ -1,20 +1,8 @@
-﻿using System.Xml;
-using Avalonia.Media;
+﻿using Avalonia.Svg.CompileGenerator;
 
 namespace Avalonia.Svg.Setters;
 
-public interface IStrokeSetter : IDeferredAdder
-{
-    public IBrush? Stroke { get; set; }
-
-    public void Parse(XmlAttributeCollection attrs)
-    {
-        this.ParseOrDefer<IStrokeSetter, IBrush?>(attrs, SvgProperties.Stroke, Parsers.TryToBrush, (setter, value) => setter.Stroke = value);
-    }
-}
-
-[Name(SvgProperties.Stroke)] public class StrokeSetterFactory : AbstractSetterFactory<StrokeSetter> { }
-
+[SetterGenerator(nameof(SvgProperties.Stroke), SvgTypes.Brush)]
 public class StrokeSetter : AbstractBrushSetter
 {
     public override void Set(ISvgTag tag)

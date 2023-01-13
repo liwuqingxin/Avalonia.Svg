@@ -89,9 +89,8 @@ public class SvgPath : SvgTagBase, ISvgVisual, IFillSetter, IStrokeSetter, IStro
 
     void ISvgVisual.ApplyTransform(Transform transform)
     {
-        var clone = Geometry/*.Clone()*/;
-        clone.Transform = transform;
-        RenderGeometry = clone;
+        Geometry.Transform = transform;
+        RenderGeometry = Geometry;
     }
 
     public IBrush? Fill        { get; set; }
