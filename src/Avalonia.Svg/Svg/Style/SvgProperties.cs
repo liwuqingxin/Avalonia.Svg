@@ -11,8 +11,10 @@ namespace Avalonia.Svg
         public const string Double    = "double";
         public const string Bool      = "bool";
         public const string Int       = "int";
+        public const string String    = "string";
         public const string Brush     = nameof(IBrush);
         public const string Thickness = nameof(Avalonia.Thickness);
+        public const string Geometry  = nameof(Avalonia.Media.Geometry);
     }
 
     /// <summary>

@@ -76,16 +76,30 @@ public static class SvgTagFactory
         return (svg as ISvg)!;
     }
 
-    private static ISvgTag? CreateTagFrom(XmlNode node)
+    private static ISvgTag CreateTagFrom(XmlNode node)
     {
         if (!Enum.TryParse<SvgTags>(node.LocalName.Replace('-', '_'), out var tagDefinition))
         {
-            throw new Exception($"Can not recognize the tag named{node.LocalName}");
+            if (SvgParameters.Default.ThrowExceptionWhenTagNotRecognized)
+            {
+                throw new Exception($"Can not recognize the tag named{node.LocalName}");
+            }
+            else
+            {
+                return Svg.Empty;
+            }
         }
 
         if (!SvgTagFactories.TryGetValue(tagDefinition, out var factory))
         {
-            throw new Exception($"Tag named '{node.LocalName}' does not implement");
+            if (SvgParameters.Default.ThrowExceptionWhenTagNotImplement)
+            {
+                throw new NotImplementedException($"Tag named '{node.LocalName}' does not implement");
+            }
+            else
+            {
+                return Svg.Empty;
+            }
         }
 
         var tag = factory.CreateTag(node);
@@ -99,7 +113,7 @@ public static class SvgTagFactory
             .OfType<XmlNode>()
             .Where(n => n.NodeType == XmlNodeType.Element)
             .Select(CreateTagFrom)
-            .OfType<ISvgTag>()
+            .Where(t => t != Svg.Empty)
             .ToList();
 
         tag.Children = childTags;

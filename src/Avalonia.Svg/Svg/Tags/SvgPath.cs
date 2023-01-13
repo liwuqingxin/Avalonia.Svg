@@ -9,32 +9,27 @@ public class SvgPathFactory : ISvgTagFactory
 {
     public ISvgTag CreateTag(XmlNode xmlNode)
     {
-        var data = xmlNode.Attributes?[SvgProperties.Data]?.Value;
-        if (data == null)
+        if (xmlNode.Attributes?[SvgProperties.Data]?.Value == null)
         {
             return SvgIgnore.Default;
         }
 
-        var svgPath = new SvgPath(data.ToGeometry());
-        var attrs = xmlNode.Attributes!;
-
-        svgPath.Class = attrs[SvgProperties.Class]?.Value;
-        svgPath.FetchProperties(attrs);
+        var svgPath = new SvgPath();
+        svgPath.FetchProperties(xmlNode.Attributes!);
         
         return svgPath;
     }
 }
 
-public class SvgPath : SvgTagBase, ISvgVisual, IFillSetter, IStrokeSetter, IStrokeWidthSetter, IOpacitySetter
+public class SvgPath : SvgTagBase, ISvgVisual, 
+    IClassSetter, 
+    IDataSetter,  
+    IFillSetter, 
+    IStrokeSetter, 
+    IStrokeWidthSetter, 
+    IOpacitySetter
 {
-    public string?   Class          { get; internal set; }
-    public Geometry  Geometry       { get; }
     public Geometry? RenderGeometry { get; private set; }
-
-    public SvgPath(Geometry geometry)
-    {
-        Geometry = geometry;
-    }
 
     public override void ApplyResources(ISvgResourceCollector collector)
     {
@@ -63,7 +58,7 @@ public class SvgPath : SvgTagBase, ISvgVisual, IFillSetter, IStrokeSetter, IStro
         }
     }
 
-    Rect ISvgVisual.Bounds => Geometry.Bounds;
+    Rect ISvgVisual.Bounds => Data?.Bounds ?? Rect.Empty;
 
     Rect ISvgVisual.RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
 
@@ -89,12 +84,19 @@ public class SvgPath : SvgTagBase, ISvgVisual, IFillSetter, IStrokeSetter, IStro
 
     void ISvgVisual.ApplyTransform(Transform transform)
     {
-        Geometry.Transform = transform;
-        RenderGeometry = Geometry;
+        if (Data == null)
+        {
+            return;
+        }
+
+        RenderGeometry = Data.Clone();
+        RenderGeometry.Transform = transform;
     }
 
-    public IBrush? Fill        { get; set; }
-    public IBrush? Stroke      { get; set; }
-    public double? StrokeWidth { get; set; }
-    public double? Opacity     { get; set; }
+    public string?   Class       { get; set; }
+    public Geometry? Data        { get; set; }
+    public IBrush?   Fill        { get; set; }
+    public IBrush?   Stroke      { get; set; }
+    public double?   StrokeWidth { get; set; }
+    public double?   Opacity     { get; set; }
 }

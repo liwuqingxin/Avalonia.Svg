@@ -29,6 +29,8 @@ public class SvgFactory : ISvgTagFactory
 
 public class Svg : SvgTagBase, ISvg, ISvgResourceCollector
 {
+    public static Svg Empty { get; } = new Svg();
+
     public string? Id      { get; set; }
     public string? Version { get; set; }
     public string? Style   { get; set; }

@@ -30,7 +30,7 @@ namespace Avalonia.Svg
             return list;
         }
 
-        public static bool TryGetGeometry(string data, out Geometry? geometry)
+        private static bool TryGetGeometry(string data, out Geometry? geometry)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace Avalonia.Svg
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static Dictionary<string, Geometry> NormalizeGeometries(IReadOnlyDictionary<string, Geometry> list)
+        private static Dictionary<string, Geometry> NormalizeGeometries(IReadOnlyDictionary<string, Geometry> list)
         {
             var topLeftPoints = list.Select(pair => pair.Value.Bounds.TopLeft);
             // ReSharper disable once PossibleMultipleEnumeration

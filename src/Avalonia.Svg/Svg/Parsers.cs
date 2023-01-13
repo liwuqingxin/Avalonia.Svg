@@ -9,6 +9,18 @@ namespace Avalonia.Svg
     internal static class Parsers
     {
         /// <summary>
+        /// Try convert value string to <see cref="string"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static bool TryToString(this string valueString, out string result)
+        {
+            result = valueString;
+            return true;
+        }
+
+        /// <summary>
         /// Convert value string to <see cref="double"/>.
         /// </summary>
         /// <param name="valueString"></param>
@@ -112,7 +124,7 @@ namespace Avalonia.Svg
         /// <returns></returns>
         public static Geometry ToGeometry(this string valueString)
         {
-            return Geometry.Parse(valueString).Clone();
+            return Geometry.Parse(valueString);
         }
 
         /// <summary>
@@ -126,36 +138,6 @@ namespace Avalonia.Svg
             try
             {
                 geometry = ToGeometry(valueString);
-                return true;
-            }
-            catch
-            {
-                geometry = null;
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Convert value string to frozen <see cref="Geometry"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
-        private static Geometry ToFrozenGeometry(this string valueString)
-        {
-            return Geometry.Parse(valueString);
-        }
-
-        /// <summary>
-        /// Try convert value string to <see cref="Geometry"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
-        public static bool TryToFrozenGeometry(this string valueString, out Geometry? geometry)
-        {
-            try
-            {
-                geometry = ToFrozenGeometry(valueString);
                 return true;
             }
             catch

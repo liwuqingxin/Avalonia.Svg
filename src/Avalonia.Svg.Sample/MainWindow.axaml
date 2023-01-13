@@ -11,6 +11,11 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <StackPanel Orientation="Horizontal" Spacing="30">
+        <nlnet:Icon IconSvgData="{x:Static local:TestData.SvgData1}" ShowRenderBounds="True">
+            <nlnet:Icon.RenderTransform>
+                <ScaleTransform ScaleX="0.1" ScaleY="0.1" />
+            </nlnet:Icon.RenderTransform>
+        </nlnet:Icon>
         <Viewbox Width="256"
                  Height="256"
                  Stretch="Uniform">

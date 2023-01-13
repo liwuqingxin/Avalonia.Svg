@@ -12,6 +12,6 @@ public class StrokeSetter : AbstractBrushSetter
             return;
         }
 
-        setter.Stroke = Brush;
+        setter.Stroke = Value;
     }
 }

@@ -21,13 +21,13 @@ public abstract class AbstractSetterFactory<T> : ISvgStyleSetterFactory where T 
 /// </summary>
 public abstract class AbstractBrushSetter : ISvgStyleSetter
 {
-    protected IBrush? Brush;
+    protected IBrush? Value;
 
     public abstract void Set(ISvgTag tag);
 
     public void InitializeValue(string setterValue)
     {
-        Brush = Avalonia.Media.Brush.Parse(setterValue);
+        Value = Avalonia.Media.Brush.Parse(setterValue);
     }
 
     public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
@@ -37,8 +37,28 @@ public abstract class AbstractBrushSetter : ISvgStyleSetter
         if (match.Success)
         {
             var id = match.Groups[1].Value;
-            collector.Brushes.TryGetValue(id, out Brush);
+            collector.Brushes.TryGetValue(id, out Value);
         }
+    }
+}
+
+/// <summary>
+/// Abstract base setter for <see cref="Geometry"/>.
+/// </summary>
+public abstract class AbstractGeometrySetter : ISvgStyleSetter
+{
+    protected Geometry? Value;
+
+    public abstract void Set(ISvgTag tag);
+
+    public void InitializeValue(string setterValue)
+    {
+        Value = Geometry.Parse(setterValue);
+    }
+
+    public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
+    {
+        throw new NotImplementedException("Deferred Geometry value is not implemented");
     }
 }
 
@@ -59,5 +79,25 @@ public abstract class AbstractDoubleSetter : ISvgStyleSetter
     public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
     {
         throw new NotImplementedException("Deferred double value is not implemented");
+    }
+}
+
+/// <summary>
+/// Abstract base setter for <see cref="string"/>.
+/// </summary>
+public abstract class AbstractStringSetter : ISvgStyleSetter
+{
+    protected string? Value;
+
+    public abstract void Set(ISvgTag tag);
+
+    public void InitializeValue(string setterValue)
+    {
+        Value = setterValue;
+    }
+
+    public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
+    {
+        throw new NotImplementedException("Deferred string value is not implemented");
     }
 }

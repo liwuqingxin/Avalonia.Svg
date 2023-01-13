@@ -12,6 +12,6 @@ public class FillSetter : AbstractBrushSetter
             return;
         }
 
-        setter.Fill = Brush;
+        setter.Fill = Value;
     }
 }

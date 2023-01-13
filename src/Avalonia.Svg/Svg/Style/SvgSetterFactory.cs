@@ -35,6 +35,20 @@ public static class SvgStyleSetterFactory
     /// <returns></returns>
     public static ISvgStyleSetterFactory? GetSetterFactory(string name)
     {
-        return SvgSetterFactories.TryGetValue(name, out var factory) ? factory : null;
+        if (SvgSetterFactories.TryGetValue(name, out var factory))
+        {
+            return factory;
+        }
+        else
+        {
+            if (SvgParameters.Default.ThrowExceptionWhenAttributeNotImplement)
+            {
+                throw new NotImplementedException($"Attribute named '{name}' does not implement");
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }
