@@ -11,11 +11,11 @@ public class SvgRectFactory : ISvgTagFactory
 
         if (xmlNode.Attributes != null)
         {
-            tag.Id     = xmlNode.Attributes["id"]?.Value;
-            tag.Width  = xmlNode.Attributes["width"]?.Value;
-            tag.Height = xmlNode.Attributes["height"]?.Value;
-            tag.X      = xmlNode.Attributes["x"]?.Value;
-            tag.Y      = xmlNode.Attributes["y"]?.Value;
+            tag.Id     = xmlNode.Attributes[SvgProperties.Id]?.Value;
+            tag.Width  = xmlNode.Attributes[SvgProperties.Width]?.Value;
+            tag.Height = xmlNode.Attributes[SvgProperties.Height]?.Value;
+            tag.X      = xmlNode.Attributes[SvgProperties.X]?.Value;
+            tag.Y      = xmlNode.Attributes[SvgProperties.Y]?.Value;
         }
 
         return tag;

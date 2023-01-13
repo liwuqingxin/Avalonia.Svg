@@ -11,7 +11,7 @@ public class SvgClipPathFactory : ISvgTagFactory
 
         if (xmlNode.Attributes != null)
         {
-            tag.Id = xmlNode.Attributes["id"]?.Value;
+            tag.Id = xmlNode.Attributes[SvgProperties.Id]?.Value;
         }
 
         return tag;

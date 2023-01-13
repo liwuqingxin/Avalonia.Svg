@@ -10,9 +10,9 @@ public class SvgStopFactory : ISvgTagFactory
     {
         if (xmlNode.Attributes != null)
         {
-            var offset = xmlNode.Attributes["offset"]?.Value.ToDouble() ?? 0;
-            var stopOpacity = xmlNode.Attributes["stop-opacity"]?.Value.ToDouble() ?? 1;
-            var stopColor = Color.Parse(xmlNode.Attributes["stop-color"]?.Value ?? "Black");
+            var offset      = xmlNode.Attributes[SvgProperties.Offset]?.Value.ToDouble()      ?? 0;
+            var stopOpacity = xmlNode.Attributes[SvgProperties.StopOpacity]?.Value.ToDouble() ?? 1;
+            var stopColor   = Color.Parse(xmlNode.Attributes[SvgProperties.StopColor]?.Value ?? "Black");
             return new SvgStop(offset, stopOpacity, stopColor);
         }
         else

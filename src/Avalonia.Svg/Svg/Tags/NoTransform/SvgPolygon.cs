@@ -11,8 +11,8 @@ public class SvgPolygonFactory : ISvgTagFactory
 
         if (xmlNode.Attributes != null)
         {
-            tag.Class = xmlNode.Attributes["class"]?.Value;
-            tag.Points = xmlNode.Attributes["points"]?.Value;
+            tag.Class = xmlNode.Attributes[SvgProperties.Class]?.Value;
+            tag.Points = xmlNode.Attributes[SvgProperties.Points]?.Value;
         }
 
         return tag;

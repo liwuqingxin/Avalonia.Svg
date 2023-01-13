@@ -13,11 +13,11 @@ public class SvgLinearGradientFactory : ISvgTagFactory
 
         if (xmlNode.Attributes != null)
         {
-            tag.Id = xmlNode.Attributes["id"]?.Value ?? string.Empty;
-            tag.X1 = xmlNode.Attributes["x1"]?.Value.ToDouble() ?? 0;
-            tag.X2 = xmlNode.Attributes["x2"]?.Value.ToDouble() ?? 1;
-            tag.Y1 = xmlNode.Attributes["y1"]?.Value.ToDouble() ?? 0;
-            tag.Y2 = xmlNode.Attributes["y2"]?.Value.ToDouble() ?? 0;
+            tag.Id = xmlNode.Attributes[SvgProperties.Id]?.Value            ?? string.Empty;
+            tag.X1 = xmlNode.Attributes[SvgProperties.X1]?.Value.ToDouble() ?? 0;
+            tag.X2 = xmlNode.Attributes[SvgProperties.X2]?.Value.ToDouble() ?? 1;
+            tag.Y1 = xmlNode.Attributes[SvgProperties.Y1]?.Value.ToDouble() ?? 0;
+            tag.Y2 = xmlNode.Attributes[SvgProperties.Y2]?.Value.ToDouble() ?? 0;
         }
 
         return tag;

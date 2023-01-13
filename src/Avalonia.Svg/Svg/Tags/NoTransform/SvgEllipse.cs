@@ -11,13 +11,13 @@ public class SvgEllipseFactory : ISvgTagFactory
 
         if (xmlNode.Attributes != null)
         {
-            tag.Id = xmlNode.Attributes["id"]?.Value;
-            tag.RX = xmlNode.Attributes["rx"]?.Value;
-            tag.RY = xmlNode.Attributes["ry"]?.Value;
-            tag.CX = xmlNode.Attributes["cx"]?.Value;
-            tag.CY = xmlNode.Attributes["cy"]?.Value;
-            tag.Opacity = xmlNode.Attributes["opacity"]?.Value;
-            tag.Fill = xmlNode.Attributes["fill"]?.Value;
+            tag.Id      = xmlNode.Attributes[SvgProperties.Id]?.Value;
+            tag.RX      = xmlNode.Attributes[SvgProperties.RX]?.Value;
+            tag.RY      = xmlNode.Attributes[SvgProperties.RY]?.Value;
+            tag.CX      = xmlNode.Attributes[SvgProperties.CX]?.Value;
+            tag.CY      = xmlNode.Attributes[SvgProperties.CY]?.Value;
+            tag.Opacity = xmlNode.Attributes[SvgProperties.Opacity]?.Value;
+            tag.Fill    = xmlNode.Attributes[SvgProperties.Fill]?.Value;
         }
 
         return tag;

@@ -17,7 +17,7 @@ public class SvgStyleFactory : ISvgTagFactory
 
         if (xmlNode.Attributes != null)
         {
-            tag.ContentType = xmlNode.Attributes["type"]?.Value;
+            tag.ContentType = xmlNode.Attributes[SvgProperties.Type]?.Value;
         }
 
         return tag;

@@ -11,11 +11,11 @@ public class SvgLineFactory : ISvgTagFactory
 
         if (xmlNode.Attributes != null)
         {
-            tag.Class = xmlNode.Attributes["class"]?.Value;
-            tag.X1    = xmlNode.Attributes["x1"]?.Value;
-            tag.X2    = xmlNode.Attributes["x2"]?.Value;
-            tag.Y1    = xmlNode.Attributes["y1"]?.Value;
-            tag.Y2    = xmlNode.Attributes["y2"]?.Value;
+            tag.Class = xmlNode.Attributes[SvgProperties.Class]?.Value;
+            tag.X1    = xmlNode.Attributes[SvgProperties.X1]?.Value;
+            tag.X2    = xmlNode.Attributes[SvgProperties.X2]?.Value;
+            tag.Y1    = xmlNode.Attributes[SvgProperties.Y1]?.Value;
+            tag.Y2    = xmlNode.Attributes[SvgProperties.Y2]?.Value;
         }
 
         return tag;

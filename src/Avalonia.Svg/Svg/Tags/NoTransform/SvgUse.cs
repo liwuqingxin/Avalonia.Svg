@@ -11,8 +11,8 @@ public class SvgUseFactory : ISvgTagFactory
 
         if (xmlNode.Attributes != null)
         {
-            tag.Style = xmlNode.Attributes["style"]?.Value;
-            tag.Href  = xmlNode.Attributes["xlink:href"]?.Value;
+            tag.Style = xmlNode.Attributes[SvgProperties.Style]?.Value;
+            tag.Href  = xmlNode.Attributes[SvgProperties.Href]?.Value;
         }
 
         return tag;

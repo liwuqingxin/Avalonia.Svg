@@ -15,12 +15,12 @@ public class SvgFactory : ISvgTagFactory
 
         if (xmlNode.Attributes != null)
         {
-            tag.Id      = xmlNode.Attributes["id"]?.Value;
-            tag.Version = xmlNode.Attributes["version"]?.Value;
-            tag.Style   = xmlNode.Attributes["style"]?.Value;
-            tag.ViewBox = xmlNode.Attributes["viewBox"]?.Value;
-            tag.Y       = xmlNode.Attributes["y"]?.Value;
-            tag.X       = xmlNode.Attributes["x"]?.Value;
+            tag.Id      = xmlNode.Attributes[SvgProperties.Id]?.Value;
+            tag.Version = xmlNode.Attributes[SvgProperties.Version]?.Value;
+            tag.Style   = xmlNode.Attributes[SvgProperties.Style]?.Value;
+            tag.ViewBox = xmlNode.Attributes[SvgProperties.ViewBox]?.Value;
+            tag.X       = xmlNode.Attributes[SvgProperties.X]?.Value;
+            tag.Y       = xmlNode.Attributes[SvgProperties.Y]?.Value;
         }
 
         return tag;
