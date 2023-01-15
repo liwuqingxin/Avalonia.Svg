@@ -1,11 +1,11 @@
 <Window x:Class="Nlnet.Avalonia.Svg.Sample.MainWindow"
         xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:Nlnet.Avalonia.Svg.Controls;assembly=Nlnet.Avalonia.Svg"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Avalonia.Svg.Sample"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:nlnet="https://nlnet.com/avalonia.svg"
-        xmlns:controls="clr-namespace:Nlnet.Avalonia.Svg.Controls;assembly=Nlnet.Avalonia.Svg"
         xmlns:sample="clr-namespace:Nlnet.Avalonia.Svg.Sample"
         Title="Avalonia.Svg.Sample"
         d:DesignHeight="450"
@@ -13,11 +13,11 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <StackPanel Orientation="Horizontal" Spacing="30">
-        <controls:Icon IconSvgData="{x:Static sample:TestData.SvgData1}" ShowRenderBounds="True">
+        <!--<controls:Icon IconSvgData="{x:Static sample:TestData.SvgData1}" ShowRenderBounds="True">
             <controls:Icon.RenderTransform>
                 <ScaleTransform ScaleX="0.1" ScaleY="0.1" />
             </controls:Icon.RenderTransform>
-        </controls:Icon>
+        </controls:Icon>-->
         <Viewbox Width="256"
                  Height="256"
                  Stretch="Uniform">

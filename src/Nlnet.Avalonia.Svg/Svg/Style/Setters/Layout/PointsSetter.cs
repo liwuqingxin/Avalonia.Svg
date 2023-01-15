@@ -2,8 +2,8 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.Points), SvgTypes.PointList, false, ParserMethodName = nameof(SvgTypes.PointList))]
-public class PointsSetter : AbstractDoubleSetter
+[SetterGenerator(nameof(SvgProperties.Points), SvgTypes.PointList, false)]
+public class PointsSetter : AbstractPointsSetter
 {
     public override void Set(ISvgTag tag)
     {

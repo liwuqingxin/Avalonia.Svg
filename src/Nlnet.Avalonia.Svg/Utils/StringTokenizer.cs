@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg.Utils
@@ -116,7 +118,7 @@ namespace Nlnet.Avalonia.Svg.Utils
             return false;
         }
 
-        public bool TryGetDate(out DateTime? date)
+        public bool TryReadDate(out DateTime? date)
         {
             if (_results.Length <= _index)
             {
@@ -135,7 +137,7 @@ namespace Nlnet.Avalonia.Svg.Utils
             return false;
         }
 
-        public bool TryGetColor(out Color? color)
+        public bool TryReadColor(out Color? color)
         {
             if (_results.Length <= _index)
             {
@@ -154,7 +156,7 @@ namespace Nlnet.Avalonia.Svg.Utils
             return false;
         }
 
-        public bool TryGetBrush(out IBrush? brush)
+        public bool TryReadBrush(out IBrush? brush)
         {
             if (_results.Length <= _index)
             {
@@ -173,6 +175,11 @@ namespace Nlnet.Avalonia.Svg.Utils
                 brush = null;
                 return false;
             }
+        }
+
+        public IEnumerable<string> GetTokens()
+        {
+            return _results;
         }
     }
 }

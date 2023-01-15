@@ -17,7 +17,7 @@ namespace Nlnet.Avalonia.Svg
         public const string Brush     = nameof(global::Avalonia.Media.IBrush);
         public const string Thickness = nameof(global::Avalonia.Thickness);
         public const string Geometry  = nameof(global::Avalonia.Media.Geometry);
-        public const string PointList = "System.Collections.Generic.List<Avalonia.Point>";
+        public const string PointList = nameof(global::Nlnet.Avalonia.Svg.PointList);
     }
 
     /// <summary>

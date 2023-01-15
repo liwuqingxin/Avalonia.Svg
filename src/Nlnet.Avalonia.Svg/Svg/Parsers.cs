@@ -1,6 +1,10 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Media;
+using Nlnet.Avalonia.Svg.Utils;
 
 namespace Nlnet.Avalonia.Svg
 {
@@ -144,6 +148,62 @@ namespace Nlnet.Avalonia.Svg
             catch
             {
                 geometry = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Convert value string to <see cref="PointList"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static PointList ToPointList(this string valueString)
+        {
+            var results   = new PointList();
+            var tokenizer = new SafeStringTokenizer(valueString, StringSplitOptions.RemoveEmptyEntries, ' ', ',');
+            var values = tokenizer
+                .GetTokens()
+                .Select(t =>
+                {
+                    if (double.TryParse(t, out var dValue))
+                    {
+                        return (double?) dValue;
+                    }
+                    return null;
+                })
+                .OfType<double>()
+                .ToList();
+
+            for (var i = 0; i < values.Count; i+=2)
+            {
+                if (i + 1 >= values.Count)
+                {
+                    break;
+                }
+                var x = values[i];
+                var y = values[i + 1];
+                results.Add(new Point(x, y));
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Try convert value string to <see cref="PointList"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="points"></param>
+        /// <returns></returns>
+        public static bool TryToPointList(this string valueString, out PointList points)
+        {
+            try
+            {
+                points = ToPointList(valueString);
+                return true;
+            }
+            catch
+            {
+                points = new PointList();
                 return false;
             }
         }

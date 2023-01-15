@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Avalonia;
 using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg;
@@ -27,7 +29,7 @@ public abstract class AbstractBrushSetter : ISvgStyleSetter
 
     public void InitializeValue(string setterValue)
     {
-        Value = global::Avalonia.Media.Brush.Parse(setterValue);
+        Value = setterValue.ToIBrush();
     }
 
     public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
@@ -53,7 +55,7 @@ public abstract class AbstractGeometrySetter : ISvgStyleSetter
 
     public void InitializeValue(string setterValue)
     {
-        Value = Geometry.Parse(setterValue);
+        Value = setterValue.ToGeometry();
     }
 
     public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
@@ -73,7 +75,7 @@ public abstract class AbstractDoubleSetter : ISvgStyleSetter
 
     public void InitializeValue(string setterValue)
     {
-        Value = double.Parse(setterValue);
+        Value = setterValue.ToDouble();
     }
 
     public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
@@ -99,5 +101,22 @@ public abstract class AbstractStringSetter : ISvgStyleSetter
     public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
     {
         throw new NotImplementedException("Deferred string value is not implemented");
+    }
+}
+
+public abstract class AbstractPointsSetter : ISvgStyleSetter
+{
+    protected PointList? Value;
+
+    public abstract void Set(ISvgTag tag);
+
+    public void InitializeValue(string setterValue)
+    {
+        Value = setterValue.ToPointList();
+    }
+
+    public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
+    {
+        throw new NotImplementedException("Deferred List<Point> value is not implemented");
     }
 }
