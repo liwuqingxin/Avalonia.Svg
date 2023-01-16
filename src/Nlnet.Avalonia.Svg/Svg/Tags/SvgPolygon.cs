@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.CompileGenerator;
@@ -12,48 +11,15 @@ public class SvgPolygon : SvgTagBase,
     IClassSetter,
     IPointsSetter
 {
-    private Rect? _rect;
+    private Geometry? _geometry;
+    private Geometry? _renderGeometry;
 
-    public string?    Class        { get; set; }
-    public IBrush?    Fill         { get; set; }
-    public IBrush?    Stroke       { get; set; }
-    public double?    StrokeWidth  { get; set; }
-    public double?    Opacity      { get; set; }
-    public PointList? Points       { get; set; }
-    public PointList? RenderPoints { get; set; }
-
-    public Rect Bounds
-    {
-        get
-        {
-            if (_rect != null)
-            {
-                return _rect.Value;
-            }
-
-            if (Points == null)
-            {
-                return (_rect = Rect.Empty).Value;
-            }
-
-            var minX = 0d;
-            var minY = 0d;
-            var maxX = 0d;
-            var maxY = 0d;
-            foreach (var point in Points)
-            {
-                minX = Math.Min(minX, point.X);
-                minY = Math.Min(minY, point.Y);
-                maxX = Math.Max(maxX, point.X);
-                maxY = Math.Max(maxY, point.Y);
-            }
-
-            _rect = new Rect(minX, minY, maxX - minX, maxY - minY);
-            return _rect.Value;
-        }
-    }
-
-    public Rect RenderBounds { get; set; }
+    public string?    Class       { get; set; }
+    public IBrush?    Fill        { get; set; }
+    public IBrush?    Stroke      { get; set; }
+    public double?    StrokeWidth { get; set; }
+    public double?    Opacity     { get; set; }
+    public PointList? Points      { get; set; }
 
     public SvgPolygon()
     {
@@ -64,35 +30,48 @@ public class SvgPolygon : SvgTagBase,
         };
     }
 
-    public void Render(DrawingContext dc)
+    Rect ISvgVisual.Bounds
     {
-        if (RenderPoints is not {Count: > 1})
+        get
+        {
+            if (Points == null)
+            {
+                return Rect.Empty;
+            }
+
+            if (_geometry != null)
+            {
+                return _geometry.Bounds;
+            }
+
+            _geometry = new PolylineGeometry(Points, true);
+            return _geometry.Bounds;
+        }
+    }
+
+    Rect ISvgVisual.RenderBounds => _renderGeometry?.Bounds ?? Rect.Empty;
+
+    void ISvgVisual.Render(DrawingContext dc)
+    {
+        if (_renderGeometry == null)
         {
             return;
         }
-
-        var polyLineGeometry = new PolylineGeometry(RenderPoints, true);
 
         dc.RenderWithOpacity(Opacity, () =>
         {
-            dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), polyLineGeometry);
+            dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), _renderGeometry);
         });
     }
 
-    public void ApplyTransform(Transform transform)
+    void ISvgVisual.ApplyTransform(Transform transform)
     {
-        RenderBounds = Bounds.TransformToAABB(transform.Value);
-
-        if (Points == null)
+        if (_geometry == null)
         {
             return;
         }
 
-        RenderPoints = new PointList();
-
-        foreach (var point in Points)
-        {
-            RenderPoints.Add(new Point(point.X + transform.Value.M31, point.Y + transform.Value.M32));
-        }
+        _renderGeometry = _geometry.Clone();
+        _renderGeometry.Transform = transform;
     }
 }

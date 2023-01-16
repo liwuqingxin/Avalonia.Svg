@@ -11,7 +11,7 @@ public class SvgPath : SvgTagBase,
     IClassSetter, 
     IDataSetter
 {
-    private Geometry? RenderGeometry { get; set; }
+    private Geometry? _renderGeometry;
 
     public string?   Class       { get; set; }
     public Geometry? Data        { get; set; }
@@ -31,18 +31,18 @@ public class SvgPath : SvgTagBase,
 
     Rect ISvgVisual.Bounds => Data?.Bounds ?? Rect.Empty;
 
-    Rect ISvgVisual.RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
+    Rect ISvgVisual.RenderBounds => _renderGeometry?.Bounds ?? Rect.Empty;
 
     void ISvgVisual.Render(DrawingContext dc)
     {
-        if (RenderGeometry == null)
+        if (_renderGeometry == null)
         {
             return;
         }
 
         dc.RenderWithOpacity(Opacity, () =>
         {
-            dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
+            dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), _renderGeometry);
         });
     }
 
@@ -53,7 +53,7 @@ public class SvgPath : SvgTagBase,
             return;
         }
 
-        RenderGeometry = Data.Clone();
-        RenderGeometry.Transform = transform;
+        _renderGeometry = Data.Clone();
+        _renderGeometry.Transform = transform;
     }
 }
