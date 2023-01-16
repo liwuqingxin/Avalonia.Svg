@@ -1,22 +1,12 @@
 ﻿using System;
-using System.Linq;
-using System.Xml;
+using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Media;
+using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[SvgTag(SvgTags.polygon)]
-public class SvgPolygonFactory : ISvgTagFactory
-{
-    public ISvgTag CreateTag(XmlNode xmlNode)
-    {
-        var tag = new SvgPolygon();
-        xmlNode.Attributes?.FetchPropertiesTo(tag);
-        return tag;
-    }
-}
-
+[TagFactoryGenerator(nameof(SvgTags.polygon))]
 public class SvgPolygon : SvgTagBase,
     ISvgVisual,
     IClassSetter,
@@ -65,31 +55,13 @@ public class SvgPolygon : SvgTagBase,
 
     public Rect RenderBounds { get; set; }
 
-    public override void ApplyResources(ISvgResourceCollector collector)
+    public SvgPolygon()
     {
-        if (!string.IsNullOrWhiteSpace(Class))
+        ResourceAppliers = new List<ISvgResourceApplier>()
         {
-            if (collector.Styles.TryGetValue(Class, out var style))
-            {
-                style.ApplyTo(this);
-            }
-        }
-
-        if (DeferredProperties == null)
-        {
-            return;
-        }
-
-        foreach (var pair in DeferredProperties)
-        {
-            var setter = SvgStyleSetterFactory.GetSetterFactory(pair.Key)?.CreateSetter();
-            if (setter == null)
-            {
-                continue;
-            }
-            setter.InitializeDeferredValue(collector, pair.Value);
-            setter.Set(this);
-        }
+            new ClassApplier(),
+            new DeferredPropertiesApplier(),
+        };
     }
 
     public void Render(DrawingContext dc)
@@ -101,17 +73,10 @@ public class SvgPolygon : SvgTagBase,
 
         var polyLineGeometry = new PolylineGeometry(RenderPoints, true);
 
-        if (Opacity != null)
-        {
-            using (dc.PushOpacity(Opacity.Value))
-            {
-                dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), polyLineGeometry);
-            }
-        }
-        else
+        dc.RenderWithOpacity(Opacity, () =>
         {
             dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), polyLineGeometry);
-        }
+        });
     }
 
     public void ApplyTransform(Transform transform)

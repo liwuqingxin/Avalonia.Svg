@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Media;
@@ -82,6 +83,27 @@ namespace Nlnet.Avalonia.Svg
             var minY = topLeftPoints.Select(p => p.Y).Min();
 
             return new TranslateTransform(-minX, -minY);
+        }
+
+        /// <summary>
+        /// Render with opacity.
+        /// </summary>
+        /// <param name="dc"></param>
+        /// <param name="opacity"></param>
+        /// <param name="render"></param>
+        public static void RenderWithOpacity(this DrawingContext dc, double? opacity, Action render)
+        {
+            if (opacity != null)
+            {
+                using (dc.PushOpacity(opacity.Value))
+                {
+                    render();
+                }
+            }
+            else
+            {
+                render();
+            }
         }
     }
 }

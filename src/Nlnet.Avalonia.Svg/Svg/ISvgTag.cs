@@ -8,15 +8,20 @@ namespace Nlnet.Avalonia.Svg;
 public interface ISvgTag
 {
     /// <summary>
-    /// Get the standard tag name. It is defined by svg format.
+    /// Properties deferred to set value.
     /// </summary>
-    /// <returns></returns>
-    public string GetTagName();
+    public IReadOnlyDictionary<string, string>? DeferredProperties { get; }
 
     /// <summary>
     /// Children of this tag.
     /// </summary>
     public List<ISvgTag>? Children { get; set; }
+
+    /// <summary>
+    /// Get the standard tag name. It is defined by svg format.
+    /// </summary>
+    /// <returns></returns>
+    public string GetTagName();
 
     /// <summary>
     /// Apply resources to this tag including brushes, styles, etc...

@@ -1,20 +1,10 @@
-﻿using System.Xml;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Media;
+using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[SvgTag(SvgTags.rect)]
-public class SvgRectFactory : ISvgTagFactory
-{
-    public ISvgTag CreateTag(XmlNode xmlNode)
-    {
-        var tag = new SvgRect();
-        xmlNode.Attributes?.FetchPropertiesTo(tag);
-        return tag;
-    }
-}
-
+[TagFactoryGenerator(nameof(SvgTags.rect))]
 public class SvgRect : SvgTagBase, 
     ISvgVisual, 
     IXSetter, 
@@ -49,17 +39,10 @@ public class SvgRect : SvgTagBase,
             return;
         }
 
-        if (Opacity != null)
-        {
-            using (dc.PushOpacity(Opacity.Value))
-            {
-                dc.DrawRectangle(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderBounds);
-            }
-        }
-        else
+        dc.RenderWithOpacity(Opacity, () =>
         {
             dc.DrawRectangle(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderBounds);
-        }
+        });
     }
 
     void ISvgVisual.ApplyTransform(Transform transform)

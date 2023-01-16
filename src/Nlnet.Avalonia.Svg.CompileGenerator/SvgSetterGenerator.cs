@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Nlnet.Avalonia.Svg.CompileGenerator
 {
     [Generator]
-    public class SvgISetterGenerator : ISourceGenerator
+    public class SvgSetterGenerator : ISourceGenerator
     {
         // 语法接收器，将在每次生成代码时被按需创建
         private class SyntaxReceiver : ISyntaxReceiver
@@ -38,6 +38,10 @@ using System;
 
 namespace Nlnet.Avalonia.Svg.CompileGenerator
 {
+    /// <summary>
+    /// Mark the setter should auto generate correspoding setter interface and factory.
+    /// </summary>
+    /// <returns></returns>
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     internal sealed class SetterGeneratorAttribute : Attribute
     {
@@ -79,7 +83,7 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
 
             if (!(context.Compilation is CSharpCompilation csharpCompilation))
             {
-                throw new Exception($"{nameof(SvgISetterGenerator)} only support C#.");
+                throw new Exception($"{nameof(SvgSetterGenerator)} only support C#.");
             }
 
             // 创建处目标名称的属性
@@ -156,8 +160,16 @@ using Nlnet.Avalonia.Svg;
 
 namespace {namespaceName}
 {{
+    /// <summary>
+    /// Factory for <see cref=""{classSymbol.Name}""/>
+    /// </summary>
+    /// <returns></returns>
     [Name(SvgProperties.{property})] public class {classSymbol.Name}Factory : AbstractSetterFactory<{classSymbol.Name}> {{ }}
 
+    /// <summary>
+    /// Interface for <see cref=""{classSymbol.Name}""/>
+    /// </summary>
+    /// <returns></returns>
     public interface I{classSymbol.Name} : IDeferredAdder
     {{
         public {propertyType}? {property} {{ get; set; }}

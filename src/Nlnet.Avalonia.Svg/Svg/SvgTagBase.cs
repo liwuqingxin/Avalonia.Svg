@@ -7,17 +7,27 @@ namespace Nlnet.Avalonia.Svg;
 /// <summary>
 /// Abstract base class for svg tags. This class provides the shared method <see cref="GetTagName"/> and the ability to add deferred properties.
 /// </summary>
-public abstract class SvgTagBase : ISvgTag
+public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 {
     #region ISvgTag
 
     private string? _tagName;
 
-    public  List<ISvgTag>? Children { get; set; }
+    IReadOnlyDictionary<string, string>? ISvgTag.DeferredProperties => DeferredProperties;
+
+    public List<ISvgTag>? Children { get; set; }
 
     public virtual void ApplyResources(ISvgResourceCollector collector)
     {
+        if (ResourceAppliers == null)
+        {
+            return;
+        }
 
+        foreach (var applier in ResourceAppliers)
+        {
+            applier.Apply(this, collector);
+        }
     }
 
     public string GetTagName()
@@ -55,6 +65,14 @@ public abstract class SvgTagBase : ISvgTag
         DeferredProperties ??= new Dictionary<string, string>();
         DeferredProperties.TryAdd(property, valueString);
     }
+
+    #endregion
+
+
+
+    #region ISvgResourceApplier
+
+    protected List<ISvgResourceApplier>? ResourceAppliers { get; init; }
 
     #endregion
 }

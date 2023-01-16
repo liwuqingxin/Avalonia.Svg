@@ -1,25 +1,11 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
 using Avalonia;
 using Avalonia.Media;
+using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[SvgTag(SvgTags.path)]
-public class SvgPathFactory : ISvgTagFactory
-{
-    public ISvgTag CreateTag(XmlNode xmlNode)
-    {
-        if (xmlNode.Attributes?[SvgProperties.Data]?.Value == null)
-        {
-            return SvgIgnore.Default;
-        }
-
-        var tag = new SvgPath();
-        xmlNode.Attributes?.FetchPropertiesTo(tag);
-        return tag;
-    }
-}
-
+[TagFactoryGenerator(nameof(SvgTags.path))]
 public class SvgPath : SvgTagBase, 
     ISvgVisual, 
     IClassSetter, 
@@ -34,31 +20,13 @@ public class SvgPath : SvgTagBase,
     public double?   StrokeWidth { get; set; }
     public double?   Opacity     { get; set; }
 
-    public override void ApplyResources(ISvgResourceCollector collector)
+    public SvgPath()
     {
-        if (!string.IsNullOrWhiteSpace(Class))
+        ResourceAppliers = new List<ISvgResourceApplier>()
         {
-            if (collector.Styles.TryGetValue(Class, out var style))
-            {
-                style.ApplyTo(this);
-            }
-        }
-
-        if (DeferredProperties == null)
-        {
-            return;
-        }
-
-        foreach (var pair in DeferredProperties)
-        {
-            var setter = SvgStyleSetterFactory.GetSetterFactory(pair.Key)?.CreateSetter();
-            if (setter == null)
-            {
-                continue;
-            }
-            setter.InitializeDeferredValue(collector, pair.Value);
-            setter.Set(this);
-        }
+            new ClassApplier(),
+            new DeferredPropertiesApplier(),
+        };
     }
 
     Rect ISvgVisual.Bounds => Data?.Bounds ?? Rect.Empty;
@@ -72,17 +40,10 @@ public class SvgPath : SvgTagBase,
             return;
         }
 
-        if (Opacity != null)
-        {
-            using (dc.PushOpacity(Opacity.Value))
-            {
-                dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
-            }
-        }
-        else
+        dc.RenderWithOpacity(Opacity, () =>
         {
             dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
-        }
+        });
     }
 
     void ISvgVisual.ApplyTransform(Transform transform)
