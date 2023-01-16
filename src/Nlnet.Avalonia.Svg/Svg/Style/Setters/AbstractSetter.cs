@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Avalonia;
 using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg;
@@ -60,7 +58,7 @@ public abstract class AbstractGeometrySetter : ISvgStyleSetter
 
     public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
     {
-        throw new NotImplementedException("Deferred Geometry value is not implemented");
+        throw new NotImplementedException($"Deferred {nameof(Geometry)} value is not implemented");
     }
 }
 
@@ -100,7 +98,7 @@ public abstract class AbstractStringSetter : ISvgStyleSetter
 
     public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
     {
-        throw new NotImplementedException("Deferred string value is not implemented");
+        throw new NotImplementedException($"Deferred string value is not implemented");
     }
 }
 
@@ -117,6 +115,23 @@ public abstract class AbstractPointsSetter : ISvgStyleSetter
 
     public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
     {
-        throw new NotImplementedException("Deferred List<Point> value is not implemented");
+        throw new NotImplementedException($"Deferred {nameof(PointList)} value is not implemented");
+    }
+}
+
+public abstract class AbstractTransformSetter : ISvgStyleSetter
+{
+    protected Transform? Value;
+
+    public abstract void Set(ISvgTag tag);
+
+    public void InitializeValue(string setterValue)
+    {
+        Value = setterValue.ToTransform();
+    }
+
+    public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
+    {
+        throw new NotImplementedException($"Deferred {nameof(Transform)} value is not implemented");
     }
 }

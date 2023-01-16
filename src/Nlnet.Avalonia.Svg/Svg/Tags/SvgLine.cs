@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.line))]
-public class SvgLine : SvgTagBase, 
+public class SvgLine : SvgVisualBase, 
     IClassSetter,
     IX1Setter,
     IX2Setter,
@@ -17,51 +17,11 @@ public class SvgLine : SvgTagBase,
     private Rect? _bounds;
     private Rect _renderBounds;
 
-    public string? Class
-    {
-        get;
-        set;
-    }
-    public double? X1
-    {
-        get;
-        set;
-    }
-    public double? X2
-    {
-        get;
-        set;
-    }
-    public double? Y1
-    {
-        get;
-        set;
-    }
-    public double? Y2
-    {
-        get;
-        set;
-    }
-    public IBrush? Fill
-    {
-        get;
-        set;
-    }
-    public IBrush? Stroke
-    {
-        get;
-        set;
-    }
-    public double? StrokeWidth
-    {
-        get;
-        set;
-    }
-    public double? Opacity
-    {
-        get;
-        set;
-    }
+    public string? Class { get; set; }
+    public double? X1    { get; set; }
+    public double? X2    { get; set; }
+    public double? Y1    { get; set; }
+    public double? Y2    { get; set; }
 
     public SvgLine()
     {
@@ -72,7 +32,7 @@ public class SvgLine : SvgTagBase,
         };
     }
 
-    Rect ISvgVisual.Bounds
+    public override Rect Bounds
     {
         get
         {
@@ -90,9 +50,9 @@ public class SvgLine : SvgTagBase,
         }
     }
 
-    Rect ISvgVisual.RenderBounds => _renderBounds;
+    public override Rect RenderBounds => _renderBounds;
 
-    void ISvgVisual.Render(DrawingContext dc)
+    public override void Render(DrawingContext dc)
     {
         dc.RenderWithOpacity(Opacity, () =>
         {
@@ -104,7 +64,7 @@ public class SvgLine : SvgTagBase,
         });
     }
 
-    void ISvgVisual.ApplyTransform(Transform transform)
+    protected override void ApplyTransformCore(Transform transform)
     {
         _renderBounds = ((ISvgVisual)this).Bounds.TransformToAABB(transform.Value);
     }

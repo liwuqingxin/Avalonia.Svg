@@ -105,5 +105,30 @@ namespace Nlnet.Avalonia.Svg
                 render();
             }
         }
+
+        /// <summary>
+        /// Provide a generic visitor for <see cref="ISvgTag"/> tree.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="visitor"></param>
+        public static void VisitSvgTagTree(this ISvgTag? tag, Action<ISvgTag> visitor)
+        {
+            if (tag == null)
+            {
+                return;
+            }
+
+            visitor(tag);
+
+            if (tag.Children == null)
+            {
+                return;
+            }
+
+            foreach (var child in tag.Children)
+            {
+                child.VisitSvgTagTree(visitor);
+            }
+        }
     }
 }

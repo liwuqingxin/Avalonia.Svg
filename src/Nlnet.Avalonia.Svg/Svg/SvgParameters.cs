@@ -7,8 +7,8 @@
         public static SvgParameters Default { get; set; } = new SvgParameters()
         {
 #if DEBUG
-            ThrowExceptionWhenTagNotRecognized = true,
-            ThrowExceptionWhenTagNotImplement = true,
+            ThrowExceptionWhenTagNotRecognized      = true,
+            ThrowExceptionWhenTagNotImplement       = false,
             ThrowExceptionWhenAttributeNotImplement = false,
 #else
             ThrowExceptionWhenTagNotRecognized = false,

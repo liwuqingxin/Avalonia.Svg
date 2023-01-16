@@ -6,19 +6,15 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.path))]
-public class SvgPath : SvgTagBase, 
+public class SvgPath : SvgVisualBase, 
     IClassSetter, 
     IDataSetter,
     ISvgVisual
 {
     private Geometry? _renderGeometry;
 
-    public string?   Class       { get; set; }
-    public Geometry? Data        { get; set; }
-    public IBrush?   Fill        { get; set; }
-    public IBrush?   Stroke      { get; set; }
-    public double?   StrokeWidth { get; set; }
-    public double?   Opacity     { get; set; }
+    public string? Class { get; set; }
+    public Geometry? Data { get; set; }
 
     public SvgPath()
     {
@@ -29,11 +25,11 @@ public class SvgPath : SvgTagBase,
         };
     }
 
-    Rect ISvgVisual.Bounds => Data?.Bounds ?? Rect.Empty;
+    public override Rect Bounds => Data?.Bounds ?? Rect.Empty;
 
-    Rect ISvgVisual.RenderBounds => _renderGeometry?.Bounds ?? Rect.Empty;
+    public override Rect RenderBounds => _renderGeometry?.Bounds ?? Rect.Empty;
 
-    void ISvgVisual.Render(DrawingContext dc)
+    public override void Render(DrawingContext dc)
     {
         if (_renderGeometry == null)
         {
@@ -46,7 +42,7 @@ public class SvgPath : SvgTagBase,
         });
     }
 
-    void ISvgVisual.ApplyTransform(Transform transform)
+    protected override void ApplyTransformCore(Transform transform)
     {
         if (Data == null)
         {

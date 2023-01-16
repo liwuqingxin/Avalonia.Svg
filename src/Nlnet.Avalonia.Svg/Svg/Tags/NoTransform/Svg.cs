@@ -39,10 +39,6 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector
     public string? Y       { get; set; }
     public string? X       { get; set; }
 
-    private IList<ISvgStyleProvider> StyleProviders { get; set; } = new List<ISvgStyleProvider>();
-
-    private IList<ISvgBrushProvider> BrushProviders { get; set; } = new List<ISvgBrushProvider>();
-
     private Dictionary<string, ISvgClassStyle> Styles { get; set; } = new Dictionary<string, ISvgClassStyle>();
 
     private Dictionary<string, IBrush> Brushes { get; set; } = new Dictionary<string, IBrush>();
@@ -52,10 +48,6 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector
 
 
     #region ISvgResourceCollector
-
-    IList<ISvgStyleProvider> ISvgResourceCollector.StyleProviders => StyleProviders;
-
-    IList<ISvgBrushProvider> ISvgResourceCollector.BrushProviders => BrushProviders;
 
     IReadOnlyDictionary<string, ISvgClassStyle> ISvgResourceCollector.Styles => this.Styles;
 
@@ -72,7 +64,6 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector
     {
         if (tag is ISvgStyleProvider styleProvider)
         {
-            svg.StyleProviders.Add(styleProvider);
             foreach (var style in styleProvider.GetStyles())
             {
                 svg.Styles.Add(style.Class, style);
@@ -81,7 +72,6 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector
 
         if (tag is ISvgBrushProvider brushProvider)
         {
-            svg.BrushProviders.Add(brushProvider);
             svg.Brushes.Add(brushProvider.Id, brushProvider.GetBrush());
         }
 

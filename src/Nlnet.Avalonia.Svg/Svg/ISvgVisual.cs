@@ -7,7 +7,7 @@ namespace Nlnet.Avalonia.Svg
     /// Represent a visual that can be rendered to ui. It should define a <see cref="Bounds"/> and a <see cref="RenderBounds"/>
     /// to be the render area. Also it should render itself.
     /// </summary>
-    public interface ISvgVisual : IFillSetter, IStrokeSetter, IStrokeWidthSetter, IOpacitySetter
+    public interface ISvgVisual : IOpacitySetter, ITransformSetter, IFillSetter, IStrokeSetter, IStrokeWidthSetter
     {
         /// <summary>
         /// Original bounds of the <see cref="ISvgVisual"/>.
@@ -31,5 +31,11 @@ namespace Nlnet.Avalonia.Svg
         /// </summary>
         /// <param name="transform"></param>
         void ApplyTransform(Transform transform);
+
+        /// <summary>
+        /// Apply a transform from ancestor group to this <see cref="ISvgVisual"/>.
+        /// </summary>
+        /// <param name="transform"></param>
+        void ApplyAncestorTransform(Transform transform);
     }
 }

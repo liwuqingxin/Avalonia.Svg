@@ -13,7 +13,7 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 
     private string? _tagName;
 
-    IReadOnlyDictionary<string, string>? ISvgTag.DeferredProperties => DeferredProperties;
+    IReadOnlyDictionary<string, string>? ISvgTag.DeferredProperties => _deferredProperties;
 
     public List<ISvgTag>? Children { get; set; }
 
@@ -58,12 +58,12 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 
     #region Deferred Property
 
-    protected Dictionary<string, string>? DeferredProperties;
+    private Dictionary<string, string>? _deferredProperties;
 
     public void AddDeferred(string property, string valueString)
     {
-        DeferredProperties ??= new Dictionary<string, string>();
-        DeferredProperties.TryAdd(property, valueString);
+        _deferredProperties ??= new Dictionary<string, string>();
+        _deferredProperties.TryAdd(property, valueString);
     }
 
     #endregion

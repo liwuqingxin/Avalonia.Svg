@@ -9,16 +9,6 @@ namespace Nlnet.Avalonia.Svg;
 public interface ISvgResourceCollector
 {
     /// <summary>
-    /// All style providers in svg.
-    /// </summary>
-    public IList<ISvgStyleProvider> StyleProviders { get; }
-
-    /// <summary>
-    /// All brush providers in svg.
-    /// </summary>
-    public IList<ISvgBrushProvider> BrushProviders { get; }
-
-    /// <summary>
     /// All styles.
     /// </summary>
     public IReadOnlyDictionary<string, ISvgClassStyle> Styles { get; }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Avalonia;
@@ -204,6 +203,73 @@ namespace Nlnet.Avalonia.Svg
             catch
             {
                 points = new PointList();
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Convert value string to <see cref="Transform"/>.<br/>
+        /// For example 'translate(336.000000, 336.000000)'.<br/>
+        /// For example 2 'translate(66.372939, 117.459729) rotate(16.000000) translate(-66.372939, -117.459729)'.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static Transform ToTransform(this string valueString)
+        {
+            var regex = new Regex("(translate\\(.*?\\s*?,\\s*?.*?\\))|(rotate\\(.*?\\))");
+            var matches = regex.Matches(valueString);
+
+            var transform = new TransformGroup();
+            foreach (Match match in matches)
+            {
+                if (match.Value.StartsWith("translate"))
+                {
+                    var translateStrings = match.Value[10..^1].Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    if (translateStrings.Length != 2)
+                    {
+                        continue;
+                    }
+                    var x = double.Parse(translateStrings[0]);
+                    var y = double.Parse(translateStrings[1]);
+                    transform.Children.Add(new TranslateTransform(x, y));
+                }
+                else if (match.Value.StartsWith("rotate"))
+                {
+                    var rotateStrings = match.Value[7..^1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    var angle         = double.Parse(rotateStrings[0]);
+                    var centerX       = 0d;
+                    var centerY       = 0d;
+                    if (rotateStrings.Length > 1)
+                    {
+                        centerX = double.Parse(rotateStrings[1]);
+                    }
+                    if (rotateStrings.Length > 2)
+                    {
+                        centerY = double.Parse(rotateStrings[2]);
+                    }
+                    transform.Children.Add(new RotateTransform(angle, centerX, centerY));
+                }
+            }
+
+            return transform;
+        }
+
+        /// <summary>
+        /// Try convert value string to <see cref="Transform"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="transform"></param>
+        /// <returns></returns>
+        public static bool TryToTransform(this string valueString, out Transform? transform)
+        {
+            try
+            {
+                transform = ToTransform(valueString);
+                return true;
+            }
+            catch
+            {
+                transform = null;
                 return false;
             }
         }

@@ -6,7 +6,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.polygon))]
-public class SvgPolygon : SvgTagBase,
+public class SvgPolygon : SvgVisualBase,
     IClassSetter,
     IPointsSetter,
     ISvgVisual
@@ -14,12 +14,8 @@ public class SvgPolygon : SvgTagBase,
     private Geometry? _geometry;
     private Geometry? _renderGeometry;
 
-    public string?    Class       { get; set; }
-    public IBrush?    Fill        { get; set; }
-    public IBrush?    Stroke      { get; set; }
-    public double?    StrokeWidth { get; set; }
-    public double?    Opacity     { get; set; }
-    public PointList? Points      { get; set; }
+    public string? Class { get; set; }
+    public PointList? Points { get; set; }
 
     public SvgPolygon()
     {
@@ -30,7 +26,7 @@ public class SvgPolygon : SvgTagBase,
         };
     }
 
-    Rect ISvgVisual.Bounds
+    public override Rect Bounds
     {
         get
         {
@@ -49,9 +45,9 @@ public class SvgPolygon : SvgTagBase,
         }
     }
 
-    Rect ISvgVisual.RenderBounds => _renderGeometry?.Bounds ?? Rect.Empty;
+    public override Rect RenderBounds => _renderGeometry?.Bounds ?? Rect.Empty;
 
-    void ISvgVisual.Render(DrawingContext dc)
+    public override void Render(DrawingContext dc)
     {
         if (_renderGeometry == null)
         {
@@ -64,7 +60,7 @@ public class SvgPolygon : SvgTagBase,
         });
     }
 
-    void ISvgVisual.ApplyTransform(Transform transform)
+    protected override void ApplyTransformCore(Transform transform)
     {
         if (_geometry == null)
         {

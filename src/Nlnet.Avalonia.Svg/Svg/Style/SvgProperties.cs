@@ -18,6 +18,7 @@ namespace Nlnet.Avalonia.Svg
         public const string Thickness = nameof(global::Avalonia.Thickness);
         public const string Geometry  = nameof(global::Avalonia.Media.Geometry);
         public const string PointList = nameof(global::Nlnet.Avalonia.Svg.PointList);
+        public const string Transform = nameof(global::Avalonia.Media.Transform);
     }
 
     /// <summary>
@@ -53,6 +54,7 @@ namespace Nlnet.Avalonia.Svg
         public const string Y2          = "y2";
         public const string Width       = "width";
         public const string Height      = "height";
+        public const string Transform   = "transform";
 
     }
 }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.rect))]
-public class SvgRect : SvgTagBase,
+public class SvgRect : SvgVisualBase,
     IIdSetter,
     IXSetter,
     IYSetter,
@@ -16,15 +16,11 @@ public class SvgRect : SvgTagBase,
 {
     private Rect _renderBounds;
 
-    public double? X           { get; set; }
-    public double? Y           { get; set; }
-    public string? Id          { get; set; }
-    public double? Width       { get; set; }
-    public double? Height      { get; set; }
-    public IBrush? Fill        { get; set; }
-    public IBrush? Stroke      { get; set; }
-    public double? StrokeWidth { get; set; }
-    public double? Opacity     { get; set; }
+    public double?    X           { get; set; }
+    public double?    Y           { get; set; }
+    public string?    Id          { get; set; }
+    public double?    Width       { get; set; }
+    public double?    Height      { get; set; }
 
     public SvgRect()
     {
@@ -35,11 +31,11 @@ public class SvgRect : SvgTagBase,
         };
     }
 
-    Rect ISvgVisual.Bounds => new(X ?? 0, Y ?? 0, Width ?? 0, Height ?? 0);
+    public override Rect Bounds => new(X ?? 0, Y ?? 0, Width ?? 0, Height ?? 0);
 
-    Rect ISvgVisual.RenderBounds => _renderBounds;
+    public override Rect RenderBounds => _renderBounds;
 
-    void ISvgVisual.Render(DrawingContext dc)
+    public override void Render(DrawingContext dc)
     {
         if (Width == null || Height == null || (Width == 0 && Height == 0))
         {
@@ -52,7 +48,7 @@ public class SvgRect : SvgTagBase,
         });
     }
 
-    void ISvgVisual.ApplyTransform(Transform transform)
+    protected override void ApplyTransformCore(Transform transform)
     {
         _renderBounds = ((ISvgVisual)this).Bounds.TransformToAABB(transform.Value);
     }
