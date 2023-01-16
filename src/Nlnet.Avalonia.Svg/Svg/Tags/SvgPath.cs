@@ -7,9 +7,9 @@ namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.path))]
 public class SvgPath : SvgTagBase, 
-    ISvgVisual, 
     IClassSetter, 
-    IDataSetter
+    IDataSetter,
+    ISvgVisual
 {
     private Geometry? _renderGeometry;
 

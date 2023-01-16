@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 
 namespace Nlnet.Avalonia.Svg.Sample
 {

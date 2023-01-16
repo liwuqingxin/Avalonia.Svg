@@ -6,13 +6,13 @@ using System.Collections.Generic;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.rect))]
-public class SvgRect : SvgTagBase, 
-    ISvgVisual, 
-    IIdSetter, 
-    IXSetter, 
-    IYSetter, 
-    IWidthSetter, 
-    IHeightSetter
+public class SvgRect : SvgTagBase,
+    IIdSetter,
+    IXSetter,
+    IYSetter,
+    IWidthSetter,
+    IHeightSetter,
+    ISvgVisual
 {
     private Rect _renderBounds;
 

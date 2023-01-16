@@ -7,9 +7,9 @@ namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.polygon))]
 public class SvgPolygon : SvgTagBase,
-    ISvgVisual,
     IClassSetter,
-    IPointsSetter
+    IPointsSetter,
+    ISvgVisual
 {
     private Geometry? _geometry;
     private Geometry? _renderGeometry;
