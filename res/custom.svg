@@ -1,0 +1,37 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" fill="none" >
+    <g>
+        <rect fill="#11111111" width="500" height="500"></rect>
+        <g transform="translate(100,100)">
+            <rect fill="orange" x="0" y="0" width="200" height="200"></rect>
+            <path fill="skyBlue" d="M100,100 100,200 200,200 200,100">
+               <animateTransform attributeName="transform" repeatCount="indefinite" type="rotate" from="-45"
+                to="45" dur="5">
+            </animateTransform>
+            </path>
+            <rect fill="red" x="100" y="100" width="50" height="50"></rect>
+
+            <path transform=" rotate(45) scale(0.5,0.5)" fill="skyBlue" d="M100,100 100,200 200,200 200,100"/>
+            <path transform="scale(0.5,0.5)" fill="skyBlue" d="M100,100 100,200 200,200 200,100"/>
+            <path transform=" rotate(-45) scale(0.5,0.5)" fill="skyBlue" d="M100,100 100,200 200,200 200,100"/>
+
+            <rect transform="scale(0.1,0.1) rotate(45)" fill="red" x="100" y="100" width="50" height="50"></rect>
+            <rect transform="scale(0.1,0.1)" fill="red" x="100" y="100" width="50" height="50"></rect>
+            <rect transform="scale(0.1,0.1) rotate(-45)" fill="red" x="100" y="100" width="50" height="50"></rect>
+            
+            <rect transform=" rotate(45) scale(0.5,0.5)" fill="red" x="100" y="100" width="50" height="50"></rect>
+            <rect transform="scale(0.5,0.5)" fill="red" x="100" y="100" width="50" height="50"></rect>
+            <rect transform=" rotate(-45) scale(0.5,0.5)" fill="red" x="100" y="100" width="50" height="50"></rect>
+
+            <rect transform="translate(30,50)" fill="green" x="100" y="100" width="50" height="50"></rect>
+            <rect transform="translate(30,50) rotate(5)" fill="blue" x="100" y="100" width="50" height="50"></rect>
+            <rect transform="translate(30,50) rotate(10)" fill="blue" x="100" y="100" width="50" height="50"></rect>
+            <rect transform="translate(30,50) rotate(15)" fill="blue" x="100" y="100" width="50" height="50"></rect>
+            <rect transform="translate(30,50) rotate(20)" fill="blue" x="100" y="100" width="50" height="50"></rect>
+            <rect transform="translate(30,50) rotate(25)" fill="blue" x="100" y="100" width="50" height="50"></rect>
+            <rect transform="translate(30,50) rotate(30)" fill="blue" x="100" y="100" width="50" height="50"></rect>
+            <rect transform="translate(30,50) rotate(35)" fill="blue" x="100" y="100" width="50" height="50"></rect>
+            <rect transform="translate(30,50) rotate(40)" fill="blue" x="100" y="100" width="50" height="50"></rect>
+            <rect transform="translate(30,50) rotate(45)" fill="blue" x="100" y="100" width="50" height="50"></rect>
+	    </g>
+    </g>
+</svg>

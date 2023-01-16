@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.Utils;
 
@@ -210,13 +211,13 @@ namespace Nlnet.Avalonia.Svg
         /// <summary>
         /// Convert value string to <see cref="Transform"/>.<br/>
         /// For example 'translate(336.000000, 336.000000)'.<br/>
-        /// For example 2 'translate(66.372939, 117.459729) rotate(16.000000) translate(-66.372939, -117.459729)'.
+        /// For example 2 'translate(66.372939, 117.459729) rotate(16.000000) scale(-66.372939, -117.459729)'.
         /// </summary>
         /// <param name="valueString"></param>
         /// <returns></returns>
         public static Transform ToTransform(this string valueString)
         {
-            var regex = new Regex("(translate\\(.*?\\s*?,\\s*?.*?\\))|(rotate\\(.*?\\))");
+            var regex = new Regex("(translate\\(.*?\\s*?,\\s*?.*?\\))|(scale\\(.*?\\s*?,\\s*?.*?\\))|(rotate\\(.*?\\))");
             var matches = regex.Matches(valueString);
 
             var transform = new TransformGroup();
@@ -248,6 +249,17 @@ namespace Nlnet.Avalonia.Svg
                         centerY = double.Parse(rotateStrings[2]);
                     }
                     transform.Children.Add(new RotateTransform(angle, centerX, centerY));
+                }
+                else if (match.Value.StartsWith("scale"))
+                {
+                    var scaleStrings = match.Value[6..^1].Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    if (scaleStrings.Length != 2)
+                    {
+                        continue;
+                    }
+                    var x = double.Parse(scaleStrings[0]);
+                    var y = double.Parse(scaleStrings[1]);
+                    transform.Children.Add(new ScaleTransform(x, y));
                 }
             }
 

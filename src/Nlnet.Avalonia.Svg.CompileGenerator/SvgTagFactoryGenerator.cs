@@ -108,7 +108,7 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
                 {
                     continue;
                 }
-                context.AddSource($"I{typeSymbol.Name}.g.cs", SourceText.From(source, Encoding.UTF8));
+                context.AddSource($"I{typeSymbol.Name}Factory.g.cs", SourceText.From(source, Encoding.UTF8));
             }
         }
 
@@ -150,6 +150,7 @@ public class {tagClassName}Factory : ISvgTagFactory
     {{
         var tag = new {tagClassName}();
         xmlNode.Attributes?.FetchPropertiesTo(tag);
+        tag.OnPropertiesFetched();
         return tag;
     }}
 }}");

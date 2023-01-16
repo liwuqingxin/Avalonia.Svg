@@ -7,15 +7,18 @@ public abstract class SvgVisualBase : SvgTagBase, ISvgVisual
 {
     private TransformGroup? _transformGroup;
 
+    protected Geometry? OriginalGeometry;
+    protected Geometry? RenderGeometry;
+
     public double?    Opacity     { get; set; }
     public Transform? Transform   { get; set; }
     public IBrush?    Fill        { get; set; }
     public IBrush?    Stroke      { get; set; }
     public double?    StrokeWidth { get; set; }
 
-    public abstract Rect Bounds { get; }
+    public Rect Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;
 
-    public abstract Rect RenderBounds { get; }
+    public Rect RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
 
     public abstract void Render(DrawingContext dc);
 
@@ -35,7 +38,16 @@ public abstract class SvgVisualBase : SvgTagBase, ISvgVisual
     /// Derived class does not need to care about any transform from outer except the parameter <see cref="transform"/>.
     /// </summary>
     /// <param name="transform"></param>
-    protected abstract void ApplyTransformCore(Transform transform);
+    protected virtual void ApplyTransformCore(Transform transform)
+    {
+        if (OriginalGeometry == null)
+        {
+            return;
+        }
+
+        RenderGeometry = OriginalGeometry.Clone();
+        RenderGeometry.Transform = transform;
+    }
 
     public virtual void ApplyAncestorTransform(Transform transform)
     {

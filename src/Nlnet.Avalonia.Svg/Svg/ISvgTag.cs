@@ -28,4 +28,9 @@ public interface ISvgTag
     /// </summary>
     /// <param name="collector"></param>
     public void ApplyResources(ISvgResourceCollector collector);
+
+    /// <summary>
+    /// This method will be called after properties of svg tag being fetched.
+    /// </summary>
+    public void OnPropertiesFetched();
 }

@@ -14,9 +14,6 @@ public class SvgLine : SvgVisualBase,
     IY2Setter,
     ISvgVisual
 {
-    private Rect? _bounds;
-    private Rect _renderBounds;
-
     public string? Class { get; set; }
     public double? X1    { get; set; }
     public double? X2    { get; set; }
@@ -32,40 +29,28 @@ public class SvgLine : SvgVisualBase,
         };
     }
 
-    public override Rect Bounds
+    public override void OnPropertiesFetched()
     {
-        get
+        if (X1 == null || X2 == null || Y1 == null || Y2 == null)
         {
-            if (_bounds != null)
-            {
-                return _bounds.Value;
-            }
-            if (X1 == null || X2 == null || Y1 == null || Y2 == null)
-            {
-                return Rect.Empty;
-            }
-            _bounds = new Rect(new Point(X1.Value, Y1.Value), new Point(X2.Value, Y2.Value));
-
-            return _bounds.Value;
+            OriginalGeometry = new LineGeometry();
+        }
+        else
+        {
+            OriginalGeometry = new LineGeometry(new Point(X1.Value, Y1.Value), new Point(X2.Value, Y2.Value));
         }
     }
 
-    public override Rect RenderBounds => _renderBounds;
-
     public override void Render(DrawingContext dc)
     {
+        if (RenderGeometry == null)
+        {
+            return;
+        }
+
         dc.RenderWithOpacity(Opacity, () =>
         {
-            var x1 = _renderBounds.Left;
-            var y1 = _renderBounds.Top;
-            var x2 = _renderBounds.Right;
-            var y2 = _renderBounds.Bottom;
-            dc.DrawLine(new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), new Point(x1, y1), new Point(x2, y2));
+            dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
         });
-    }
-
-    protected override void ApplyTransformCore(Transform transform)
-    {
-        _renderBounds = ((ISvgVisual)this).Bounds.TransformToAABB(transform.Value);
     }
 }

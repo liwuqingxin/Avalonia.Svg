@@ -23,7 +23,7 @@ public class GroupTransformApplier : ISvgResourceApplier
                 return;
             }
 
-            visual.ApplyTransform(group.Transform);
+            visual.ApplyAncestorTransform(group.Transform);
         });
     }
 }

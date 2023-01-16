@@ -196,6 +196,7 @@
         </g>
     </g>
 </svg>";
+
         public const string SvgData5 = @"<?xml version=""1.0"" encoding=""UTF-8""?>
 <svg width=""48px"" height=""48px"" viewBox=""0 0 48 48"" version=""1.1"" xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"">
     <title>编组</title>
@@ -220,6 +221,7 @@
         </g>
     </g>
 </svg>";
+
         public const string SvgData6 = @"<svg xmlns:xlink=""http://www.w3.org/1999/xlink"" xmlns=""http://www.w3.org/2000/svg"" fill=""none"" viewBox=""0 0 1024 2224.74"" height=""2224.740234"" width=""1024.000000"">
 	<desc>
 			Created with Pixso.

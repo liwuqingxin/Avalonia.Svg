@@ -14,13 +14,11 @@ public class SvgRect : SvgVisualBase,
     IHeightSetter,
     ISvgVisual
 {
-    private Rect _renderBounds;
-
-    public double?    X           { get; set; }
-    public double?    Y           { get; set; }
-    public string?    Id          { get; set; }
-    public double?    Width       { get; set; }
-    public double?    Height      { get; set; }
+    public double? X      { get; set; }
+    public double? Y      { get; set; }
+    public string? Id     { get; set; }
+    public double? Width  { get; set; }
+    public double? Height { get; set; }
 
     public SvgRect()
     {
@@ -31,25 +29,21 @@ public class SvgRect : SvgVisualBase,
         };
     }
 
-    public override Rect Bounds => new(X ?? 0, Y ?? 0, Width ?? 0, Height ?? 0);
-
-    public override Rect RenderBounds => _renderBounds;
+    public override void OnPropertiesFetched()
+    {
+        OriginalGeometry = new RectangleGeometry(new Rect(X ?? 0, Y ?? 0, Width ?? 0, Height ?? 0));
+    }
 
     public override void Render(DrawingContext dc)
     {
-        if (Width == null || Height == null || (Width == 0 && Height == 0))
+        if (RenderGeometry == null)
         {
             return;
         }
 
         dc.RenderWithOpacity(Opacity, () =>
         {
-            dc.DrawRectangle(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), _renderBounds);
+            dc.DrawGeometry(Fill  ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
         });
-    }
-
-    protected override void ApplyTransformCore(Transform transform)
-    {
-        _renderBounds = ((ISvgVisual)this).Bounds.TransformToAABB(transform.Value);
     }
 }

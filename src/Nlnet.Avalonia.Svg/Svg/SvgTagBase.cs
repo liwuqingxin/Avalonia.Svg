@@ -17,19 +17,6 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 
     public List<ISvgTag>? Children { get; set; }
 
-    public virtual void ApplyResources(ISvgResourceCollector collector)
-    {
-        if (ResourceAppliers == null)
-        {
-            return;
-        }
-
-        foreach (var applier in ResourceAppliers)
-        {
-            applier.Apply(this, collector);
-        }
-    }
-
     public string GetTagName()
     {
         if (_tagName != null)
@@ -50,6 +37,24 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 
         _tagName = attribute.Tag.ToString();
         return _tagName;
+    }
+
+    public virtual void ApplyResources(ISvgResourceCollector collector)
+    {
+        if (ResourceAppliers == null)
+        {
+            return;
+        }
+
+        foreach (var applier in ResourceAppliers)
+        {
+            applier.Apply(this, collector);
+        }
+    }
+
+    public virtual void OnPropertiesFetched()
+    {
+        
     }
 
     #endregion

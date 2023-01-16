@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Avalonia;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 
@@ -11,9 +10,8 @@ public class SvgPath : SvgVisualBase,
     IDataSetter,
     ISvgVisual
 {
-    private Geometry? _renderGeometry;
-
     public string? Class { get; set; }
+
     public Geometry? Data { get; set; }
 
     public SvgPath()
@@ -25,31 +23,21 @@ public class SvgPath : SvgVisualBase,
         };
     }
 
-    public override Rect Bounds => Data?.Bounds ?? Rect.Empty;
-
-    public override Rect RenderBounds => _renderGeometry?.Bounds ?? Rect.Empty;
+    public override void OnPropertiesFetched()
+    {
+        OriginalGeometry = Data ?? new PolylineGeometry();
+    }
 
     public override void Render(DrawingContext dc)
     {
-        if (_renderGeometry == null)
+        if (RenderGeometry == null)
         {
             return;
         }
 
         dc.RenderWithOpacity(Opacity, () =>
         {
-            dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), _renderGeometry);
+            dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
         });
-    }
-
-    protected override void ApplyTransformCore(Transform transform)
-    {
-        if (Data == null)
-        {
-            return;
-        }
-
-        _renderGeometry = Data.Clone();
-        _renderGeometry.Transform = transform;
     }
 }
