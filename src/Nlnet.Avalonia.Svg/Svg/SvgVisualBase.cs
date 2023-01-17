@@ -20,8 +20,6 @@ public abstract class SvgVisualBase : SvgTagBase, ISvgVisual
 
     public Rect RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
 
-    public abstract void Render(DrawingContext dc);
-
     public void ApplyTransform(Transform transform)
     {
         _transformGroup ??= new TransformGroup();
@@ -53,5 +51,18 @@ public abstract class SvgVisualBase : SvgTagBase, ISvgVisual
     {
         _transformGroup ??= new TransformGroup();
         _transformGroup.Children.Add(transform);
+    }
+
+    public virtual void Render(DrawingContext dc)
+    {
+        if (RenderGeometry == null)
+        {
+            return;
+        }
+
+        dc.RenderWithOpacity(Opacity, () =>
+        {
+            dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
+        });
     }
 }

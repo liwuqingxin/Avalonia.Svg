@@ -7,8 +7,7 @@ namespace Nlnet.Avalonia.Svg;
 [TagFactoryGenerator(nameof(SvgTags.path))]
 public class SvgPath : SvgVisualBase, 
     IClassSetter, 
-    IDataSetter,
-    ISvgVisual
+    IDataSetter
 {
     public string? Class { get; set; }
 
@@ -26,18 +25,5 @@ public class SvgPath : SvgVisualBase,
     public override void OnPropertiesFetched()
     {
         OriginalGeometry = Data ?? new PolylineGeometry();
-    }
-
-    public override void Render(DrawingContext dc)
-    {
-        if (RenderGeometry == null)
-        {
-            return;
-        }
-
-        dc.RenderWithOpacity(Opacity, () =>
-        {
-            dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
-        });
     }
 }

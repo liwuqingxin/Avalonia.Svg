@@ -11,8 +11,7 @@ public class SvgRect : SvgVisualBase,
     IXSetter,
     IYSetter,
     IWidthSetter,
-    IHeightSetter,
-    ISvgVisual
+    IHeightSetter
 {
     public double? X      { get; set; }
     public double? Y      { get; set; }
@@ -32,18 +31,5 @@ public class SvgRect : SvgVisualBase,
     public override void OnPropertiesFetched()
     {
         OriginalGeometry = new RectangleGeometry(new Rect(X ?? 0, Y ?? 0, Width ?? 0, Height ?? 0));
-    }
-
-    public override void Render(DrawingContext dc)
-    {
-        if (RenderGeometry == null)
-        {
-            return;
-        }
-
-        dc.RenderWithOpacity(Opacity, () =>
-        {
-            dc.DrawGeometry(Fill  ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
-        });
     }
 }

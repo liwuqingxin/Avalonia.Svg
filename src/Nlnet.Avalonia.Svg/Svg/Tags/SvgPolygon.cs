@@ -7,8 +7,7 @@ namespace Nlnet.Avalonia.Svg;
 [TagFactoryGenerator(nameof(SvgTags.polygon))]
 public class SvgPolygon : SvgVisualBase,
     IClassSetter,
-    IPointsSetter,
-    ISvgVisual
+    IPointsSetter
 {
     public string? Class { get; set; }
 
@@ -26,18 +25,5 @@ public class SvgPolygon : SvgVisualBase,
     public override void OnPropertiesFetched()
     {
         OriginalGeometry = Points == null ? new PolylineGeometry() : new PolylineGeometry(Points, true);
-    }
-
-    public override void Render(DrawingContext dc)
-    {
-        if (RenderGeometry == null)
-        {
-            return;
-        }
-
-        dc.RenderWithOpacity(Opacity, () =>
-        {
-            dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
-        });
     }
 }

@@ -11,8 +11,7 @@ public class SvgLine : SvgVisualBase,
     IX1Setter,
     IX2Setter,
     IY1Setter,
-    IY2Setter,
-    ISvgVisual
+    IY2Setter
 {
     public string? Class { get; set; }
     public double? X1    { get; set; }
@@ -39,18 +38,5 @@ public class SvgLine : SvgVisualBase,
         {
             OriginalGeometry = new LineGeometry(new Point(X1.Value, Y1.Value), new Point(X2.Value, Y2.Value));
         }
-    }
-
-    public override void Render(DrawingContext dc)
-    {
-        if (RenderGeometry == null)
-        {
-            return;
-        }
-
-        dc.RenderWithOpacity(Opacity, () =>
-        {
-            dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
-        });
     }
 }
