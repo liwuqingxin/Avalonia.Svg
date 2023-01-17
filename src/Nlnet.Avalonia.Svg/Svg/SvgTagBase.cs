@@ -5,7 +5,7 @@ using System.Reflection;
 namespace Nlnet.Avalonia.Svg;
 
 /// <summary>
-/// Abstract base class for svg tags. This class provides the shared method <see cref="GetTagName"/> and the ability to add deferred properties.
+/// Abstract base class for svg tags.
 /// </summary>
 public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 {

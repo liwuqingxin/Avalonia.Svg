@@ -57,38 +57,26 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector
 
     void ISvgResourceCollector.CollectResources()
     {
-        CollectResources(this, this);
-    }
-
-    private static void CollectResources(ISvgTag tag, Svg svg)
-    {
-        if (tag is ISvgStyleProvider styleProvider)
+        this.VisitSvgTagTree(tag =>
         {
-            foreach (var style in styleProvider.GetStyles())
+            switch (tag)
             {
-                svg.Styles.Add(style.Class, style);
+                case ISvgStyleProvider styleProvider:
+                {
+                    foreach (var style in styleProvider.GetStyles())
+                    {
+                        this.Styles.Add(style.Class, style);
+                    }
+                    break;
+                }
+                case ISvgBrushProvider brushProvider:
+                    this.Brushes.Add(brushProvider.Id, brushProvider.GetBrush());
+                    break;
+                case ISvgVisual visual:
+                    this.Visuals.Add(visual);
+                    break;
             }
-        }
-
-        if (tag is ISvgBrushProvider brushProvider)
-        {
-            svg.Brushes.Add(brushProvider.Id, brushProvider.GetBrush());
-        }
-
-        if (tag is ISvgVisual visual)
-        {
-            svg.Visuals.Add(visual);
-        }
-
-        if (tag.Children == null)
-        {
-            return;
-        }
-
-        foreach (var child in tag.Children)
-        {
-            CollectResources(child, svg);
-        }
+        });
     }
 
     #endregion
@@ -102,28 +90,16 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector
 
         foreach (var child in Children)
         {
-            ApplyResources(collector, child);
+            child.VisitSvgTagTree(tag =>
+            {
+                tag.ApplyResources(collector);
+            });
         }
 
         var transform = SvgHelper.GetAlignToTopLeftTransform(Visuals.Select(v => v.Bounds));
         foreach (var visual in Visuals)
         {
             visual.ApplyTransform(transform);
-        }
-    }
-
-    private static void ApplyResources(ISvgResourceCollector collector, ISvgTag tag)
-    {
-        tag.ApplyResources(collector);
-
-        if (tag.Children == null)
-        {
-            return;
-        }
-
-        foreach (var child in tag.Children)
-        {
-            ApplyResources(collector, child);
         }
     }
 

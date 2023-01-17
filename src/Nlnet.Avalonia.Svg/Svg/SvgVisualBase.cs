@@ -3,6 +3,9 @@ using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg;
 
+/// <summary>
+/// Base class for all svg visual tags that implements the <see cref="ISvgVisual"/>
+/// </summary>
 public abstract class SvgVisualBase : SvgTagBase, ISvgVisual
 {
     private TransformGroup? _transformGroup;

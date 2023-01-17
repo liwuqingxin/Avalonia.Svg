@@ -1,4 +1,5 @@
 ﻿using Nlnet.Avalonia.Svg.CompileGenerator;
+// ReSharper disable InconsistentNaming
 
 namespace Nlnet.Avalonia.Svg;
 
