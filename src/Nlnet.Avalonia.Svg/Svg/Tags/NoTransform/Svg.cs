@@ -99,7 +99,7 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector
         var transform = SvgHelper.GetAlignToTopLeftTransform(Visuals.Select(v => v.Bounds));
         foreach (var visual in Visuals)
         {
-            visual.ApplyTransform(transform);
+            visual.ApplyGlobalTransform(transform);
         }
     }
 

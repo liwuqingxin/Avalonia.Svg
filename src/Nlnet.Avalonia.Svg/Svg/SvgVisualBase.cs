@@ -23,7 +23,7 @@ public abstract class SvgVisualBase : SvgTagBase, ISvgVisual
 
     public Rect RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
 
-    public void ApplyTransform(Transform transform)
+    public void ApplyGlobalTransform(Transform transform)
     {
         _transformGroup ??= new TransformGroup();
         _transformGroup.Children.Add(transform);

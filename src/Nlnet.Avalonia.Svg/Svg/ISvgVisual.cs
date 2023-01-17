@@ -27,10 +27,10 @@ namespace Nlnet.Avalonia.Svg
         public void Render(DrawingContext dc);
 
         /// <summary>
-        /// Apply a transform to this <see cref="ISvgVisual"/>.
+        /// Apply a global transform that is from svg or alignment to this <see cref="ISvgVisual"/>.
         /// </summary>
         /// <param name="transform"></param>
-        void ApplyTransform(Transform transform);
+        void ApplyGlobalTransform(Transform transform);
 
         /// <summary>
         /// Apply a transform from ancestor group to this <see cref="ISvgVisual"/>.
