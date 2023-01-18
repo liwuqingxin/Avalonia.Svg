@@ -16,7 +16,7 @@ namespace Nlnet.Avalonia.Svg
         /// </summary>
         /// <param name="attrs"></param>
         /// <param name="target"></param>
-        public static void FetchPropertiesTo(this XmlAttributeCollection? attrs, ISvgTag target)
+        public static void FetchPropertiesFrom(this ISvgTag target, XmlAttributeCollection? attrs)
         {
             // TODO For convenience here, temporarily use reflection to parse the implemented attribute interface, and then consider performance later.
 

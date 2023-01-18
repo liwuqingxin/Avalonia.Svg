@@ -1,10 +1,11 @@
 ﻿namespace Nlnet.Avalonia.Svg;
 
 /// <summary>
-/// Group transform applier for <see cref="ISvgResourceApplier"/>.
+/// Group heritable properties applier for <see cref="ISvgResourceApplier"/>.
 /// </summary>
-public class GroupTransformApplier : ISvgResourceApplier
+public class GroupHeritablePropertiesApplier : ISvgResourceApplier
 {
+    // TODO 1. 改为应用所有属性；
     public void Apply(ISvgTag tag, ISvgResourceCollector collector)
     {
         if (tag is not SvgGroup group)

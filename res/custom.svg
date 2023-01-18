@@ -1,12 +1,18 @@
 <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" fill="none" >
     <g>
         <rect fill="#11111111" width="500" height="500"></rect>
+        <g d="M100,100 100,200 200,200 200,100" fill="Gray" >
+            <circle r="141" fill="Red"/>
+            <path d="M100,100 100,200 200,200 200,100">
+               <animateTransform attributeName="transform" repeatCount="indefinite" type="rotate" from="-45"
+                to="45" dur="5"/>
+            </path>
+        </g>
         <g transform="translate(100,100)">
             <rect fill="orange" x="0" y="0" width="200" height="200"></rect>
             <path fill="skyBlue" d="M100,100 100,200 200,200 200,100">
                <animateTransform attributeName="transform" repeatCount="indefinite" type="rotate" from="-45"
-                to="45" dur="5">
-            </animateTransform>
+                to="45" dur="5"/>
             </path>
             <rect fill="red" x="100" y="100" width="50" height="50"></rect>
 

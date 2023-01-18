@@ -174,7 +174,7 @@ namespace Nlnet.Avalonia.Svg
                 .OfType<double>()
                 .ToList();
 
-            for (var i = 0; i < values.Count; i+=2)
+            for (var i = 0; i < values.Count; i += 2)
             {
                 if (i + 1 >= values.Count)
                 {

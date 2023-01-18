@@ -14,7 +14,7 @@ public class SvgGroup : SvgTagBase,
     {
         ResourceAppliers = new List<ISvgResourceApplier>()
         {
-            new GroupTransformApplier(),
+            new GroupHeritablePropertiesApplier(),
         };
     }
 }
