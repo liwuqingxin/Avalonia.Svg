@@ -63,9 +63,18 @@ public abstract class SvgVisualBase : SvgTagBase, ISvgVisual
             return;
         }
 
-        dc.RenderWithOpacity(Opacity, () =>
+        void DoRender() => dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
+
+        if (Opacity != null)
         {
-            dc.DrawGeometry(Fill ?? Brushes.Black, new Pen(Stroke ?? Brushes.Black, StrokeWidth ?? 0), RenderGeometry);
-        });
+            using (dc.PushOpacity(Opacity.Value))
+            {
+                DoRender();
+            }
+        }
+        else
+        {
+            DoRender();
+        }
     }
 }

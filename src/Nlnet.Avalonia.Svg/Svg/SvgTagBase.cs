@@ -14,6 +14,8 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
     private string? _tagName;
 
     IReadOnlyDictionary<string, string>? ISvgTag.DeferredProperties => _deferredProperties;
+    
+    public ISvgTag? Parent { get; set; }
 
     public List<ISvgTag>? Children { get; set; }
 

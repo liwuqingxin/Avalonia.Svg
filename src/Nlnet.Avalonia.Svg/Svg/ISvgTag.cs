@@ -13,6 +13,11 @@ public interface ISvgTag
     public IReadOnlyDictionary<string, string>? DeferredProperties { get; }
 
     /// <summary>
+    /// Parent of the svg tag.
+    /// </summary>
+    public ISvgTag? Parent { get; set; }
+
+    /// <summary>
     /// Children of this tag.
     /// </summary>
     public List<ISvgTag>? Children { get; set; }

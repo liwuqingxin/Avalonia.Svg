@@ -117,6 +117,7 @@ public static class SvgTagFactory
             .ToList();
 
         tag.Children = childTags;
+        childTags.ForEach(t => t.Parent = tag);
 
         return tag;
     }

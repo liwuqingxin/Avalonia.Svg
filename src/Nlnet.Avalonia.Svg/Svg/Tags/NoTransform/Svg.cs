@@ -105,10 +105,7 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector
 
     void ISvg.Render(DrawingContext dc)
     {
-        foreach (var visual in Visuals)
-        {
-            visual.Render(dc);
-        }
+        this.Children?.Render(dc);
     }
 
     Size ISvg.GetRenderSize()

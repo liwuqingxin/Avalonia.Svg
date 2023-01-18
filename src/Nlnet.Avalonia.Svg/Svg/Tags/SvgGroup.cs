@@ -1,20 +1,31 @@
-﻿using Avalonia.Media;
+﻿using System.Collections.Generic;
+using Avalonia;
+using Avalonia.Media;
 using Nlnet.Avalonia.Svg.CompileGenerator;
-using System.Collections.Generic;
 
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.g))]
-public class SvgGroup : SvgTagBase, 
-    ITransformSetter
+public class SvgGroup : SvgVisualBase, ISvgContainer, IRenderHost
 {
-    public Transform? Transform { get; set; }
+    public bool RenderBySelf => true;
 
     public SvgGroup()
     {
-        ResourceAppliers = new List<ISvgResourceApplier>()
+        //ResourceAppliers = new List<ISvgResourceApplier>()
+        //{
+        //    new GroupHeritablePropertiesApplier(),
+        //};
+    }
+
+    public override void Render(DrawingContext dc)
+    {
+        using (dc.PushTransformContainer())
         {
-            new GroupHeritablePropertiesApplier(),
-        };
+            using (dc.PushSetTransform(Transform?.Value ?? Matrix.Identity))
+            {
+                this.Children?.Render(dc);
+            }
+        }
     }
 }
