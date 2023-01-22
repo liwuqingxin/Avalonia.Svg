@@ -39,5 +39,15 @@
             <rect transform="translate(30,50) rotate(40)" fill="blue" x="100" y="100" width="50" height="50"></rect>
             <rect transform="translate(30,50) rotate(45)" fill="blue" x="100" y="100" width="50" height="50"></rect>
 	    </g>
+        <rect transform="translate(0,50)" fill="#342809" x="100" y="100" width="50" height="50"></rect>
+        <rect transform="translate(0,50) rotate(45)" fill="#829847" x="100" y="100" width="50" height="50"></rect>
+        <rect transform="translate(0,50) rotate(45) translate(0,-50)" fill="#762156" x="100" y="100" width="50" height="50"></rect>
+        <rect transform="translate(0,50) rotate(45) translate(0,-50) rotate(-90)" fill="#762156" x="100" y="100" width="50" height="50"></rect>
+        <rect transform="translate(0,50) rotate(45) translate(0,-50) rotate(-90) rotate(90)" fill="#ffffff" x="100" y="100" width="50" height="50"></rect>
+        <rect transform="translate(0,50) scale(0.1,0.1)" fill="#829847" x="100" y="100" width="50" height="50"></rect>
+        <g transform="translate(0,350)">
+            <rect transform="rotate(0)" fill="Red" x="100" y="100" width="50" height="50"/>
+            <rect transform="rotate(5)" fill="Red" x="100" y="100" width="50" height="50"/>
+        </g>
     </g>
 </svg>

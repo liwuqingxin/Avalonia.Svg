@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Avalonia;
-using Avalonia.Animation;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.Utils;
 
@@ -213,6 +212,7 @@ namespace Nlnet.Avalonia.Svg
         /// For example 'translate(336.000000, 336.000000)'.<br/>
         /// For example 2 'translate(66.372939, 117.459729) rotate(16.000000) scale(-66.372939, -117.459729)'.
         /// </summary>
+        /// <remarks>Note that the coordinate system is also affected by the transform like rotate or scale, witch is svg behavior.</remarks>
         /// <param name="valueString"></param>
         /// <returns></returns>
         public static Transform ToTransform(this string valueString)
@@ -232,21 +232,32 @@ namespace Nlnet.Avalonia.Svg
                     }
                     var x = double.Parse(translateStrings[0]);
                     var y = double.Parse(translateStrings[1]);
-                    transform.Children.Add(new TranslateTransform(x, y));
+
+                    // Coordinate system of Avalonia is not affected by rotation and scaling, but svg's does.
+                    // So the translate transform should be inserted before all existed transforms.
+                    transform.Children.Insert(0, new TranslateTransform(x, y));
                 }
                 else if (match.Value.StartsWith("rotate"))
                 {
                     var rotateStrings = match.Value[7..^1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     var angle         = double.Parse(rotateStrings[0]);
-                    var centerX       = 0d;
-                    var centerY       = 0d;
+
+                    // Default center point is the offset point of transform.
+                    var centerX = transform.Value.M31;
+                    var centerY = transform.Value.M32;
                     if (rotateStrings.Length > 1)
                     {
-                        centerX = double.Parse(rotateStrings[1]);
+                        centerX += double.Parse(rotateStrings[1]);
                     }
                     if (rotateStrings.Length > 2)
                     {
-                        centerY = double.Parse(rotateStrings[2]);
+                        centerY += double.Parse(rotateStrings[2]);
+                    }
+
+                    // If scale transform changed the face of the geometry, reverse rotation.
+                    if (transform.Value.M11 * transform.Value.M22 < 0)
+                    {
+                        angle = -angle;
                     }
                     transform.Children.Add(new RotateTransform(angle, centerX, centerY));
                 }
@@ -257,9 +268,19 @@ namespace Nlnet.Avalonia.Svg
                     {
                         continue;
                     }
-                    var x = double.Parse(scaleStrings[0]);
-                    var y = double.Parse(scaleStrings[1]);
-                    transform.Children.Add(new ScaleTransform(x, y));
+
+                    var centerX = transform.Value.M31;
+                    var centerY = transform.Value.M32;
+
+                    // Move to the (0,0) to perform scaling.
+                    transform.Children.Add(new TranslateTransform(-centerX, -centerY));
+                    {
+                        var x = double.Parse(scaleStrings[0]);
+                        var y = double.Parse(scaleStrings[1]);
+                        transform.Children.Add(new ScaleTransform(x, y));
+                    }
+                    // Restore the translate transform.
+                    transform.Children.Add(new TranslateTransform(centerX, centerY));
                 }
             }
 
