@@ -4,16 +4,16 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[TagFactoryGenerator(nameof(SvgTags.path))]
-public class SvgPath : SvgVisualBase, 
-    IClassSetter, 
-    IDataSetter
+[TagFactoryGenerator(nameof(SvgTags.polygon))]
+public class SvgPolyline : SvgVisualBase, IShape, IGraphic,
+    IClassSetter,
+    IPointsSetter
 {
     public string? Class { get; set; }
 
-    public Geometry? Data { get; set; }
+    public PointList? Points { get; set; }
 
-    public SvgPath()
+    public SvgPolyline()
     {
         ResourceAppliers = new List<ISvgResourceApplier>()
         {
@@ -24,6 +24,6 @@ public class SvgPath : SvgVisualBase,
 
     public override void OnPropertiesFetched()
     {
-        OriginalGeometry = Data ?? new PolylineGeometry();
+        OriginalGeometry = Points == null ? new PolylineGeometry() : new PolylineGeometry(Points, true);
     }
 }

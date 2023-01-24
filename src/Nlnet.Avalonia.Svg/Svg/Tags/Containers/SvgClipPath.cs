@@ -18,7 +18,7 @@ public class SvgClipPathFactory : ISvgTagFactory
     }
 }
 
-public class SvgClipPath : SvgTagBase
+public class SvgClipPath : SvgTagBase, ISvgContainer
 {
     public string? Id { get; set; }
 }

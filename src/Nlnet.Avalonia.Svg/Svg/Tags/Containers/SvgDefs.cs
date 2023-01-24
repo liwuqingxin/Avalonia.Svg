@@ -11,7 +11,7 @@ public class SvgDefsFactory : ISvgTagFactory
     }
 }
 
-public class SvgDefs : SvgTagBase
+public class SvgDefs : SvgTagBase, ISvgContainer
 {
     
 }

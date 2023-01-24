@@ -90,7 +90,7 @@ public enum SvgTags
     style,
     svg,
     [Name("switch")]
-    @switch,
+    _switch,
     symbol,
     text,
     textPath,
@@ -100,4 +100,5 @@ public enum SvgTags
     use,
     view,
     vkern,
+    unknown,
 }

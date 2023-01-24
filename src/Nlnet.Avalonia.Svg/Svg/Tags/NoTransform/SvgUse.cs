@@ -19,7 +19,7 @@ public class SvgUseFactory : ISvgTagFactory
     }
 }
 
-public class SvgUse : SvgTagBase
+public class SvgUse : SvgTagBase, IRenderable
 {
     public string? Style { get; set; }
     public string? Href  { get; set; }

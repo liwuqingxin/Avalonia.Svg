@@ -6,7 +6,7 @@ namespace Nlnet.Avalonia.Svg;
 // TODO As Mask resource.
 
 [TagFactoryGenerator(nameof(SvgTags.mask))]
-public class SvgMask : SvgTagBase, 
+public class SvgMask : SvgTagBase, ISvgContainer, 
     IIdSetter,
     IFillSetter
 {

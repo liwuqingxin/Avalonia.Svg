@@ -28,7 +28,7 @@ public class SvgFactory : ISvgTagFactory
     }
 }
 
-public class Svg : SvgTagBase, ISvg, ISvgResourceCollector
+public class Svg : SvgTagBase, ISvg, ISvgResourceCollector, ISvgContainer, IRenderable
 {
     public static Svg Empty { get; } = new Svg();
 
