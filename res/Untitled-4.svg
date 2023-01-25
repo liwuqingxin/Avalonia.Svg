@@ -14,8 +14,8 @@
     <g fill-rule="evenodd" fill="none" stroke-width="1" stroke="none" id="暂无发票">
         <rect height="1024" width="1024" y="0" x="0" fill="#FFFFFF"></rect>
         <g id="编组-2">
-            <!-- <rect height="1024" width="1024" y="0" x="0" id="矩形"></rect> -->
-            <rect height="1024" width="1024" y="0" x="0" id="矩形" fill="#11111111"></rect>
+            <rect height="1024" width="1024" y="0" x="0" id="矩形"></rect>
+            <!-- <rect height="1024" width="1024" y="0" x="0" id="矩形" fill="red"></rect> -->
             <ellipse ry="150" rx="350" cy="735" cx="512" opacity="0.5" fill="url(#linearGradient-1)" id="椭圆形"></ellipse>
             <g transform="translate(677.988476, 421.007570)" id="编组">
                 <path transform="translate(66.372939, 117.459729) rotate(16.000000) translate(-66.372939, -117.459729)" fill="#FFDBAD" id="椭圆形" d="M73.4952866,229.027314 C89.2166164,229.024219 102.01735,182.585394 103.319332,114.779642 C104.621315,46.9738896 94.229671,5.88905003 78.5083411,5.89214517 C62.7870113,5.89524031 29.3291663,54.5658508 29.316698,117.836177 C29.3042379,181.106503 57.7739568,229.030409 73.4952866,229.027314 Z"></path>

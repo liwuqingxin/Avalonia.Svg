@@ -68,6 +68,11 @@ namespace Nlnet.Avalonia.Svg
         /// <returns></returns>
         public static IBrush ToIBrush(this string valueString)
         {
+            if (valueString == "none")
+            {
+                return Brushes.Transparent;
+            }
+
             return Brush.Parse(valueString);
         }
 

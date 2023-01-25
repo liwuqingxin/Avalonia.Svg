@@ -38,4 +38,24 @@ public interface ISvgTag
     /// This method will be called after properties of svg tag being fetched.
     /// </summary>
     public void OnPropertiesFetched();
+
+    /// <summary>
+    /// Get property value even if the property can be inherit from ancestor.
+    /// </summary>
+    /// <typeparam name="TPropertyOwner"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
+    /// <returns></returns>
+    public TValue? GetPropertyValue<TPropertyOwner, TValue>()
+        where TPropertyOwner : class, ISvgProperty<TPropertyOwner>
+        where TValue : class;
+
+    /// <summary>
+    /// Get property value even if the property can be inherit from ancestor.
+    /// </summary>
+    /// <typeparam name="TPropertyOwner"></typeparam>
+    /// <typeparam name="TValue"></typeparam>
+    /// <returns></returns>
+    public TValue? GetPropertyStructValue<TPropertyOwner, TValue>()
+        where TPropertyOwner : class, ISvgProperty<TPropertyOwner>
+        where TValue : struct;
 }

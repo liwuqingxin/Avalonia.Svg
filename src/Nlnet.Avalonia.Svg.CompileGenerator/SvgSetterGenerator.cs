@@ -170,9 +170,13 @@ namespace {namespaceName}
     /// Interface for <see cref=""{classSymbol.Name}""/>
     /// </summary>
     /// <returns></returns>
-    public interface I{classSymbol.Name} : IDeferredAdder
+    public interface I{classSymbol.Name} : IDeferredAdder, ISvgProperty<I{classSymbol.Name}>
     {{
         public {propertyType}? {property} {{ get; set; }}
+
+        object? ISvgProperty<I{classSymbol.Name}>.Value => {property};
+
+        bool ISvgProperty<I{classSymbol.Name}>.CanInherit => true;
 
         public void I{classSymbol.Name}Parser(XmlAttributeCollection attrs)
         {{

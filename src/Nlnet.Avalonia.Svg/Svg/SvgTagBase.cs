@@ -82,4 +82,52 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
     protected List<ISvgResourceApplier>? ResourceAppliers { get; init; }
 
     #endregion
+
+
+
+    #region Inheritable Properties accessor
+
+    public TValue? GetPropertyValue<TPropertyOwner, TValue>()
+        where TPropertyOwner : class, ISvgProperty<TPropertyOwner>
+        where TValue : class
+    {
+        if (this is TPropertyOwner owner)
+        {
+            if (owner.Value is TValue value)
+            {
+                return value;
+            }
+
+            return owner.CanInherit ? this.Parent?.GetPropertyValue<TPropertyOwner, TValue>() : null;
+
+        }
+        else
+        {
+            return null;
+            throw new InvalidOperationException($"Can not find the property implementation of {typeof(TPropertyOwner)} in tag type {this.GetType()}");
+        }
+    }
+
+    public TValue? GetPropertyStructValue<TPropertyOwner, TValue>()
+        where TPropertyOwner : class, ISvgProperty<TPropertyOwner>
+        where TValue : struct
+    {
+        if (this is TPropertyOwner owner)
+        {
+            if (owner.Value is TValue value)
+            {
+                return value;
+            }
+
+            return owner.CanInherit ? this.Parent?.GetPropertyStructValue<TPropertyOwner, TValue>() : null;
+
+        }
+        else
+        {
+            return null;
+            throw new InvalidOperationException($"Can not find the property implementation of {typeof(TPropertyOwner)} in tag type {this.GetType()}");
+        }
+    }
+
+    #endregion
 }
