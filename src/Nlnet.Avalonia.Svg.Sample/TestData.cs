@@ -170,7 +170,7 @@
         </linearGradient>
     </defs>
     <g fill-rule=""evenodd"" fill=""none"" stroke-width=""1"" stroke=""none"" id=""暂无发票"">
-        <rect height=""1024"" width=""1024"" y=""0"" x=""0"" fill=""#FFFFFF""></rect>
+        <rect height=""1024"" width=""1024"" y=""0"" x=""0""></rect>
         <g id=""编组-2"">
             <rect height=""1024"" width=""1024"" y=""0"" x=""0"" id=""矩形""></rect>
             <ellipse ry=""150"" rx=""350"" cy=""735"" cx=""512"" opacity=""0.5"" fill=""url(#linearGradient-1)"" id=""椭圆形""></ellipse>

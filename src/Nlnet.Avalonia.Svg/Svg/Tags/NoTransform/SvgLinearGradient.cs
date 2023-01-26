@@ -50,8 +50,8 @@ public class SvgLinearGradient : SvgTagBase, ISvgBrushProvider
 
         var brush = new LinearGradientBrush
         {
-            StartPoint = new RelativePoint(X1, Y1, RelativeUnit.Absolute),
-            EndPoint   = new RelativePoint(X2, Y2, RelativeUnit.Absolute)
+            StartPoint = new RelativePoint(X1, Y1, RelativeUnit.Relative),
+            EndPoint   = new RelativePoint(X2, Y2, RelativeUnit.Relative)
         };
 
         if (this.Children != null)
