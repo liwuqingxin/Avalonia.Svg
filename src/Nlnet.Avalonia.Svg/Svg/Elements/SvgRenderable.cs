@@ -1,29 +1,42 @@
 ﻿using Avalonia;
 using Avalonia.Media;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Nlnet.Avalonia.Svg;
 
 /// <summary>
-/// Base class for all svg visual tags that implements the <see cref="ISvgVisual"/>
+/// Base class for all svg renderable tags that implements the <see cref="ISvgRenderable"/>
 /// </summary>
-public abstract class SvgVisualBase : SvgTagBase, ISvgVisual
+public abstract class SvgRenderable : SvgTagBase, ISvgRenderable, 
+    IOpacitySetter, 
+    ITransformSetter, 
+    IFillSetter, 
+    IStrokeSetter, 
+    IStrokeWidthSetter
 {
     private TransformGroup? _transformGroup;
 
+    /// <summary>
+    /// The original geometry that the svg describes.
+    /// </summary>
     protected Geometry? OriginalGeometry;
+
+    /// <summary>
+    /// The geometry to render, which applied some transforms.
+    /// </summary>
     protected Geometry? RenderGeometry;
 
-    public double?    Opacity     { get; set; }
-    public Transform? Transform   { get; set; }
-    public IBrush?    Fill        { get; set; }
-    public IBrush?    Stroke      { get; set; }
-    public double?    StrokeWidth { get; set; }
+    public double?             Opacity     { get; set; }
+    public Transform?          Transform   { get; set; }
+    IBrush? IFillSetter.       Fill        { get; set; }
+    IBrush? IStrokeSetter.     Stroke      { get; set; }
+    double? IStrokeWidthSetter.StrokeWidth { get; set; }
 
-    public Rect Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;
+    Rect ISvgRenderable.Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;
 
-    public Rect RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
+    Rect ISvgRenderable.RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
 
-    public void ApplyGlobalTransform(Transform transform)
+    void ISvgRenderable.ApplyGlobalTransform(Transform transform)
     {
         _transformGroup ??= new TransformGroup();
         _transformGroup.Children.Add(transform);
@@ -56,6 +69,10 @@ public abstract class SvgVisualBase : SvgTagBase, ISvgVisual
         _transformGroup.Children.Add(transform);
     }
 
+    /// <summary>
+    /// Render the <see cref="ISvgRenderable"/>. In <see cref="SvgRenderable"/>, it renders the <see cref="RenderGeometry"/>.
+    /// </summary>
+    /// <param name="dc"></param>
     public virtual void Render(DrawingContext dc)
     {
         if (RenderGeometry == null)
@@ -65,7 +82,7 @@ public abstract class SvgVisualBase : SvgTagBase, ISvgVisual
 
         var fill = this.GetPropertyValue<IFillSetter, IBrush>() ?? Brushes.Black;
         var stroke = this.GetPropertyValue<IStrokeSetter, IBrush>() ?? Brushes.Black;
-        var strokeWidth = this.GetPropertyStructValue<IStrokeWidthSetter, double>() ?? 0;
+        var strokeWidth = this.GetPropertyStructValue<IStrokeWidthSetter, double>() ?? 0d;
         void DoRender() => dc.DrawGeometry(fill, new Pen(stroke, strokeWidth), RenderGeometry);
 
         if (Opacity != null)

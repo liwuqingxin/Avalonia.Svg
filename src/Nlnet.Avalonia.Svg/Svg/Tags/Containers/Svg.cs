@@ -28,7 +28,7 @@ public class SvgFactory : ISvgTagFactory
     }
 }
 
-public class Svg : SvgTagBase, ISvg, ISvgResourceCollector, ISvgContainer, IRenderable
+public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, ISvgRenderable
 {
     public static Svg Empty { get; } = new Svg();
 
@@ -43,7 +43,7 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector, ISvgContainer, IRend
 
     private Dictionary<string, IBrush> Brushes { get; set; } = new Dictionary<string, IBrush>();
 
-    private List<ISvgVisual> Visuals { get; set; } = new List<ISvgVisual>();
+    private List<ISvgRenderable> Renderables { get; set; } = new();
 
 
 
@@ -53,7 +53,7 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector, ISvgContainer, IRend
 
     IReadOnlyDictionary<string, IBrush> ISvgResourceCollector.Brushes => this.Brushes;
 
-    IReadOnlyList<ISvgVisual> ISvgResourceCollector.Visuals => this.Visuals;
+    IReadOnlyList<ISvgRenderable> ISvgResourceCollector.Renderables => this.Renderables;
 
     void ISvgResourceCollector.CollectResources()
     {
@@ -72,8 +72,8 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector, ISvgContainer, IRend
                 case ISvgBrushProvider brushProvider:
                     this.Brushes.Add(brushProvider.Id, brushProvider.GetBrush());
                     break;
-                case ISvgVisual visual:
-                    this.Visuals.Add(visual);
+                case ISvgRenderable renderable:
+                    this.Renderables.Add(renderable);
                     break;
             }
         });
@@ -96,8 +96,8 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector, ISvgContainer, IRend
             });
         }
 
-        var transform = SvgHelper.GetAlignToTopLeftTransform(Visuals.Select(v => v.Bounds));
-        foreach (var visual in Visuals)
+        var transform = SvgHelper.GetAlignToTopLeftTransform(Renderables.Select(v => v.Bounds));
+        foreach (var visual in Renderables)
         {
             visual.ApplyGlobalTransform(transform);
         }
@@ -115,7 +115,7 @@ public class Svg : SvgTagBase, ISvg, ISvgResourceCollector, ISvgContainer, IRend
         var right  = 0d;
         var bottom = 0d;
 
-        foreach (var visual in Visuals)
+        foreach (var visual in Renderables)
         {
             left   = Math.Min(visual.RenderBounds.Left, left);
             top    = Math.Min(visual.RenderBounds.Top, top);

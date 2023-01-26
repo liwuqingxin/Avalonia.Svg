@@ -11,7 +11,7 @@ public class SvgCircleFactory : ISvgTagFactory
     }
 }
 
-public class SvgCircle : SvgTagBase, IShape, IGraphic, IRenderable
+public class SvgCircle : SvgRenderable, ISvgShape, ISvgGraphic, ISvgRenderable
 {
 
 }

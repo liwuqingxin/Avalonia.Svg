@@ -19,9 +19,9 @@ public interface ISvgResourceCollector
     public IReadOnlyDictionary<string, IBrush> Brushes { get; }
 
     /// <summary>
-    /// All visuals.
+    /// All renderable elements.
     /// </summary>
-    public IReadOnlyList<ISvgVisual> Visuals { get; }
+    public IReadOnlyList<ISvgRenderable> Renderables { get; }
 
     /// <summary>
     /// Collect resources.

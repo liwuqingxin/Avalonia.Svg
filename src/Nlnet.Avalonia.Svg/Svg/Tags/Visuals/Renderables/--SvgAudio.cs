@@ -6,39 +6,39 @@ using System.Threading.Tasks;
 
 namespace Nlnet.Avalonia.Svg
 {
-    public class SvgAudio : IGraphic, IRenderable
+    public class SvgAudio : SvgRenderable, ISvgGraphic, ISvgRenderable
     {
     }
 
-    public class SvgCanvas : IGraphic, IRenderable
+    public class SvgCanvas : SvgRenderable, ISvgGraphic, ISvgRenderable
     {
     }
 
-    public class SvgForeignObject : IGraphic, IRenderable
+    public class SvgForeignObject : SvgRenderable, ISvgGraphic, ISvgRenderable
     {
     }
 
-    public class SvgIFrame : IGraphic, IRenderable
+    public class SvgIFrame : SvgRenderable, ISvgGraphic, ISvgRenderable
     {
     }
 
-    public class SvgImage : IGraphic, IRenderable
+    public class SvgImage : SvgRenderable, ISvgGraphic, ISvgRenderable
     {
     }
 
-    public class SvgText : IGraphic, IRenderable
+    public class SvgText : SvgRenderable, ISvgGraphic, ISvgRenderable
     {
     }
 
-    public class SvgTextPath : IGraphic, IRenderable
+    public class SvgTextPath : SvgRenderable, ISvgGraphic, ISvgRenderable
     {
     }
 
-    public class SvgTSpan : IGraphic, IRenderable
+    public class SvgTSpan : SvgRenderable, ISvgGraphic, ISvgRenderable
     {
     }
 
-    public class SvgVideo : IGraphic, IRenderable
+    public class SvgVideo : SvgRenderable, ISvgGraphic, ISvgRenderable
     {
     }
 }

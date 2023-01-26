@@ -90,12 +90,12 @@ namespace Nlnet.Avalonia.Svg
         {
             children?.ForEach(c => c.VisitSvgTagTree(tag =>
             {
-                if (tag is not ISvgVisual visual)
+                if (tag is not ISvgRenderable renderable)
                 {
                     return true;
                 }
 
-                visual.Render(dc);
+                renderable.Render(dc);
                 return tag is IRenderHost { RenderBySelf: false } or not IRenderHost;
             }));
         }

@@ -19,12 +19,12 @@ public class GroupHeritablePropertiesApplier : ISvgResourceApplier
 
         group.VisitSvgTagTree(t =>
         {
-            if (t is not ISvgVisual visual)
+            if (t is not ISvgRenderable renderable)
             {
                 return;
             }
 
-            visual.ApplyAncestorTransform(group.Transform);
+            renderable.ApplyAncestorTransform(group.Transform);
         });
     }
 }

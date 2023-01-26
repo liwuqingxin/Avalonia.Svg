@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.rect))]
-public class SvgRect : SvgVisualBase, IShape, IGraphic, IRenderable,
+public class SvgRect : SvgRenderable, ISvgShape, ISvgGraphic, ISvgRenderable,
     IIdSetter,
     IXSetter,
     IYSetter,

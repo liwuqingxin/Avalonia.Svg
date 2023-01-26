@@ -6,7 +6,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.g))]
-public class SvgGroup : SvgVisualBase, ISvgContainer, IRenderHost, IRenderable
+public class SvgGroup : SvgRenderable, ISvgContainer, IRenderHost, ISvgRenderable
 {
     public bool RenderBySelf => true;
 

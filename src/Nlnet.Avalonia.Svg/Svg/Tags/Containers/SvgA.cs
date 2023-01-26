@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Nlnet.Avalonia.Svg
 {
-    internal class SvgA : ISvgContainer, IRenderable
+    public class SvgA : SvgRenderable, ISvgContainer, ISvgRenderable
     {
+
     }
 }
