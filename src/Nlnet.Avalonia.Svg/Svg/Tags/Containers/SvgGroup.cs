@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 
@@ -9,14 +8,6 @@ namespace Nlnet.Avalonia.Svg;
 public class SvgGroup : SvgRenderable, ISvgContainer, ISvgRenderable
 {
     public bool RenderBySelf => true;
-
-    public SvgGroup()
-    {
-        //ResourceAppliers = new List<ISvgResourceApplier>()
-        //{
-        //    new GroupHeritablePropertiesApplier(),
-        //};
-    }
 
     public override void Render(DrawingContext dc)
     {

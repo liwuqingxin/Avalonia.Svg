@@ -1,45 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using Avalonia;
 using Avalonia.Media;
+using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[SvgTag(SvgTags.svg)]
-public class SvgFactory : ISvgTagFactory
+[TagFactoryGenerator(nameof(SvgTags.svg))]
+public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, ISvgRenderable,
+    IIdSetter,
+    //IVersionSetter,
+    //IStyleSetter,
+    //IViewBoxSetter,
+    IXSetter,
+    IYSetter
 {
-    public ISvgTag CreateTag(XmlNode xmlNode)
-    {
-        var tag = new Svg();
-
-        if (xmlNode.Attributes != null)
-        {
-            tag.Id      = xmlNode.Attributes[SvgProperties.Id]?.Value;
-            tag.Version = xmlNode.Attributes[SvgProperties.Version]?.Value;
-            tag.Style   = xmlNode.Attributes[SvgProperties.Style]?.Value;
-            tag.ViewBox = xmlNode.Attributes[SvgProperties.ViewBox]?.Value;
-            tag.X       = xmlNode.Attributes[SvgProperties.X]?.Value;
-            tag.Y       = xmlNode.Attributes[SvgProperties.Y]?.Value;
-        }
-
-        return tag;
-    }
-}
-
-public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, ISvgRenderable
-{
-    private Transform _alignTransform;
+    private Transform? _alignTransform;
 
     public static Svg Empty { get; } = new();
 
-    public string? Id      { get; set; }
-    public string? Version { get; set; }
-    public string? Style   { get; set; }
-    public string? ViewBox { get; set; }
-    public string? Y       { get; set; }
-    public string? X       { get; set; }
+    public string? Id
+    {
+        get;
+        set;
+    }
+
+    public double? X
+    {
+        get;
+        set;
+    }
+
+    public double? Y
+    {
+        get;
+        set;
+    }
 
     private Dictionary<string, ISvgClassStyle> Styles { get; } = new();
 
@@ -64,15 +61,18 @@ public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, IS
             switch (tag)
             {
                 case ISvgStyleProvider styleProvider:
-                {
-                    foreach (var style in styleProvider.GetStyles())
                     {
-                        this.Styles.Add(style.Class, style);
+                        foreach (var style in styleProvider.GetStyles())
+                        {
+                            this.Styles.Add(style.Class, style);
+                        }
+                        break;
                     }
-                    break;
-                }
                 case ISvgBrushProvider brushProvider:
-                    this.Brushes.Add(brushProvider.Id, brushProvider.GetBrush());
+                    if (brushProvider.Id != null)
+                    {
+                        this.Brushes.Add(brushProvider.Id, brushProvider.GetBrush());
+                    }
                     break;
                 case ISvgRenderable renderable:
                     this.Renderables.Add(renderable);
@@ -107,7 +107,7 @@ public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, IS
     {
         using (dc.PushTransformContainer())
         {
-            using (dc.PushSetTransform(_alignTransform.Value))
+            using (dc.PushSetTransform(_alignTransform?.Value ?? Matrix.Identity))
             {
                 this.Children?.Render(dc);
             }
@@ -116,17 +116,17 @@ public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, IS
 
     Size ISvg.GetRenderSize()
     {
-        var left   = 0d;
-        var top    = 0d;
-        var right  = 0d;
+        var left = 0d;
+        var top = 0d;
+        var right = 0d;
         var bottom = 0d;
 
-        foreach (var visual in Renderables)
+        foreach (var renderable in Renderables)
         {
-            left   = Math.Min(visual.RenderBounds.Left, left);
-            top    = Math.Min(visual.RenderBounds.Top, top);
-            right  = Math.Max(visual.RenderBounds.Right, right);
-            bottom = Math.Max(visual.RenderBounds.Bottom, bottom);
+            left = Math.Min(renderable.RenderBounds.Left, left);
+            top = Math.Min(renderable.RenderBounds.Top, top);
+            right = Math.Max(renderable.RenderBounds.Right, right);
+            bottom = Math.Max(renderable.RenderBounds.Bottom, bottom);
         }
 
         return new Size(right - left, bottom - top);

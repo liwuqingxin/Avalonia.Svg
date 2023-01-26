@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;

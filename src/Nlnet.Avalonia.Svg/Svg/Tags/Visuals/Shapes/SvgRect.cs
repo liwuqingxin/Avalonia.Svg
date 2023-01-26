@@ -1,10 +1,12 @@
 ﻿using Avalonia;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.CompileGenerator;
-using System.Collections.Generic;
 
 namespace Nlnet.Avalonia.Svg;
 
+/// <summary>
+/// Factory is <see cref="SvgRectFactory"/>.
+/// </summary>
 [TagFactoryGenerator(nameof(SvgTags.rect))]
 public class SvgRect : SvgRenderable, ISvgShape, ISvgGraphic, ISvgRenderable,
     IIdSetter,

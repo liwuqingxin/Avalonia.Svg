@@ -29,10 +29,10 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
         this.TryAddApplier(new TransformApplier());
     }
 
-    public double?             Opacity     { get; set; }
-    public Transform?          Transform   { get; set; }
-    IBrush? IFillSetter.       Fill        { get; set; }
-    IBrush? IStrokeSetter.     Stroke      { get; set; }
+    public double? Opacity { get; set; }
+    public Transform? Transform { get; set; }
+    IBrush? IFillSetter.Fill { get; set; }
+    IBrush? IStrokeSetter.Stroke { get; set; }
     double? IStrokeWidthSetter.StrokeWidth { get; set; }
 
     Rect ISvgRenderable.Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;

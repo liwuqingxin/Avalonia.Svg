@@ -33,32 +33,38 @@ public class SvgStyle : SvgTagBase, ISvgStyleProvider
 
     IEnumerable<ISvgClassStyle> ISvgStyleProvider.GetStyles()
     {
-        if (_styles == null)
+        if (_styles != null)
         {
-            _styles = new List<ISvgClassStyle>();
+            return _styles;
+        }
 
-            if (string.IsNullOrWhiteSpace(Content))
+        _styles = new List<ISvgClassStyle>();
+
+        if (string.IsNullOrWhiteSpace(Content))
+        {
+            return _styles;
+        }
+
+        var regex   = new Regex("\\.(.*?)\\{(.*?)\\}", RegexOptions.Singleline);
+        var matches = regex.Matches(Content.Replace("\r", "").Replace("\n", "").Replace("\t", ""));
+        if (matches.Count <= 0)
+        {
+            return _styles;
+        }
+
+        foreach (Match match in matches)
+        {
+            if (!match.Success || match.Groups.Count != 3)
             {
-                return _styles;
+                continue;
             }
 
-            var regex = new Regex("\\.(.*?)\\{(.*?)\\}", RegexOptions.Singleline);
-            var matches = regex.Matches(Content.Replace("\r", "").Replace("\n", "").Replace("\t", ""));
-            if (matches.Count > 0)
+            var name  = match.Groups[1].Value;
+            var value = match.Groups[2].Value;
+            var style = GetStyleFromStyleString(name, value);
+            if (style != null)
             {
-                foreach (Match match in matches)
-                {
-                    if (match.Success && match.Groups.Count == 3)
-                    {
-                        var name  = match.Groups[1].Value;
-                        var value = match.Groups[2].Value;
-                        var style = GetStyleFromStyleString(name, value);
-                        if (style != null)
-                        {
-                            _styles.Add(style);
-                        }
-                    }
-                }
+                _styles.Add(style);
             }
         }
 

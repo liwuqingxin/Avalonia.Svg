@@ -10,6 +10,7 @@ public class SvgStopFactory : ISvgTagFactory
     {
         if (xmlNode.Attributes != null)
         {
+            // ref https://www.w3.org/TR/SVG2/pservers.html#StopElementOffsetAttribute
             var offset      = xmlNode.Attributes[SvgProperties.Offset]?.Value.ToDouble()      ?? 0;
             var stopOpacity = xmlNode.Attributes[SvgProperties.StopOpacity]?.Value.ToDouble() ?? 1;
             var stopColor   = Color.Parse(xmlNode.Attributes[SvgProperties.StopColor]?.Value ?? "Black");
@@ -35,7 +36,7 @@ public class SvgStop : SvgTagBase
             // So we apply it to the color.
             //
             Color = Color.FromArgb((byte)(opacity * color.A), color.R, color.G, color.B),
-            Offset = offset
+            Offset = offset,
         };
     }
 }

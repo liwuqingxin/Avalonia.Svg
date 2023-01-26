@@ -10,7 +10,7 @@ public interface ISvgBrushProvider
     /// <summary>
     /// Id of the brush.
     /// </summary>
-    public string Id { get; set; }
+    public string? Id { get; set; }
 
     /// <summary>
     /// Brush instance.

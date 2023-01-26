@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.CompileGenerator;
-using System.Collections.Generic;
 
 namespace Nlnet.Avalonia.Svg;
 
