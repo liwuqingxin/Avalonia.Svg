@@ -31,7 +31,7 @@ namespace Nlnet.Avalonia.Svg
         /// <returns></returns>
         public static double ToDouble(this string valueString)
         {
-            if (Regex.IsMatch(valueString, "^[0-9.]*%$"))
+            if (Regex.IsMatch(valueString, "^[-0-9.]*%$"))
             {
                 return double.Parse(valueString[..^1]) / 100;
             }
