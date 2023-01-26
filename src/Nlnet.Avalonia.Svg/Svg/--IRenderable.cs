@@ -17,6 +17,7 @@ namespace Nlnet.Avalonia.Svg
     /// https://www.w3.org/TR/SVG2/render.html#TermRenderableElement
     public interface IRenderable
     {
+
     }
 
     /// <summary>

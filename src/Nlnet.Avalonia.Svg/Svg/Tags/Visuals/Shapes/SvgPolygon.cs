@@ -5,7 +5,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.polygon))]
-public class SvgPolygon : SvgVisualBase, IShape, IGraphic,
+public class SvgPolygon : SvgVisualBase, IShape, IGraphic, IRenderable,
     IClassSetter,
     IPointsSetter
 {

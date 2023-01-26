@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace Nlnet.Avalonia.Svg.Sample;
 
-public class MainWindowViewModel : INotifyPropertyChanged
+public sealed class MainWindowViewModel : INotifyPropertyChanged
 {
     private List<string> _svgList = new();
 
@@ -26,7 +26,7 @@ public class MainWindowViewModel : INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
     [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

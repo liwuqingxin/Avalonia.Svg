@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.line))]
-public class SvgLine : SvgVisualBase, IShape, IGraphic,
+public class SvgLine : SvgVisualBase, IShape, IGraphic, IRenderable,
     IClassSetter,
     IX1Setter,
     IX2Setter,

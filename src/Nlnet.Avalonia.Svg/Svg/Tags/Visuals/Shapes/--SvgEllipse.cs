@@ -24,7 +24,7 @@ public class SvgEllipseFactory : ISvgTagFactory
     }
 }
 
-public class SvgEllipse : SvgTagBase, IShape, IGraphic
+public class SvgEllipse : SvgTagBase, IShape, IGraphic, IRenderable
 {
     public string? Id { get; set; }
     public string? RX { get; set; }
