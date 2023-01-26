@@ -21,11 +21,8 @@ public class SvgLine : SvgRenderable, ISvgShape, ISvgGraphic, ISvgRenderable,
 
     public SvgLine()
     {
-        ResourceAppliers = new List<ISvgResourceApplier>()
-        {
-            new ClassApplier(),
-            new DeferredPropertiesApplier(),
-        };
+        this.TryAddApplier(new ClassApplier());
+        this.TryAddApplier(new DeferredPropertiesApplier());
     }
 
     public override void OnPropertiesFetched()

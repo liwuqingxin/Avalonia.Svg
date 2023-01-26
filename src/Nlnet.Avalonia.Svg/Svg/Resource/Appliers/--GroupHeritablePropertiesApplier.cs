@@ -24,7 +24,7 @@ public class GroupHeritablePropertiesApplier : ISvgResourceApplier
                 return;
             }
 
-            renderable.ApplyAncestorTransform(group.Transform);
+            //renderable.ApplyAncestorTransform(group.Transform);
         });
     }
 }

@@ -26,21 +26,14 @@ namespace Nlnet.Avalonia.Svg
         public Rect RenderBounds { get; }
 
         /// <summary>
+        /// Build render geometry from origin geometry.
+        /// </summary>
+        public void BuildRenderGeometry();
+
+        /// <summary>
         /// Render the <see cref="ISvgRenderable"/>.
         /// </summary>
         /// <param name="dc"></param>
         public void Render(DrawingContext dc);
-
-        /// <summary>
-        /// Apply a global transform that is from svg or alignment to this <see cref="ISvgRenderable"/>.
-        /// </summary>
-        /// <param name="transform"></param>
-        void ApplyGlobalTransform(Transform transform);
-
-        /// <summary>
-        /// Apply a transform from ancestor group to this <see cref="ISvgRenderable"/>.
-        /// </summary>
-        /// <param name="transform"></param>
-        void ApplyAncestorTransform(Transform transform);
     }
 }

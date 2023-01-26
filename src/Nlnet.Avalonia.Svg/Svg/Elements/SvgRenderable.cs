@@ -14,8 +14,6 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
     IStrokeSetter, 
     IStrokeWidthSetter
 {
-    private TransformGroup? _transformGroup;
-
     /// <summary>
     /// The original geometry that the svg describes.
     /// </summary>
@@ -25,6 +23,11 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
     /// The geometry to render, which applied some transforms.
     /// </summary>
     protected Geometry? RenderGeometry;
+
+    protected SvgRenderable()
+    {
+        this.TryAddApplier(new TransformApplier());
+    }
 
     public double?             Opacity     { get; set; }
     public Transform?          Transform   { get; set; }
@@ -36,23 +39,7 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
 
     Rect ISvgRenderable.RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
 
-    void ISvgRenderable.ApplyGlobalTransform(Transform transform)
-    {
-        _transformGroup ??= new TransformGroup();
-        _transformGroup.Children.Add(transform);
-        if (Transform != null)
-        {
-            _transformGroup.Children.Add(Transform);
-        }
-
-        ApplyTransformCore(_transformGroup);
-    }
-
-    /// <summary>
-    /// Derived class does not need to care about any transform from outer except the parameter <see cref="transform"/>.
-    /// </summary>
-    /// <param name="transform"></param>
-    protected virtual void ApplyTransformCore(Transform transform)
+    void ISvgRenderable.BuildRenderGeometry()
     {
         if (OriginalGeometry == null)
         {
@@ -60,13 +47,7 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
         }
 
         RenderGeometry = OriginalGeometry.Clone();
-        RenderGeometry.Transform = transform;
-    }
-
-    public virtual void ApplyAncestorTransform(Transform transform)
-    {
-        _transformGroup ??= new TransformGroup();
-        _transformGroup.Children.Add(transform);
+        RenderGeometry.Transform = Transform;
     }
 
     /// <summary>

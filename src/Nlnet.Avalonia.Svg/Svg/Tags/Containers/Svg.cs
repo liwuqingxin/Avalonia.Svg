@@ -30,7 +30,9 @@ public class SvgFactory : ISvgTagFactory
 
 public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, ISvgRenderable
 {
-    public static Svg Empty { get; } = new Svg();
+    private Transform _alignTransform;
+
+    public static Svg Empty { get; } = new();
 
     public string? Id      { get; set; }
     public string? Version { get; set; }
@@ -39,11 +41,11 @@ public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, IS
     public string? Y       { get; set; }
     public string? X       { get; set; }
 
-    private Dictionary<string, ISvgClassStyle> Styles { get; set; } = new Dictionary<string, ISvgClassStyle>();
+    private Dictionary<string, ISvgClassStyle> Styles { get; } = new();
 
-    private Dictionary<string, IBrush> Brushes { get; set; } = new Dictionary<string, IBrush>();
+    private Dictionary<string, IBrush> Brushes { get; } = new();
 
-    private List<ISvgRenderable> Renderables { get; set; } = new();
+    private List<ISvgRenderable> Renderables { get; } = new();
 
 
 
@@ -81,6 +83,8 @@ public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, IS
 
     #endregion
 
+
+
     public override void ApplyResources(ISvgResourceCollector collector)
     {
         if (Children == null)
@@ -96,16 +100,18 @@ public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, IS
             });
         }
 
-        var transform = SvgHelper.GetAlignToTopLeftTransform(Renderables.Select(v => v.Bounds));
-        foreach (var visual in Renderables)
-        {
-            visual.ApplyGlobalTransform(transform);
-        }
+        _alignTransform = SvgHelper.GetAlignToTopLeftTransform(Renderables.Select(v => v.Bounds));
     }
 
     void ISvg.Render(DrawingContext dc)
     {
-        this.Children?.Render(dc);
+        using (dc.PushTransformContainer())
+        {
+            using (dc.PushSetTransform(_alignTransform.Value))
+            {
+                this.Children?.Render(dc);
+            }
+        }
     }
 
     Size ISvg.GetRenderSize()

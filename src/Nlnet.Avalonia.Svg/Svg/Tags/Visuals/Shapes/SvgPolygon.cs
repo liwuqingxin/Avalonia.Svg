@@ -15,11 +15,8 @@ public class SvgPolygon : SvgRenderable, ISvgShape, ISvgGraphic, ISvgRenderable,
 
     public SvgPolygon()
     {
-        ResourceAppliers = new List<ISvgResourceApplier>()
-        {
-            new ClassApplier(),
-            new DeferredPropertiesApplier(),
-        };
+        this.TryAddApplier(new ClassApplier());
+        this.TryAddApplier(new DeferredPropertiesApplier());
     }
 
     public override void OnPropertiesFetched()
