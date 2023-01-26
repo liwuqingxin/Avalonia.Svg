@@ -39,6 +39,8 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
 
     Rect ISvgRenderable.RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
 
+    bool ISvgRenderable.RenderBySelf => false;
+
     void ISvgRenderable.BuildRenderGeometry()
     {
         if (OriginalGeometry == null)

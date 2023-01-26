@@ -7,7 +7,7 @@ using System.Xml;
 
 namespace Nlnet.Avalonia.Svg
 {
-    internal static class PropertyService
+    internal static class PropertyHelper
     {
         private static readonly ConcurrentDictionary<Type, List<MethodInfo>> SetterTypeCaches = new();
 

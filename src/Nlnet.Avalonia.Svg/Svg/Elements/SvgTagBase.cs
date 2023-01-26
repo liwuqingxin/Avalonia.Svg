@@ -19,7 +19,7 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 
     public List<ISvgTag>? Children { get; set; }
 
-    public string GetTagName()
+    string ISvgTag.GetTagName()
     {
         if (_tagName != null)
         {

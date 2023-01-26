@@ -26,6 +26,11 @@ namespace Nlnet.Avalonia.Svg
         public Rect RenderBounds { get; }
 
         /// <summary>
+        /// Indicates if this object renders itself and it's children by itself.
+        /// </summary>
+        public bool RenderBySelf { get; }
+
+        /// <summary>
         /// Build render geometry from origin geometry.
         /// </summary>
         public void BuildRenderGeometry();

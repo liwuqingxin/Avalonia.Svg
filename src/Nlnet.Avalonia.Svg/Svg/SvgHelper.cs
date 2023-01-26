@@ -82,7 +82,7 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
-        /// Render children with checking <see cref="IRenderHost"/>.
+        /// Render children.
         /// </summary>
         /// <param name="children"></param>
         /// <param name="dc"></param>
@@ -96,7 +96,7 @@ namespace Nlnet.Avalonia.Svg
                 }
 
                 renderable.Render(dc);
-                return tag is IRenderHost { RenderBySelf: false } or not IRenderHost;
+                return !renderable.RenderBySelf;
             }));
         }
     }
