@@ -3,19 +3,15 @@ using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg;
 
-public abstract class AbstractTransformSetter : ISvgStyleSetter
+/// <summary>
+/// Abstract base setter for <see cref="Transform"/>.
+/// </summary>
+public abstract class AbstractTransformSetter : AbstractDeferredSetter
 {
     protected Transform? Value;
 
-    public abstract void Set(ISvgTag tag);
-
-    public void InitializeValue(string setterValue)
+    public override void InitializeValue(string setterValue)
     {
         Value = setterValue.ToTransform();
-    }
-
-    public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
-    {
-        throw new NotImplementedException($"Deferred {nameof(Transform)} value is not implemented");
     }
 }

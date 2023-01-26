@@ -4,30 +4,36 @@
         xmlns:controls="clr-namespace:Nlnet.Avalonia.Svg.Controls;assembly=Nlnet.Avalonia.Svg"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:system="clr-namespace:System;assembly=System.Runtime"
         xmlns:sample="clr-namespace:Nlnet.Avalonia.Svg.Sample"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
         Title="Avalonia.Svg.Sample"
         d:DesignHeight="450"
         d:DesignWidth="800"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <Design.DataContext>
-		<sample:MainWindowViewModel/>
+        <sample:MainWindowViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="Auto,Auto,*">
-        <ListBox Grid.Column="1" Items="{Binding Path=SvgList}">
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="system:String">
-                    <Viewbox Width="256"
-                             Height="256"
-                             Stretch="Uniform">
-                        <controls:Icon IconSvgData="{Binding}" ShowRenderBounds="True" />
-                    </Viewbox>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+    <Grid ColumnDefinitions="Auto,*">
+        <ScrollViewer>
+            <ItemsControl Margin="20" Items="{Binding Path=SvgList}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="system:String">
+                        <Border Margin="5"
+                                BorderBrush="Red"
+                                BorderThickness="1">
+                            <Viewbox Width="256"
+                                     Height="256"
+                                     Stretch="Uniform">
+                                <controls:Icon IconSvgData="{Binding}" ShowRenderBounds="True" />
+                            </Viewbox>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
         <TextBox x:Name="TextBox"
-                 Grid.Column="2"
+                 Grid.Column="1"
                  Margin="12"
                  AcceptsReturn="True"
                  ScrollViewer.VerticalScrollBarVisibility="Visible" />

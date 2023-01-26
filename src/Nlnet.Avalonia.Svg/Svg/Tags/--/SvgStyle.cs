@@ -31,6 +31,11 @@ public class SvgStyle : SvgTagBase, ISvgStyleProvider
     public string? ContentType { get; set; }
     public string? Content     { get; set; }
 
+    public SvgStyle()
+    {
+        TryAddApplier(new DeferredSetterValueApplier());
+    }
+
     IEnumerable<ISvgClassStyle> ISvgStyleProvider.GetStyles()
     {
         if (_styles != null)
@@ -93,7 +98,15 @@ public class SvgStyle : SvgTagBase, ISvgStyleProvider
                 continue;
             }
             var setter = factory.CreateSetter();
-            setter.InitializeValue(setterString[(setterString.IndexOf(':') + 1)..]);
+            var valueString = setterString[(setterString.IndexOf(':') + 1)..];
+            try
+            {
+                setter.InitializeValue(valueString);
+            }
+            catch
+            {
+                setter.AddDeferredValueString(valueString);
+            }
             setters.Add(setter);
         }
 

@@ -23,4 +23,15 @@ public interface ISvgStyleSetter
     /// <param name="collector"></param>
     /// <param name="deferredSetterValue"></param>
     public void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue);
+
+    /// <summary>
+    /// The value can not be parsed immediately. Add deferred value string and parse it later.
+    /// </summary>
+    /// <param name="valueString"></param>
+    void AddDeferredValueString(string valueString);
+
+    /// <summary>
+    /// Apply the deferred value string if it exists.
+    /// </summary>
+    void ApplyDeferredValueString(ISvgResourceCollector collector);
 }
