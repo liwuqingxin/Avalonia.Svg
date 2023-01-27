@@ -8,6 +8,7 @@ namespace Nlnet.Avalonia.Svg.Sample;
 public sealed class MainWindowViewModel : INotifyPropertyChanged
 {
     private List<string> _svgList = new();
+    private string?      _editableSvgData;
 
     public List<string> SvgList
     {
@@ -17,6 +18,18 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             if (Equals(value, _svgList))
                 return;
             _svgList = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string? EditableSvgData
+    {
+        get => _editableSvgData;
+        set
+        {
+            if (value == _editableSvgData)
+                return;
+            _editableSvgData = value;
             OnPropertyChanged();
         }
     }

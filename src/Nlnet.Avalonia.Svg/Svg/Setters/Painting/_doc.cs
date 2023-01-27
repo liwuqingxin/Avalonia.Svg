@@ -20,3 +20,7 @@
 ///
 /// A <paint> value is defined as follows:
 /// <paint> = none | <color> | <url> [none | <color>] ? | context - fill | context - stroke
+///
+/// For any <color> value, all color syntaxes defined in CSS Color Module Level 3 must be
+/// supported, including rgb(), rgba(), hsl(), hsla(), the extended color keywords and the
+/// currentColor value.

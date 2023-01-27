@@ -16,26 +16,34 @@
     </Design.DataContext>
     <Grid ColumnDefinitions="Auto,*">
         <ScrollViewer>
-            <ItemsControl Margin="20" Items="{Binding Path=SvgList}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="system:String">
-                        <Border Margin="5"
-                                BorderBrush="Red"
-                                BorderThickness="1">
-                            <Viewbox Width="256"
-                                     Height="256"
-                                     Stretch="Uniform">
-                                <controls:Icon IconSvgData="{Binding}" ShowRenderBounds="True" />
-                            </Viewbox>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+            <StackPanel>
+                <Viewbox Width="256"
+                         Height="256"
+                         Stretch="Uniform">
+                    <controls:Icon IconSvgData="{Binding Path=EditableSvgData}" ShowRenderBounds="True" />
+                </Viewbox>
+                <ItemsControl Margin="20" Items="{Binding Path=SvgList}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="system:String">
+                            <Border Margin="5"
+                                    BorderBrush="Red"
+                                    BorderThickness="1">
+                                <Viewbox Width="256"
+                                         Height="256"
+                                         Stretch="Uniform">
+                                    <controls:Icon IconSvgData="{Binding}" ShowRenderBounds="True" />
+                                </Viewbox>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
         </ScrollViewer>
         <TextBox x:Name="TextBox"
                  Grid.Column="1"
                  Margin="12"
                  AcceptsReturn="True"
-                 ScrollViewer.VerticalScrollBarVisibility="Visible" />
+                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 Text="{Binding EditableSvgData}" />
     </Grid>
 </Window>
