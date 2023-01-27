@@ -1,11 +1,11 @@
 ﻿namespace Nlnet.Avalonia.Svg;
 
 /// <summary>
-/// Class applier for <see cref="ISvgResourceApplier"/>.
+/// Class applier for <see cref="ISvgContextApplier"/>.
 /// </summary>
-public class ClassApplier : ISvgResourceApplier
+public class ClassApplier : ISvgContextApplier
 {
-    public void Apply(ISvgTag tag, ISvgResourceCollector collector)
+    public void Apply(ISvgTag tag, ISvgContext context)
     {
         if (tag is not IClassSetter setter)
         {
@@ -16,7 +16,7 @@ public class ClassApplier : ISvgResourceApplier
             return;
         }
 
-        if (collector.Styles.TryGetValue(setter.Class, out var style))
+        if (context.Styles.TryGetValue(setter.Class, out var style))
         {
             style.ApplyTo(tag);
         }

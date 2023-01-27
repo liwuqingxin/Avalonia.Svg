@@ -29,10 +29,10 @@ public interface ISvgTag
     public string GetTagName();
 
     /// <summary>
-    /// Apply resources to this tag including brushes, styles, etc...
+    /// Apply context to this tag including brushes, styles, etc...
     /// </summary>
-    /// <param name="collector"></param>
-    public void ApplyResources(ISvgResourceCollector collector);
+    /// <param name="context"></param>
+    public void ApplyContext(ISvgContext context);
 
     /// <summary>
     /// This method will be called after properties of svg tag being fetched.

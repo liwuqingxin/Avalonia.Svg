@@ -13,7 +13,7 @@ public abstract class AbstractDeferredSetter : ISvgStyleSetter
 
     public abstract void InitializeValue(string setterValue);
 
-    public virtual void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
+    public virtual void InitializeDeferredValue(ISvgContext context, string deferredSetterValue)
     {
         throw new NotImplementedException($"Initializing deferred value for {this.GetType()} is not implemented");
     }
@@ -23,13 +23,13 @@ public abstract class AbstractDeferredSetter : ISvgStyleSetter
         DeferredValueString = valueString;
     }
 
-    public void ApplyDeferredValueString(ISvgResourceCollector collector)
+    public void ApplyDeferredValueString(ISvgContext context)
     {
         if (DeferredValueString == null)
         {
             return;
         }
 
-        InitializeDeferredValue(collector, DeferredValueString);
+        InitializeDeferredValue(context, DeferredValueString);
     }
 }

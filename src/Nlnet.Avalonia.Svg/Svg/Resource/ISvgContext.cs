@@ -4,9 +4,9 @@ using Avalonia.Media;
 namespace Nlnet.Avalonia.Svg;
 
 /// <summary>
-/// Collector to collect svg resources.
+/// Svg context that contains resources and...
 /// </summary>
-public interface ISvgResourceCollector
+public interface ISvgContext
 {
     /// <summary>
     /// All styles.
@@ -22,9 +22,4 @@ public interface ISvgResourceCollector
     /// All renderable elements.
     /// </summary>
     public IReadOnlyList<ISvgRenderable> Renderables { get; }
-
-    /// <summary>
-    /// Collect resources.
-    /// </summary>
-    public void CollectResources();
 }

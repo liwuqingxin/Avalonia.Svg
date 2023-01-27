@@ -1,11 +1,11 @@
 ﻿namespace Nlnet.Avalonia.Svg;
 
 /// <summary>
-/// Deferred properties applier for <see cref="ISvgResourceApplier"/>.
+/// Deferred properties applier for <see cref="ISvgContextApplier"/>.
 /// </summary>
-public class DeferredPropertiesApplier : ISvgResourceApplier
+public class DeferredPropertiesApplier : ISvgContextApplier
 {
-    public void Apply(ISvgTag tag, ISvgResourceCollector collector)
+    public void Apply(ISvgTag tag, ISvgContext context)
     {
         if (tag.DeferredProperties == null)
         {
@@ -19,7 +19,7 @@ public class DeferredPropertiesApplier : ISvgResourceApplier
             {
                 continue;
             }
-            setter.InitializeDeferredValue(collector, pair.Value);
+            setter.InitializeDeferredValue(context, pair.Value);
             setter.Set(tag);
         }
     }

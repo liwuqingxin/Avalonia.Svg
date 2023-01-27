@@ -15,14 +15,14 @@ public abstract class AbstractBrushSetter : AbstractDeferredSetter
         Value = setterValue.ToIBrush();
     }
 
-    public override void InitializeDeferredValue(ISvgResourceCollector collector, string deferredSetterValue)
+    public override void InitializeDeferredValue(ISvgContext context, string deferredSetterValue)
     {
         // url example : "url(#linearGradient-1)"
         var match = Regex.Match(deferredSetterValue, "url\\(\\#(.*)\\)");
         if (match.Success)
         {
             var id = match.Groups[1].Value;
-            collector.Brushes.TryGetValue(id, out Value);
+            context.Brushes.TryGetValue(id, out Value);
         }
     }
 }

@@ -64,16 +64,15 @@ public static class SvgTagFactory
             throw new InvalidDataException("Can not find the svg tag in the svg document");
         }
         
-        var svg = CreateTagFrom(node);
+        var svgTag = CreateTagFrom(node);
+        var svg = (Svg)svgTag;
 
-        // Collect svg resources.
-        if (svg is ISvgResourceCollector collector)
-        {
-            collector.CollectResources();
-            svg.ApplyResources(collector);
-        }
+        // Collect, build and apply svg resources.
+        svg.PrepareContext();
+        svg.BuildContext();
+        svg.ApplyContext(svg);
 
-        return (svg as ISvg)!;
+        return svg;
     }
 
     private static ISvgTag CreateTagFrom(XmlNode node)

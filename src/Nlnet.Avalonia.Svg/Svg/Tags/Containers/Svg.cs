@@ -8,7 +8,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.svg))]
-public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, ISvgRenderable,
+public class Svg : SvgRenderable, ISvg, ISvgContext, ISvgContainer, ISvgRenderable,
     IIdSetter,
     //IVersionSetter,
     //IStyleSetter,
@@ -46,62 +46,19 @@ public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, IS
 
 
 
-    #region ISvgResourceCollector
+    #region ISvgContext
 
-    IReadOnlyDictionary<string, ISvgClassStyle> ISvgResourceCollector.Styles => this.Styles;
+    IReadOnlyDictionary<string, ISvgClassStyle> ISvgContext.Styles => this.Styles;
 
-    IReadOnlyDictionary<string, IBrush> ISvgResourceCollector.Brushes => this.Brushes;
+    IReadOnlyDictionary<string, IBrush> ISvgContext.Brushes => this.Brushes;
 
-    IReadOnlyList<ISvgRenderable> ISvgResourceCollector.Renderables => this.Renderables;
-
-    void ISvgResourceCollector.CollectResources()
-    {
-        this.VisitSvgTagTree(tag =>
-        {
-            switch (tag)
-            {
-                case ISvgStyleProvider styleProvider:
-                    {
-                        foreach (var style in styleProvider.GetStyles())
-                        {
-                            this.Styles.Add(style.Class, style);
-                        }
-                        break;
-                    }
-                case ISvgBrushProvider brushProvider:
-                    if (brushProvider.Id != null)
-                    {
-                        this.Brushes.Add(brushProvider.Id, brushProvider.GetBrush());
-                    }
-                    break;
-                case ISvgRenderable renderable:
-                    this.Renderables.Add(renderable);
-                    break;
-            }
-        });
-    }
+    IReadOnlyList<ISvgRenderable> ISvgContext.Renderables => this.Renderables;
 
     #endregion
 
 
 
-    public override void ApplyResources(ISvgResourceCollector collector)
-    {
-        if (Children == null)
-        {
-            return;
-        }
-
-        foreach (var child in Children)
-        {
-            child.VisitSvgTagTree(tag =>
-            {
-                tag.ApplyResources(collector);
-            });
-        }
-
-        _alignTransform = SvgHelper.GetAlignToTopLeftTransform(Renderables.Select(v => v.Bounds));
-    }
+    #region ISvg
 
     void ISvg.Render(DrawingContext dc)
     {
@@ -116,19 +73,85 @@ public class Svg : SvgRenderable, ISvg, ISvgResourceCollector, ISvgContainer, IS
 
     Size ISvg.GetRenderSize()
     {
-        var left = 0d;
-        var top = 0d;
-        var right = 0d;
+        var left   = 0d;
+        var top    = 0d;
+        var right  = 0d;
         var bottom = 0d;
 
         foreach (var renderable in Renderables)
         {
-            left = Math.Min(renderable.RenderBounds.Left, left);
-            top = Math.Min(renderable.RenderBounds.Top, top);
-            right = Math.Max(renderable.RenderBounds.Right, right);
+            left   = Math.Min(renderable.RenderBounds.Left, left);
+            top    = Math.Min(renderable.RenderBounds.Top,  top);
+            right  = Math.Max(renderable.RenderBounds.Right,  right);
             bottom = Math.Max(renderable.RenderBounds.Bottom, bottom);
         }
 
         return new Size(right - left, bottom - top);
+    }
+
+    #endregion
+
+
+
+    internal void PrepareContext()
+    {
+        this.VisitSvgTagTree(tag =>
+        {
+            switch (tag)
+            {
+                case ISvgStyleProvider styleProvider:
+                {
+                    foreach (var style in styleProvider.GetStyles())
+                    {
+                        this.Styles.Add(style.Class, style);
+                    }
+                    break;
+                }
+                case ISvgBrushProvider brushProvider:
+                    if (brushProvider.Id != null)
+                    {
+                        this.Brushes.Add(brushProvider.Id, brushProvider.GetBrush());
+                    }
+                    break;
+                case ISvgRenderable renderable:
+                    this.Renderables.Add(renderable);
+                    break;
+            }
+        });
+    }
+
+    internal void BuildContext()
+    {
+        this.VisitSvgTagTree(tag =>
+        {
+            if (tag is not ISvgStyleProvider provider)
+            {
+                return;
+            }
+
+            var styles = provider.GetStyles();
+            foreach (var style in styles)
+            {
+                style.Setters.ForEach(s => s.ApplyDeferredValueString(this));
+            }
+        });
+    }
+
+    public override void ApplyContext(ISvgContext context)
+    {
+        if (Children == null)
+        {
+            return;
+        }
+
+        foreach (var child in Children)
+        {
+            child.VisitSvgTagTree(tag =>
+            {
+                tag.ApplyContext(context);
+            });
+        }
+
+        _alignTransform = SvgHelper.GetAlignToTopLeftTransform(Renderables.Select(v => v.Bounds));
     }
 }

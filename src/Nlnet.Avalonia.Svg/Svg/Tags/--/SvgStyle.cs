@@ -31,11 +31,6 @@ public class SvgStyle : SvgTagBase, ISvgStyleProvider
     public string? ContentType { get; set; }
     public string? Content     { get; set; }
 
-    public SvgStyle()
-    {
-        TryAddApplier(new DeferredSetterValueApplier());
-    }
-
     IEnumerable<ISvgClassStyle> ISvgStyleProvider.GetStyles()
     {
         if (_styles != null)

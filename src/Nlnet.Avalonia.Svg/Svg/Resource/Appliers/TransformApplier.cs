@@ -1,11 +1,11 @@
 ﻿namespace Nlnet.Avalonia.Svg;
 
 /// <summary>
-/// Transform applier for <see cref="ISvgResourceApplier"/>.
+/// Transform applier for <see cref="ISvgContextApplier"/>.
 /// </summary>
-public class TransformApplier : ISvgResourceApplier
+public class TransformApplier : ISvgContextApplier
 {
-    public void Apply(ISvgTag tag, ISvgResourceCollector collector)
+    public void Apply(ISvgTag tag, ISvgContext context)
     {
         if (tag is not ISvgRenderable renderable)
         {
