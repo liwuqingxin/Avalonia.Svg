@@ -37,7 +37,7 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
 
     Rect ISvgRenderable.Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;
 
-    Rect ISvgRenderable.RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
+    Rect ISvgRenderable.RenderBounds => RenderGeometry?.GetRenderBounds(GetPen()) ?? Rect.Empty;
 
     bool ISvgRenderable.RenderBySelf => false;
 
@@ -64,9 +64,8 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
         }
 
         var fill = this.GetPropertyValue<IFillSetter, IBrush>() ?? Brushes.Black;
-        var stroke = this.GetPropertyValue<IStrokeSetter, IBrush>() ?? Brushes.Black;
-        var strokeWidth = this.GetPropertyStructValue<IStrokeWidthSetter, double>() ?? 0d;
-        void DoRender() => dc.DrawGeometry(fill, new Pen(stroke, strokeWidth), RenderGeometry);
+        
+        void DoRender() => dc.DrawGeometry(fill, GetPen(), RenderGeometry);
 
         if (Opacity != null)
         {
@@ -79,5 +78,12 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
         {
             DoRender();
         }
+    }
+
+    private IPen GetPen()
+    {
+        var stroke = this.GetPropertyValue<IStrokeSetter, IBrush>() ?? Brushes.Black;
+        var strokeWidth = this.GetPropertyStructValue<IStrokeWidthSetter, double>() ?? 0d;
+        return new Pen(stroke, strokeWidth);
     }
 }
