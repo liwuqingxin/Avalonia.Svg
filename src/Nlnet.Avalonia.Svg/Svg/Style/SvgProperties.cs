@@ -52,6 +52,7 @@ namespace Nlnet.Avalonia.Svg
         public const string Y1          = "y1";
         public const string X2          = "x2";
         public const string Y2          = "y2";
+        public const string R           = "r";
         public const string Width       = "width";
         public const string Height      = "height";
         public const string Transform   = "transform";

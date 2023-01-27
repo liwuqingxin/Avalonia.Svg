@@ -8,7 +8,29 @@
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 	</PropertyGroup>
 	<ItemGroup>
+	  <Compile Remove="Svg\Setters\Aria\_doc.cs" />
+	  <Compile Remove="Svg\Setters\Conditional Processing\_doc.cs" />
+	  <Compile Remove="Svg\Setters\Geometry Properties\_doc.cs" />
+	  <Compile Remove="Svg\Setters\Graphical Event\_doc.cs" />
+	  <Compile Remove="Svg\Setters\Core\_doc.cs" />
+	  <Compile Remove="Svg\Setters\Document Element Event\_doc.cs" />
+	  <Compile Remove="Svg\Setters\Global Event\_doc.cs" />
+	  <Compile Remove="Svg\Setters\Painting\_doc.cs" />
+	  <Compile Remove="Svg\Setters\Presentation\_doc.cs" />
+	</ItemGroup>
+	<ItemGroup>
 		<None Remove=".gitignore" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="Svg\Setters\Aria\_doc.cs" />
+	  <None Include="Svg\Setters\Conditional Processing\_doc.cs" />
+	  <None Include="Svg\Setters\Geometry Properties\_doc.cs" />
+	  <None Include="Svg\Setters\Graphical Event\_doc.cs" />
+	  <None Include="Svg\Setters\Core\_doc.cs" />
+	  <None Include="Svg\Setters\Document Element Event\_doc.cs" />
+	  <None Include="Svg\Setters\Global Event\_doc.cs" />
+	  <None Include="Svg\Setters\Painting\_doc.cs" />
+	  <None Include="Svg\Setters\Presentation\_doc.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<!--This helps with theme dll-s trimming.
@@ -29,6 +51,9 @@
 	<!-- Add this as a new ItemGroup, replacing paths and names appropriately -->
 	<ItemGroup>
 		<ProjectReference Include="..\Nlnet.Avalonia.Svg.CompileGenerator\Nlnet.Avalonia.Svg.CompileGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Svg\Setters\新文件夹\--Visual\" />
 	</ItemGroup>
 
 </Project>
