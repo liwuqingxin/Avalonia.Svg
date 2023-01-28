@@ -3,7 +3,7 @@
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.clipPath))]
-public class SvgClipPath : SvgTagBase, ISvgContainer,
+public class SvgClipPath : SvgContainer, ISvgContainer,
     IIdSetter
 {
     public string? Id { get; set; }

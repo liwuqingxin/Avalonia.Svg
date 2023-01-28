@@ -3,7 +3,7 @@
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.defs))]
-public class SvgDefs : SvgTagBase, ISvgContainer
+public class SvgDefs : SvgContainer, ISvgContainer
 {
     
 }

@@ -12,7 +12,7 @@
         </linearGradient>
     </defs>
     <g fill-rule="evenodd" fill="none" stroke-width="1" stroke="none" id="暂无发票">
-        <rect height="1024" width="1024" y="0" x="0" fill="#FFFFFF"></rect>
+        <rect height="1024" width="1024" y="0" x="0"></rect>
         <g id="编组-2">
             <rect height="1024" width="1024" y="0" x="0" id="矩形"></rect>
             <!-- <rect height="1024" width="1024" y="0" x="0" id="矩形" fill="red"></rect> -->

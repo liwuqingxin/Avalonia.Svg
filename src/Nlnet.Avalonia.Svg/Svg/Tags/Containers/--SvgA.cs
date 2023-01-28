@@ -8,7 +8,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 namespace Nlnet.Avalonia.Svg
 {
     [TagFactoryGenerator(nameof(SvgTags.a))]
-    public class SvgA : SvgRenderable, ISvgContainer, ISvgRenderable
+    public class SvgA : SvgContainer, ISvgContainer, ISvgRenderable
     {
 
     }
