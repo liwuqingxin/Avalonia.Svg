@@ -8,7 +8,7 @@ namespace Nlnet.Avalonia.Svg;
 /// Factory is <see cref="SvgRectFactory"/>.
 /// </summary>
 [TagFactoryGenerator(nameof(SvgTags.rect))]
-public class SvgRect : SvgRenderable, ISvgShape, ISvgGraphic, ISvgRenderable,
+public class SvgRect : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
     IIdSetter,
     IXSetter,
     IYSetter,

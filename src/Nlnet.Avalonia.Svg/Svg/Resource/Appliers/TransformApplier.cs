@@ -12,6 +12,6 @@ public class TransformApplier : ISvgContextApplier
             return;
         }
 
-        renderable.BuildRenderGeometry();
+        renderable.ApplyTransforms();
     }
 }

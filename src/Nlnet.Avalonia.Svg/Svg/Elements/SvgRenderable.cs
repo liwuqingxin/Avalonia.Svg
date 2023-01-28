@@ -9,81 +9,37 @@ namespace Nlnet.Avalonia.Svg;
 /// </summary>
 public abstract class SvgRenderable : SvgTagBase, ISvgRenderable, 
     IOpacitySetter, 
-    ITransformSetter, 
-    IFillSetter, 
-    IStrokeSetter, 
-    IStrokeWidthSetter
+    ITransformSetter
 {
-    /// <summary>
-    /// The original geometry that the svg describes.
-    /// </summary>
-    protected Geometry? OriginalGeometry;
-
-    /// <summary>
-    /// The geometry to render, which applied some transforms.
-    /// </summary>
-    protected Geometry? RenderGeometry;
-
     protected SvgRenderable()
     {
         this.TryAddApplier(new TransformApplier());
     }
 
     public double? Opacity { get; set; }
+
     public Transform? Transform { get; set; }
-    IBrush? IFillSetter.Fill { get; set; }
-    IBrush? IStrokeSetter.Stroke { get; set; }
-    double? IStrokeWidthSetter.StrokeWidth { get; set; }
 
-    Rect ISvgRenderable.Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;
+    public virtual Rect Bounds => Rect.Empty;
 
-    Rect ISvgRenderable.RenderBounds => RenderGeometry?.GetRenderBounds(GetPen()) ?? Rect.Empty;
+    public virtual Rect RenderBounds => Rect.Empty;
 
     bool ISvgRenderable.RenderBySelf => false;
 
-    void ISvgRenderable.BuildRenderGeometry()
+    /// <summary>
+    /// Apply transforms. In <see cref="SvgRenderable"/>, it renders nothing.
+    /// </summary>
+    public virtual void ApplyTransforms()
     {
-        if (OriginalGeometry == null)
-        {
-            return;
-        }
 
-        RenderGeometry = OriginalGeometry.Clone();
-        RenderGeometry.Transform = Transform;
     }
 
     /// <summary>
-    /// Render the <see cref="ISvgRenderable"/>. In <see cref="SvgRenderable"/>, it renders the <see cref="RenderGeometry"/>.
+    /// Render the <see cref="ISvgRenderable"/>. In <see cref="SvgRenderable"/>, it renders nothing.
     /// </summary>
     /// <param name="dc"></param>
     public virtual void Render(DrawingContext dc)
     {
-        if (RenderGeometry == null)
-        {
-            return;
-        }
-
-        var fill = this.GetPropertyValue<IFillSetter, IBrush>();
         
-        void DoRender() => dc.DrawGeometry(fill, GetPen(), RenderGeometry);
-
-        if (Opacity != null)
-        {
-            using (dc.PushOpacity(Opacity.Value))
-            {
-                DoRender();
-            }
-        }
-        else
-        {
-            DoRender();
-        }
-    }
-
-    private IPen GetPen()
-    {
-        var stroke = this.GetPropertyValue<IStrokeSetter, IBrush>();
-        var strokeWidth = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
-        return new Pen(stroke, strokeWidth ?? 0);
     }
 }

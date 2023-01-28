@@ -31,9 +31,9 @@ namespace Nlnet.Avalonia.Svg
         public bool RenderBySelf { get; }
 
         /// <summary>
-        /// Build render geometry from origin geometry.
+        /// Apply transforms.
         /// </summary>
-        public void BuildRenderGeometry();
+        public void ApplyTransforms();
 
         /// <summary>
         /// Render the <see cref="ISvgRenderable"/>.
