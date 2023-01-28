@@ -2,7 +2,7 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.Transform), SvgTypes.Transform, false)]
+[SetterGenerator(nameof(SvgProperties.Transform), SvgTypes.Transform, SvgDefaultValues.Null, false)]
 public class TransformSetter : AbstractTransformSetter
 {
     public override void Set(ISvgTag tag)

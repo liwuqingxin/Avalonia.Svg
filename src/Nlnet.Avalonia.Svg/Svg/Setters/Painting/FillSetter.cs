@@ -2,7 +2,7 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.Fill), SvgTypes.Brush)]
+[SetterGenerator(nameof(SvgProperties.Fill), SvgTypes.Brush, SvgDefaultValues.BrushBlack)]
 public class FillSetter : AbstractBrushSetter
 {
     public override void Set(ISvgTag tag)

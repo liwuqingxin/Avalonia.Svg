@@ -3,7 +3,7 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.X1), SvgTypes.Double, false)]
+[SetterGenerator(nameof(SvgProperties.X1), SvgTypes.Double, SvgDefaultValues.Zero, false)]
 public class X1Setter : AbstractDoubleSetter
 {
     public override void Set(ISvgTag tag)
@@ -17,7 +17,7 @@ public class X1Setter : AbstractDoubleSetter
     }
 }
 
-[SetterGenerator(nameof(SvgProperties.Y1), SvgTypes.Double, false)]
+[SetterGenerator(nameof(SvgProperties.Y1), SvgTypes.Double, SvgDefaultValues.Zero, false)]
 public class Y1Setter : AbstractDoubleSetter
 {
     public override void Set(ISvgTag tag)
@@ -31,7 +31,7 @@ public class Y1Setter : AbstractDoubleSetter
     }
 }
 
-[SetterGenerator(nameof(SvgProperties.X2), SvgTypes.Double, false)]
+[SetterGenerator(nameof(SvgProperties.X2), SvgTypes.Double, SvgDefaultValues.Zero, false)]
 public class X2Setter : AbstractDoubleSetter
 {
     public override void Set(ISvgTag tag)
@@ -45,7 +45,7 @@ public class X2Setter : AbstractDoubleSetter
     }
 }
 
-[SetterGenerator(nameof(SvgProperties.Y2), SvgTypes.Double, false)]
+[SetterGenerator(nameof(SvgProperties.Y2), SvgTypes.Double, SvgDefaultValues.Zero, false)]
 public class Y2Setter : AbstractDoubleSetter
 {
     public override void Set(ISvgTag tag)

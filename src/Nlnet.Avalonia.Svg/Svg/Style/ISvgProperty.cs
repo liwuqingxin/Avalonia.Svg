@@ -9,5 +9,7 @@
         public bool CanInherit { get; }
 
         public object? Value { get; }
+
+        public object? DefaultValue { get; }
     }
 }

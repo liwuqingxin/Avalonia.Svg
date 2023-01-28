@@ -104,7 +104,11 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
                 return value;
             }
 
-            return owner.CanInherit ? this.Parent?.GetPropertyValue<TPropertyOwner, TValue>() : null;
+            var defaultValue = owner.DefaultValue as TValue;
+
+            return owner.CanInherit
+                ? this.Parent?.GetPropertyValue<TPropertyOwner, TValue>() ?? defaultValue
+                : defaultValue;
 
         }
         else
@@ -125,7 +129,11 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
                 return value;
             }
 
-            return owner.CanInherit ? this.Parent?.GetPropertyStructValue<TPropertyOwner, TValue>() : null;
+            var defaultValue = (TValue?)owner.DefaultValue;
+
+            return owner.CanInherit 
+                ? this.Parent?.GetPropertyStructValue<TPropertyOwner, TValue>() ?? defaultValue
+                : defaultValue;
 
         }
         else

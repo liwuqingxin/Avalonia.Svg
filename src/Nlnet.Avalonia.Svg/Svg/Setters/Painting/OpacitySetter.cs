@@ -2,7 +2,7 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.Opacity), SvgTypes.Double, false)]
+[SetterGenerator(nameof(SvgProperties.Opacity), SvgTypes.Double, SvgDefaultValues.Zero, false)]
 public class OpacitySetter : AbstractDoubleSetter
 {
     public override void Set(ISvgTag tag)

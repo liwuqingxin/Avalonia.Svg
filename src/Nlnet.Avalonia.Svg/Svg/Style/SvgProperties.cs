@@ -22,6 +22,16 @@ namespace Nlnet.Avalonia.Svg
     }
 
     /// <summary>
+    /// Svg property default value strings.
+    /// </summary>
+    public static class SvgDefaultValues
+    {
+        public const string Null = "null";
+        public const string Zero = "0d";
+        public const string BrushBlack = "Brushes.Black";
+    }
+
+    /// <summary>
     /// All svg property definitions.
     /// </summary>
     public static class SvgProperties

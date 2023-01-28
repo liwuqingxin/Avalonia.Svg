@@ -52,8 +52,5 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Nlnet.Avalonia.Svg.CompileGenerator\Nlnet.Avalonia.Svg.CompileGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Svg\Setters\新文件夹\--Visual\" />
-	</ItemGroup>
 
 </Project>

@@ -24,3 +24,5 @@
 /// For any <color> value, all color syntaxes defined in CSS Color Module Level 3 must be
 /// supported, including rgb(), rgba(), hsl(), hsla(), the extended color keywords and the
 /// currentColor value.
+///
+/// TODO It's important in the 'ANNOTATION 4' in https://www.w3.org/TR/SVG2/painting.html#SpecifyingPaint;

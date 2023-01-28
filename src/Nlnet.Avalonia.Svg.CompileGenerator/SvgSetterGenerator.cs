@@ -49,14 +49,17 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
 
         public string PropertyTypeName { get; set; }
 
+        public string DefaultValue { get; set; }
+
         public bool IsNullable { get; set; }
 
         public string ParserMethodName { get; set; }
 
-        public SetterGeneratorAttribute(string propertyName, string propertyTypeName, bool isNullable = true)
+        public SetterGeneratorAttribute(string propertyName, string propertyTypeName, string defaultValue, bool isNullable = true)
         {
             PropertyName = propertyName;
             PropertyTypeName = propertyTypeName;
+            DefaultValue = defaultValue;
             IsNullable = isNullable;
         }
     }
@@ -133,7 +136,8 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
             var namespaceName    = classSymbol.ContainingNamespace.ToDisplayString();
             var property         = attributeData.ConstructorArguments[0].Value?.ToString();
             var propertyType     = attributeData.ConstructorArguments[1].Value?.ToString();
-            var isNullable       = attributeData.ConstructorArguments[2].Value?.ToString();
+            var defaultValue     = attributeData.ConstructorArguments[2].Value?.ToString();
+            var isNullable       = attributeData.ConstructorArguments[3].Value?.ToString();
             var parserMethodName = propertyType;
             if (attributeData.NamedArguments.Length > 0)
             {
@@ -175,6 +179,8 @@ namespace {namespaceName}
         public {propertyType}? {property} {{ get; set; }}
 
         object? ISvgProperty<I{classSymbol.Name}>.Value => {property};
+
+        object? ISvgProperty<I{classSymbol.Name}>.DefaultValue => {defaultValue};
 
         bool ISvgProperty<I{classSymbol.Name}>.CanInherit => true;
 
