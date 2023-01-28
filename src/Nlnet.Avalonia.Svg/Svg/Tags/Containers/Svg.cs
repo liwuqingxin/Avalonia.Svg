@@ -38,7 +38,7 @@ public class Svg : SvgRenderable, ISvg, ISvgContext, ISvgContainer, ISvgRenderab
         set;
     }
 
-    private Dictionary<string, ISvgClassStyle> Styles { get; } = new();
+    private Dictionary<string, ISvgStyle> Styles { get; } = new();
 
     private Dictionary<string, IBrush> Brushes { get; } = new();
 
@@ -48,7 +48,7 @@ public class Svg : SvgRenderable, ISvg, ISvgContext, ISvgContainer, ISvgRenderab
 
     #region ISvgContext
 
-    IReadOnlyDictionary<string, ISvgClassStyle> ISvgContext.Styles => this.Styles;
+    IReadOnlyDictionary<string, ISvgStyle> ISvgContext.Styles => this.Styles;
 
     IReadOnlyDictionary<string, IBrush> ISvgContext.Brushes => this.Brushes;
 

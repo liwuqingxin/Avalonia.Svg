@@ -5,7 +5,7 @@ namespace Nlnet.Avalonia.Svg;
 /// <summary>
 /// Abstract base setter with ability to set deferred value string.
 /// </summary>
-public abstract class AbstractDeferredSetter : ISvgStyleSetter
+public abstract class AbstractDeferredSetter : ISvgSetter
 {
     protected string? DeferredValueString;
 

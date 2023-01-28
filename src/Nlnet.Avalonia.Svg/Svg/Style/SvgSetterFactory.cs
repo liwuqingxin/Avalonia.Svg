@@ -8,23 +8,23 @@ namespace Nlnet.Avalonia.Svg;
 /// <summary>
 /// Svg static factory for building svg style setter.
 /// </summary>
-public static class SvgStyleSetterFactory
+public static class SvgSetterFactory
 {
-    internal static readonly Dictionary<string, ISvgStyleSetterFactory> SvgSetterFactories;
+    internal static readonly Dictionary<string, ISvgSetterFactory> SvgSetterFactories;
 
     /// <summary>
     /// Pre-load all svg style setter factories.
     /// </summary>
-    static SvgStyleSetterFactory()
+    static SvgSetterFactory()
     {
         // TODO We can create the factories in need to save memory and initialization time.
         // Also we can pre-create the most popular factories to improve performance.
 
-        SvgSetterFactories = typeof(SvgStyleSetterFactory).Assembly.GetTypes()
-            .Where(t => t.IsAssignableTo(typeof(ISvgStyleSetterFactory)))
+        SvgSetterFactories = typeof(SvgSetterFactory).Assembly.GetTypes()
+            .Where(t => t.IsAssignableTo(typeof(ISvgSetterFactory)))
             .Select(t => (t.GetCustomAttribute<NameAttribute>(), t))
             .Where(tuple => tuple.Item1 != null)
-            .Select(tuple => (tuple.Item1, Activator.CreateInstance(tuple.t) as ISvgStyleSetterFactory))
+            .Select(tuple => (tuple.Item1, Activator.CreateInstance(tuple.t) as ISvgSetterFactory))
             .ToDictionary(tuple => tuple.Item1!.Name, tuple => tuple.Item2)!;
     }
 
@@ -33,7 +33,7 @@ public static class SvgStyleSetterFactory
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static ISvgStyleSetterFactory? GetSetterFactory(string name)
+    public static ISvgSetterFactory? GetSetterFactory(string name)
     {
         if (SvgSetterFactories.TryGetValue(name, out var factory))
         {

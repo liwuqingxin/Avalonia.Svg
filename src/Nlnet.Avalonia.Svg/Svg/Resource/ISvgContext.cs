@@ -11,7 +11,7 @@ public interface ISvgContext
     /// <summary>
     /// All styles.
     /// </summary>
-    public IReadOnlyDictionary<string, ISvgClassStyle> Styles { get; }
+    public IReadOnlyDictionary<string, ISvgStyle> Styles { get; }
 
     /// <summary>
     /// All brushes.

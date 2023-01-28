@@ -1,13 +1,13 @@
 ﻿namespace Nlnet.Avalonia.Svg;
 
 /// <summary>
-/// Factory for <see cref="ISvgStyleSetter"/>
+/// Factory for <see cref="ISvgSetter"/>
 /// </summary>
-public interface ISvgStyleSetterFactory
+public interface ISvgSetterFactory
 {
     /// <summary>
     /// Create a style setter instance.
     /// </summary>
     /// <returns></returns>
-    public ISvgStyleSetter CreateSetter();
+    public ISvgSetter CreateSetter();
 }

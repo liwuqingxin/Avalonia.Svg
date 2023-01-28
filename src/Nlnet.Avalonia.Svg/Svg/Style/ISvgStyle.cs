@@ -5,7 +5,7 @@ namespace Nlnet.Avalonia.Svg;
 /// <summary>
 /// Svg class style definition.
 /// </summary>
-public interface ISvgClassStyle
+public interface ISvgStyle
 {
     /// <summary>
     /// Class of this style.
@@ -15,7 +15,7 @@ public interface ISvgClassStyle
     /// <summary>
     /// Setters of this style.
     /// </summary>
-    public List<ISvgStyleSetter> Setters { get; set; }
+    public List<ISvgSetter> Setters { get; set; }
 
     /// <summary>
     /// Apply this style to <see cref="tag"/>.

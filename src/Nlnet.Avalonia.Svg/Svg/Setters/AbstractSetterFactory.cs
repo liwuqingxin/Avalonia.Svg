@@ -4,9 +4,9 @@
 /// Abstract base setter factory.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public abstract class AbstractSetterFactory<T> : ISvgStyleSetterFactory where T : ISvgStyleSetter, new()
+public abstract class AbstractSetterFactory<T> : ISvgSetterFactory where T : ISvgSetter, new()
 {
-    public ISvgStyleSetter CreateSetter()
+    public ISvgSetter CreateSetter()
     {
         return new T();
     }

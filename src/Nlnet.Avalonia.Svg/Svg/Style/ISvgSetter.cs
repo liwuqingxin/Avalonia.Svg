@@ -3,7 +3,7 @@
 /// <summary>
 /// Svg style setter.
 /// </summary>
-public interface ISvgStyleSetter
+public interface ISvgSetter
 {
     /// <summary>
     /// Set value to <see cref="tag"/>.

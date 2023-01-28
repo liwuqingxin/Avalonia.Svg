@@ -11,5 +11,5 @@ public interface ISvgStyleProvider
     /// Provide a list of svg style.
     /// </summary>
     /// <returns></returns>
-    IEnumerable<ISvgClassStyle> GetStyles();
+    IEnumerable<ISvgStyle> GetStyles();
 }

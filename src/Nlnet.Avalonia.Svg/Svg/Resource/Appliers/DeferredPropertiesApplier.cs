@@ -14,7 +14,7 @@ public class DeferredPropertiesApplier : ISvgContextApplier
 
         foreach (var pair in tag.DeferredProperties)
         {
-            var setter = SvgStyleSetterFactory.GetSetterFactory(pair.Key)?.CreateSetter();
+            var setter = SvgSetterFactory.GetSetterFactory(pair.Key)?.CreateSetter();
             if (setter == null)
             {
                 continue;

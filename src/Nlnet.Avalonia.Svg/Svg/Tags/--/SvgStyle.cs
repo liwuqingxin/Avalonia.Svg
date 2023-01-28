@@ -26,19 +26,19 @@ public class SvgStyleFactory : ISvgTagFactory
 
 public class SvgStyle : SvgTagBase, ISvgStyleProvider
 {
-    private IList<ISvgClassStyle>? _styles;
+    private IList<ISvgStyle>? _styles;
 
     public string? ContentType { get; set; }
     public string? Content     { get; set; }
 
-    IEnumerable<ISvgClassStyle> ISvgStyleProvider.GetStyles()
+    IEnumerable<ISvgStyle> ISvgStyleProvider.GetStyles()
     {
         if (_styles != null)
         {
             return _styles;
         }
 
-        _styles = new List<ISvgClassStyle>();
+        _styles = new List<ISvgStyle>();
 
         if (string.IsNullOrWhiteSpace(Content))
         {
@@ -71,14 +71,14 @@ public class SvgStyle : SvgTagBase, ISvgStyleProvider
         return _styles;
     }
 
-    private static ISvgClassStyle? GetStyleFromStyleString(string @class, string styleString)
+    private static ISvgStyle? GetStyleFromStyleString(string @class, string styleString)
     {
         if (string.IsNullOrWhiteSpace(styleString))
         {
             return null;
         }
 
-        var setters = new List<ISvgStyleSetter>();
+        var setters = new List<ISvgSetter>();
         var token = new SafeStringTokenizer(styleString, ';');
         while (true)
         {
@@ -87,7 +87,7 @@ public class SvgStyle : SvgTagBase, ISvgStyleProvider
                 break;
             }
             var name    = setterString![..setterString!.IndexOf(':')];
-            var factory = SvgStyleSetterFactory.GetSetterFactory(name);
+            var factory = SvgSetterFactory.GetSetterFactory(name);
             if (factory == null)
             {
                 continue;
@@ -110,7 +110,7 @@ public class SvgStyle : SvgTagBase, ISvgStyleProvider
             return null;
         }
 
-        ISvgClassStyle style = new SvgClassStyle(@class, setters);
+        ISvgStyle style = new SvgStyleInstance(@class, setters);
         return style;
     }
 }

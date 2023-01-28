@@ -34,7 +34,7 @@ namespace Nlnet.Avalonia.Svg.Test.Tests
                     Debug.WriteLine($"==={pair}");
                 }
 
-                foreach (var pair in SvgStyleSetterFactory.SvgSetterFactories)
+                foreach (var pair in SvgSetterFactory.SvgSetterFactories)
                 {
                     Debug.WriteLine($"--- {pair}");
                 }
