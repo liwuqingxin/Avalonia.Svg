@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
@@ -21,6 +20,6 @@ public class SvgPolyline : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 
     public override void OnPropertiesFetched()
     {
-        OriginalGeometry = Points == null ? new PolylineGeometry() : new PolylineGeometry(Points, true);
+        OriginalGeometry = Points == null ? new PolylineGeometry() : new PolylineGeometry(Points, false);
     }
 }
