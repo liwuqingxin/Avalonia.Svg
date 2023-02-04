@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Nlnet.Avalonia.Svg.Utils;
 
 namespace Nlnet.Avalonia.Svg
@@ -73,7 +74,8 @@ namespace Nlnet.Avalonia.Svg
                 return Brushes.Transparent;
             }
 
-            return Brush.Parse(valueString);
+            //return Brush.Parse(valueString);
+            return new ImmutableColorSolidColorBrush(Color.Parse(valueString));
         }
 
         /// <summary>

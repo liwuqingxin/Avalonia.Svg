@@ -10,6 +10,7 @@ public interface ISvgShape :
     IFillRuleSetter,
     IFillOpacitySetter,
     IStrokeSetter,
+    IStrokeOpacitySetter,
     IStrokeWidthSetter
 {
 

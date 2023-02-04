@@ -1,6 +1,7 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 
 namespace Nlnet.Avalonia.Svg
 {
@@ -23,6 +24,8 @@ namespace Nlnet.Avalonia.Svg
         double? IFillOpacitySetter.FillOpacity { get; set; }
 
         IBrush? IStrokeSetter.Stroke { get; set; }
+
+        double? IStrokeOpacitySetter.StrokeOpacity { get; set; }
 
         double? IStrokeWidthSetter.StrokeWidth { get; set; }
 
@@ -57,11 +60,20 @@ namespace Nlnet.Avalonia.Svg
             var fill        = this.GetPropertyValue<IFillSetter, IBrush>();
             var fillRule    = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
             var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
-            var opacity     = Opacity ?? 1d * fillOpacity;
+
+            switch (fill)
+            {
+                case Brush brush:
+                    brush.Opacity = fillOpacity;
+                    break;
+                case ImmutableColorSolidColorBrush solidColorBrush:
+                    solidColorBrush.Opacity = fillOpacity;
+                    break;
+            }
 
             RenderGeometry.FillRule = fillRule;
 
-            using (dc.PushOpacity(opacity))
+            using (dc.PushOpacity(Opacity ?? 1d))
             {
                 dc.DrawGeometry(fill, GetPen(), RenderGeometry);
             }
@@ -69,8 +81,21 @@ namespace Nlnet.Avalonia.Svg
 
         private IPen GetPen()
         {
-            var stroke      = this.GetPropertyValue<IStrokeSetter, IBrush>();
-            var strokeWidth = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
+            var stroke        = this.GetPropertyValue<IStrokeSetter, IBrush>();
+            var strokeOpacity = this.GetPropertyStructValue<IStrokeOpacitySetter, double>();
+            var strokeWidth   = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
+
+
+            switch (stroke)
+            {
+                case Brush brush:
+                    brush.Opacity = strokeOpacity;
+                    break;
+                case ImmutableColorSolidColorBrush solidColorBrush:
+                    solidColorBrush.Opacity = strokeOpacity;
+                    break;
+            }
+
             return new Pen(stroke, strokeWidth);
         }
     }
