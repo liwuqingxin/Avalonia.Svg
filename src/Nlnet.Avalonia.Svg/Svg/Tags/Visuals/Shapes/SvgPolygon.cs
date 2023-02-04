@@ -20,6 +20,9 @@ public class SvgPolygon : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 
     public override void OnPropertiesFetched()
     {
-        OriginalGeometry = Points == null ? new PolylineGeometry() : new PolylineGeometry(Points, true);
+        if (Points != null)
+        {
+            OriginalGeometry = new PolylineGeometry(Points, true);
+        }
     }
 }

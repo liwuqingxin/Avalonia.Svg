@@ -6,6 +6,7 @@
       marker: url(#diamond);
     }
   </style>
+  <path d="M 50,0 75,100 0,40 100,40 25,100 50,0z" fill="yellow" stroke="blue" fill-rule="evenodd"/>
   <path d="M 10,50 v -20 h 40 v -20" stroke="red"/>
   <path d="M 30,70 v -20 h 40 v -20" stroke="green"/>
   <path d="M 50,90 v -20 h 40 v -20" stroke="blue"/>

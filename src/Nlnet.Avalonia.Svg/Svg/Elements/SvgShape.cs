@@ -3,10 +3,7 @@ using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg
 {
-    public class SvgShape : SvgRenderable, ISvgShape,
-        IFillSetter,
-        IStrokeSetter,
-        IStrokeWidthSetter
+    public class SvgShape : SvgRenderable, ISvgShape
     {
         /// <summary>
         /// The original geometry that the svg describes.
@@ -16,9 +13,11 @@ namespace Nlnet.Avalonia.Svg
         /// <summary>
         /// The geometry to render, which applied some transforms.
         /// </summary>
-        protected Geometry? RenderGeometry;
+        protected GeometryGroup? RenderGeometry;
 
         IBrush? IFillSetter.Fill { get; set; }
+
+        FillRule? IFillRuleSetter.FillRule { get; set; }
 
         IBrush? IStrokeSetter.Stroke { get; set; }
 
@@ -36,7 +35,8 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            RenderGeometry = OriginalGeometry.Clone();
+            RenderGeometry = new GeometryGroup();
+            RenderGeometry.Children.Add(OriginalGeometry);
             RenderGeometry.Transform = Transform;
         }
 
@@ -51,8 +51,9 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            var fill = this.GetPropertyValue<IFillSetter, IBrush>();
-
+            var fill     = this.GetPropertyValue<IFillSetter, IBrush>();
+            var fillRule = this.GetPropertyStructValue<IFillRuleSetter, FillRule>() ?? FillRule.NonZero;
+            RenderGeometry.FillRule = fillRule;
             void DoRender() => dc.DrawGeometry(fill, GetPen(), RenderGeometry);
 
             if (Opacity != null)

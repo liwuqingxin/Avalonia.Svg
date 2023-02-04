@@ -20,6 +20,9 @@ public class SvgPath : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 
     public override void OnPropertiesFetched()
     {
-        OriginalGeometry = Data ?? new PolylineGeometry();
+        if (Data != null)
+        {
+            OriginalGeometry = Data;
+        }
     }
 }

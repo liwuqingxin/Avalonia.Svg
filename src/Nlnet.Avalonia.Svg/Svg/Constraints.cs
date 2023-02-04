@@ -1,4 +1,6 @@
-﻿namespace Nlnet.Avalonia.Svg;
+﻿using Avalonia.Media;
+
+namespace Nlnet.Avalonia.Svg;
 // ReSharper disable InconsistentNaming
 // ReSharper disable IdentifierTypo
 
@@ -7,15 +9,16 @@
 /// </summary>
 public static class SvgTypes
 {
-    public const string Double = "double";
-    public const string Bool = "bool";
-    public const string Int = "int";
-    public const string String = "string";
-    public const string Brush = nameof(global::Avalonia.Media.IBrush);
+    public const string Double    = "double";
+    public const string Bool      = "bool";
+    public const string Int       = "int";
+    public const string String    = "string";
+    public const string Brush     = nameof(global::Avalonia.Media.IBrush);
     public const string Thickness = nameof(global::Avalonia.Thickness);
-    public const string Geometry = nameof(global::Avalonia.Media.Geometry);
+    public const string Geometry  = nameof(global::Avalonia.Media.Geometry);
     public const string PointList = nameof(global::Nlnet.Avalonia.Svg.PointList);
     public const string Transform = nameof(global::Avalonia.Media.Transform);
+    public const string FillRule  = nameof(global::Avalonia.Media.FillRule);
 }
 
 /// <summary>
@@ -23,9 +26,10 @@ public static class SvgTypes
 /// </summary>
 public static class SvgDefaultValues
 {
-    public const string Null = "null";
-    public const string Zero = "0d";
-    public const string BrushBlack = "Brushes.Black";
+    public const string Null            = "null";
+    public const string Zero            = "0d";
+    public const string BrushBlack      = "Brushes.Black";
+    public const string FillRuleNonZero = "global::Avalonia.Media.FillRule.NonZero";
 }
 
 /// <summary>
@@ -45,6 +49,7 @@ public static class SvgProperties
     public const string Opacity = "opacity";
     public const string Points = "points";
     public const string Fill = "fill";
+    public const string FillRule = "fill-rule";
     public const string Stroke = "stroke";
     public const string StrokeWidth = "stroke-width";
     public const string StopOpacity = "stop-opacity";

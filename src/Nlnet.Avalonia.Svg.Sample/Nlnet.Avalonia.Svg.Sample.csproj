@@ -29,4 +29,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Nlnet.Avalonia.Svg\Nlnet.Avalonia.Svg.csproj" />
 	</ItemGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="copy $(SolutionDir)\..\res\*.* $(SolutionDir)\..\bin\Debug\net6.0\resources\svg\*.* " />
+	</Target>
 </Project>

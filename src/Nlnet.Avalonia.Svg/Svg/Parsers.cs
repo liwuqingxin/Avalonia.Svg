@@ -13,7 +13,7 @@ namespace Nlnet.Avalonia.Svg
     internal static class Parsers
     {
         /// <summary>
-        /// Try convert value string to <see cref="string"/>.
+        /// Try to convert value string to <see cref="string"/>.
         /// </summary>
         /// <param name="valueString"></param>
         /// <param name="result"></param>
@@ -42,7 +42,7 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
-        /// Try convert value string to <see cref="double"/>.
+        /// Try to convert value string to <see cref="double"/>.
         /// </summary>
         /// <param name="valueString"></param>
         /// <param name="value"></param>
@@ -77,7 +77,7 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
-        /// Try convert value string to <see cref="IBrush"/>.
+        /// Try to convert value string to <see cref="IBrush"/>.
         /// </summary>
         /// <param name="valueString"></param>
         /// <param name="brush"></param>
@@ -107,7 +107,7 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
-        /// Try convert value string to <see cref="Thickness"/>.
+        /// Try to convert value string to <see cref="Thickness"/>.
         /// </summary>
         /// <param name="valueString"></param>
         /// <param name="thickness"></param>
@@ -137,7 +137,7 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
-        /// Try convert value string to <see cref="Geometry"/>.
+        /// Try to convert value string to <see cref="Geometry"/>.
         /// </summary>
         /// <param name="valueString"></param>
         /// <param name="geometry"></param>
@@ -193,7 +193,7 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
-        /// Try convert value string to <see cref="PointList"/>.
+        /// Try to convert value string to <see cref="PointList"/>.
         /// </summary>
         /// <param name="valueString"></param>
         /// <param name="points"></param>
@@ -293,7 +293,7 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
-        /// Try convert value string to <see cref="Transform"/>.
+        /// Try to convert value string to <see cref="Transform"/>.
         /// </summary>
         /// <param name="valueString"></param>
         /// <param name="transform"></param>
@@ -310,6 +310,48 @@ namespace Nlnet.Avalonia.Svg
                 transform = null;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Convert value string to <see cref="FillRule"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static FillRule ToFillRule(this string valueString)
+        {
+            if (string.Equals(valueString, FillRule.NonZero.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                return FillRule.NonZero;
+            }
+            else if (string.Equals(valueString, FillRule.EvenOdd.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                return FillRule.EvenOdd;
+            }
+
+            return FillRule.NonZero;
+        }
+
+        /// <summary>
+        /// Try to convert value string to <see cref="FillRule"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="fillRule"></param>
+        /// <returns></returns>
+        public static bool TryToFillRule(this string valueString, out FillRule? fillRule)
+        {
+            if (string.Equals(valueString, FillRule.NonZero.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                fillRule = FillRule.NonZero;
+                return true;
+            }
+            else if (string.Equals(valueString, FillRule.EvenOdd.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                fillRule = FillRule.EvenOdd;
+                return true;
+            }
+
+            fillRule = FillRule.NonZero;
+            return false;
         }
     }
 }

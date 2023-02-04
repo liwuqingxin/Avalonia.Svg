@@ -29,6 +29,9 @@ public class SvgRect : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 
     public override void OnPropertiesFetched()
     {
-        OriginalGeometry = new RectangleGeometry(new Rect(X ?? 0, Y ?? 0, Width ?? 0, Height ?? 0));
+        if (X != null && Y != null && Width != null && Height != null)
+        {
+            OriginalGeometry = new RectangleGeometry(new Rect(X.Value, Y.Value, Width.Value, Height.Value));
+        }
     }
 }
