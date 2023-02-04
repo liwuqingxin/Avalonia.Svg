@@ -24,16 +24,20 @@
                 </Viewbox>
                 <ItemsControl Margin="20" Items="{Binding Path=SvgList}">
                     <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="system:String">
-                            <Border Margin="5"
-                                    BorderBrush="Red"
-                                    BorderThickness="1">
-                                <Viewbox Width="256"
-                                         Height="256"
-                                         Stretch="Uniform">
-                                    <controls:Icon IconSvgData="{Binding}" ShowRenderBounds="True" />
-                                </Viewbox>
-                            </Border>
+                        <DataTemplate DataType="sample:SvgFileItem">
+                            <Grid RowDefinitions="Auto,*">
+                                <TextBlock Text="{Binding Path=SvgFileName}" />
+                                <Border Grid.Row="1"
+                                        Margin="5"
+                                        BorderBrush="Red"
+                                        BorderThickness="1">
+                                    <Viewbox Width="256"
+                                             Height="256"
+                                             Stretch="Uniform">
+                                        <controls:Icon IconSvgData="{Binding Path=SvgData}" ShowRenderBounds="True" />
+                                    </Viewbox>
+                                </Border>
+                            </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

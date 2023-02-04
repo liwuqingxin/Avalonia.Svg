@@ -5,12 +5,24 @@ using JetBrains.Annotations;
 
 namespace Nlnet.Avalonia.Svg.Sample;
 
+public class SvgFileItem
+{
+    public SvgFileItem(string svgFileName, string svgData)
+    {
+        SvgFileName = svgFileName;
+        SvgData     = svgData;
+    }
+
+    public string SvgFileName { get; set; }
+    public string SvgData     { get; set; }
+}
+
 public sealed class MainWindowViewModel : INotifyPropertyChanged
 {
-    private List<string> _svgList = new();
-    private string?      _editableSvgData;
+    private List<SvgFileItem> _svgList = new();
+    private string?           _editableSvgData;
 
-    public List<string> SvgList
+    public List<SvgFileItem> SvgList
     {
         get => _svgList;
         set

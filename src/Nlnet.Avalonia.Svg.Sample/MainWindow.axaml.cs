@@ -23,7 +23,7 @@ namespace Nlnet.Avalonia.Svg.Sample
             foreach (var file in files)
             {
                 var svgData = File.ReadAllText(file);
-                viewModel.SvgList.Add(svgData);
+                viewModel.SvgList.Add(new SvgFileItem(Path.GetFileName(file), svgData));
             }
 
             this.DataContext = viewModel;
