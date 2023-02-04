@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+
+  <path d="M 20,20 60,20" stroke="black" stroke-width="10" stroke-linecap="butt"/>
+  <path d="M 20,20 60,20" stroke="red" stroke-width="1" />
+  <path d="M 20,30 60,30" stroke="black" stroke-width="10" stroke-linecap="round"/>
+  <path d="M 20,30 60,30" stroke="red" stroke-width="1" />
+  <path d="M 20,40 60,40" stroke="black" stroke-width="10" stroke-linecap="square"/>
+  <path d="M 20,40 60,40" stroke="red" stroke-width="1" />
+
+</svg>

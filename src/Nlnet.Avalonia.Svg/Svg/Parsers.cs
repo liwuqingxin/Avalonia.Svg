@@ -406,5 +406,61 @@ namespace Nlnet.Avalonia.Svg
             penLineCap = PenLineCap.Flat;
             return false;
         }
+
+        /// <summary>
+        /// Convert value string to <see cref="PenLineJoin"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static PenLineJoin ToPenLineJoin(this string valueString)
+        {
+            if (string.Equals(valueString, PenLineJoin.Bevel.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                return PenLineJoin.Bevel;
+            }
+            else if (string.Equals(valueString, PenLineJoin.Miter.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                return PenLineJoin.Miter;
+            }
+            else if (string.Equals(valueString, PenLineJoin.Round.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                return PenLineJoin.Round;
+            }
+
+            return PenLineJoin.Miter;
+        }
+
+        /// <summary>
+        /// Try to convert value string to <see cref="PenLineJoin"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="penLineJoin"></param>
+        /// <returns></returns>
+        public static bool TryToPenLineJoin(this string valueString, out PenLineJoin penLineJoin)
+        {
+            if (string.Equals(valueString, PenLineJoin.Bevel.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                penLineJoin = PenLineJoin.Bevel;
+                return true;
+            }
+            else if (string.Equals(valueString, PenLineJoin.Miter.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                penLineJoin = PenLineJoin.Miter;
+                return true;
+            }
+            else if (string.Equals(valueString, PenLineJoin.Round.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                penLineJoin = PenLineJoin.Round;
+                return true;
+            }
+            else if (string.Equals(valueString, "miter-clip") || string.Equals(valueString, "arcs"))
+            {
+                penLineJoin = PenLineJoin.Miter;
+                return true;
+            }
+
+            penLineJoin = PenLineJoin.Miter;
+            return false;
+        }
     }
 }
