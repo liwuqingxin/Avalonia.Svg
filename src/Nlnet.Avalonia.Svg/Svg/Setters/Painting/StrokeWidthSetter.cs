@@ -2,7 +2,7 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.StrokeWidth), SvgTypes.Double, SvgDefaultValues.Zero, false)]
+[SetterGenerator(nameof(SvgProperties.StrokeWidth), SvgTypes.Double, SvgDefaultValues.One, false)]
 public class StrokeWidthSetter : AbstractDoubleSetter
 {
     public override void Set(ISvgTag tag)

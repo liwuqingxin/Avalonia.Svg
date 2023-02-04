@@ -339,7 +339,7 @@ namespace Nlnet.Avalonia.Svg
         /// <param name="valueString"></param>
         /// <param name="fillRule"></param>
         /// <returns></returns>
-        public static bool TryToFillRule(this string valueString, out FillRule? fillRule)
+        public static bool TryToFillRule(this string valueString, out FillRule fillRule)
         {
             if (string.Equals(valueString, FillRule.NonZero.ToString(), StringComparison.CurrentCultureIgnoreCase))
             {
@@ -353,6 +353,57 @@ namespace Nlnet.Avalonia.Svg
             }
 
             fillRule = FillRule.NonZero;
+            return false;
+        }
+
+        /// <summary>
+        /// Convert value string to <see cref="PenLineCap"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static PenLineCap ToPenLineCap(this string valueString)
+        {
+            if (string.Equals(valueString, "butt", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return PenLineCap.Flat;
+            }
+            else if (string.Equals(valueString, PenLineCap.Square.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                return PenLineCap.Square;
+            }
+            else if (string.Equals(valueString, PenLineCap.Round.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                return PenLineCap.Round;
+            }
+
+            return PenLineCap.Flat;
+        }
+
+        /// <summary>
+        /// Try to convert value string to <see cref="PenLineCap"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="penLineCap"></param>
+        /// <returns></returns>
+        public static bool TryToPenLineCap(this string valueString, out PenLineCap penLineCap)
+        {
+            if (string.Equals(valueString, "butt", StringComparison.CurrentCultureIgnoreCase))
+            {
+                penLineCap = PenLineCap.Flat;
+                return true;
+            }
+            else if (string.Equals(valueString, PenLineCap.Square.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                penLineCap = PenLineCap.Square;
+                return true;
+            }
+            else if (string.Equals(valueString, PenLineCap.Round.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                penLineCap = PenLineCap.Round;
+                return true;
+            }
+
+            penLineCap = PenLineCap.Flat;
             return false;
         }
     }

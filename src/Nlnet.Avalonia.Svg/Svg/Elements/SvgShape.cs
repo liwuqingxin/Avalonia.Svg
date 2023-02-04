@@ -1,7 +1,5 @@
-﻿using System;
-using Avalonia;
+﻿using Avalonia;
 using Avalonia.Media;
-using Avalonia.Media.Immutable;
 
 namespace Nlnet.Avalonia.Svg
 {
@@ -28,6 +26,8 @@ namespace Nlnet.Avalonia.Svg
         double? IStrokeOpacitySetter.StrokeOpacity { get; set; }
 
         double? IStrokeWidthSetter.StrokeWidth { get; set; }
+
+        PenLineCap? IStrokeLineCapSetter.StrokeLineCap { get; set; }
 
         public override Rect Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;
 
@@ -84,7 +84,7 @@ namespace Nlnet.Avalonia.Svg
             var stroke        = this.GetPropertyValue<IStrokeSetter, IBrush>();
             var strokeOpacity = this.GetPropertyStructValue<IStrokeOpacitySetter, double>();
             var strokeWidth   = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
-
+            var lineCap       = this.GetPropertyStructValue<IStrokeLineCapSetter, PenLineCap>();
 
             switch (stroke)
             {
@@ -95,8 +95,8 @@ namespace Nlnet.Avalonia.Svg
                     solidColorBrush.Opacity = strokeOpacity;
                     break;
             }
-
-            return new Pen(stroke, strokeWidth);
+            
+            return new Pen(stroke, strokeWidth, null, lineCap);
         }
     }
 }
