@@ -31,6 +31,8 @@ namespace Nlnet.Avalonia.Svg
 
         PenLineJoin? IStrokeLineJoinSetter.StrokeLineJoin { get; set; }
 
+        double? IStrokeMiterLimitSetter.StrokeMiterLimit { get; set; }
+
         public override Rect Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;
 
         public override Rect RenderBounds => RenderGeometry?.GetRenderBounds(GetPen()) ?? Rect.Empty;
@@ -88,6 +90,7 @@ namespace Nlnet.Avalonia.Svg
             var strokeWidth   = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
             var lineCap       = this.GetPropertyStructValue<IStrokeLineCapSetter, PenLineCap>();
             var lineJoin      = this.GetPropertyStructValue<IStrokeLineJoinSetter, PenLineJoin>();
+            var miterLimit         = this.GetPropertyStructValue<IStrokeMiterLimitSetter, double>();
 
             switch (stroke)
             {
@@ -99,7 +102,7 @@ namespace Nlnet.Avalonia.Svg
                     break;
             }
             
-            return new Pen(stroke, strokeWidth, null, lineCap, lineJoin);
+            return new Pen(stroke, strokeWidth, null, lineCap, lineJoin, miterLimit);
         }
     }
 }
