@@ -55,7 +55,7 @@ public interface ISvgTag
     /// <typeparam name="TPropertyOwner"></typeparam>
     /// <typeparam name="TValue"></typeparam>
     /// <returns></returns>
-    public TValue? GetPropertyStructValue<TPropertyOwner, TValue>()
+    public TValue GetPropertyStructValue<TPropertyOwner, TValue>()
         where TPropertyOwner : class, ISvgProperty<TPropertyOwner>
         where TValue : struct;
 }

@@ -118,7 +118,7 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
         }
     }
 
-    public TValue? GetPropertyStructValue<TPropertyOwner, TValue>()
+    public TValue GetPropertyStructValue<TPropertyOwner, TValue>()
         where TPropertyOwner : class, ISvgProperty<TPropertyOwner>
         where TValue : struct
     {
@@ -129,16 +129,22 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
                 return value;
             }
 
-            var defaultValue = (TValue?)owner.DefaultValue;
+            if (owner.DefaultValue is TValue defaultValue)
+            {
+                if (this.Parent is TPropertyOwner && owner.CanInherit)
+                {
+                    return this.Parent.GetPropertyStructValue<TPropertyOwner, TValue>();
+                }
 
-            return owner.CanInherit 
-                ? this.Parent?.GetPropertyStructValue<TPropertyOwner, TValue>() ?? defaultValue
-                : defaultValue;
-
+                return defaultValue;
+            }
+            else
+            {
+                throw new Exception($"The default value for struct type {typeof(TValue)} should not be null or {owner.DefaultValue}");
+            }
         }
         else
         {
-            return null;
             throw new InvalidOperationException($"Can not find the property implementation of {typeof(TPropertyOwner)} in tag type {this.GetType()}");
         }
     }

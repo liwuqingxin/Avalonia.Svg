@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg
@@ -18,6 +19,8 @@ namespace Nlnet.Avalonia.Svg
         IBrush? IFillSetter.Fill { get; set; }
 
         FillRule? IFillRuleSetter.FillRule { get; set; }
+
+        double? IFillOpacitySetter.FillOpacity { get; set; }
 
         IBrush? IStrokeSetter.Stroke { get; set; }
 
@@ -51,21 +54,16 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            var fill     = this.GetPropertyValue<IFillSetter, IBrush>();
-            var fillRule = this.GetPropertyStructValue<IFillRuleSetter, FillRule>() ?? FillRule.NonZero;
-            RenderGeometry.FillRule = fillRule;
-            void DoRender() => dc.DrawGeometry(fill, GetPen(), RenderGeometry);
+            var fill        = this.GetPropertyValue<IFillSetter, IBrush>();
+            var fillRule    = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
+            var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
+            var opacity     = Opacity ?? 1d * fillOpacity;
 
-            if (Opacity != null)
+            RenderGeometry.FillRule = fillRule;
+
+            using (dc.PushOpacity(opacity))
             {
-                using (dc.PushOpacity(Opacity.Value))
-                {
-                    DoRender();
-                }
-            }
-            else
-            {
-                DoRender();
+                dc.DrawGeometry(fill, GetPen(), RenderGeometry);
             }
         }
 
@@ -73,7 +71,7 @@ namespace Nlnet.Avalonia.Svg
         {
             var stroke      = this.GetPropertyValue<IStrokeSetter, IBrush>();
             var strokeWidth = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
-            return new Pen(stroke, strokeWidth ?? 0);
+            return new Pen(stroke, strokeWidth);
         }
     }
 }
