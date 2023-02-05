@@ -33,6 +33,10 @@ namespace Nlnet.Avalonia.Svg
 
         double? IStrokeMiterLimitSetter.StrokeMiterLimit { get; set; }
 
+        DoubleList? IStrokeDashArraySetter.StrokeDashArray { get; set; }
+
+        double? IStrokeDashOffsetSetter.StrokeDashOffset { get; set; }
+
         public override Rect Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;
 
         public override Rect RenderBounds => RenderGeometry?.GetRenderBounds(GetPen()) ?? Rect.Empty;
@@ -65,15 +69,7 @@ namespace Nlnet.Avalonia.Svg
             var fillRule    = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
             var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
 
-            switch (fill)
-            {
-                case Brush brush:
-                    brush.Opacity = fillOpacity;
-                    break;
-                case ImmutableColorSolidColorBrush solidColorBrush:
-                    solidColorBrush.Opacity = fillOpacity;
-                    break;
-            }
+            ApplyOpacityToBrush(fill, fillOpacity);
 
             RenderGeometry.FillRule = fillRule;
 
@@ -83,26 +79,51 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
+        private IPen? _pen;
+
         private IPen GetPen()
         {
+            if (_pen != null)
+            {
+                return _pen;
+            }
+
             var stroke        = this.GetPropertyValue<IStrokeSetter, IBrush>();
             var strokeOpacity = this.GetPropertyStructValue<IStrokeOpacitySetter, double>();
             var strokeWidth   = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
             var lineCap       = this.GetPropertyStructValue<IStrokeLineCapSetter, PenLineCap>();
             var lineJoin      = this.GetPropertyStructValue<IStrokeLineJoinSetter, PenLineJoin>();
-            var miterLimit         = this.GetPropertyStructValue<IStrokeMiterLimitSetter, double>();
+            var miterLimit    = this.GetPropertyStructValue<IStrokeMiterLimitSetter, double>();
+            var dashArray     = this.GetPropertyValue<IStrokeDashArraySetter, DoubleList>();
+            var dashOffset    = this.GetPropertyStructValue<IStrokeDashOffsetSetter, double>();
 
-            switch (stroke)
+            // In avalonia, the stroke width will effect the dash array. We should eliminate that factor.
+            if (dashArray != null)
             {
-                case Brush brush:
-                    brush.Opacity = strokeOpacity;
+                for (var i = 0; i < dashArray.Count; i++)
+                {
+                    dashArray[i] /= strokeWidth;
+                }
+            }
+
+            var dashStyle = new DashStyle(dashArray, dashOffset);
+
+            ApplyOpacityToBrush(stroke, strokeOpacity);
+
+            return _pen = new Pen(stroke, strokeWidth, dashStyle, lineCap, lineJoin, miterLimit);
+        }
+
+        private static void ApplyOpacityToBrush(IBrush? brush, double opacity)
+        {
+            switch (brush)
+            {
+                case Brush b:
+                    b.Opacity = opacity;
                     break;
                 case ImmutableColorSolidColorBrush solidColorBrush:
-                    solidColorBrush.Opacity = strokeOpacity;
+                    solidColorBrush.Opacity = opacity;
                     break;
             }
-            
-            return new Pen(stroke, strokeWidth, null, lineCap, lineJoin, miterLimit);
         }
     }
 }

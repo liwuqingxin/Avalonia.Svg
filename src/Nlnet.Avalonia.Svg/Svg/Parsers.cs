@@ -462,5 +462,48 @@ namespace Nlnet.Avalonia.Svg
             penLineJoin = PenLineJoin.Miter;
             return false;
         }
+
+        /// <summary>
+        /// Convert value string to <see cref="DoubleList"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static DoubleList ToDoubleList(this string valueString)
+        {
+            var tokenizer = new SafeStringTokenizer(valueString, StringSplitOptions.RemoveEmptyEntries, ' ', ',');
+            var values = tokenizer
+                .GetTokens()
+                .Select(t =>
+                {
+                    if (double.TryParse(t, out var dValue))
+                    {
+                        return (double?) dValue;
+                    }
+                    return null;
+                })
+                .OfType<double>();
+
+            return new DoubleList(values);
+        }
+
+        /// <summary>
+        /// Try to convert value string to <see cref="DoubleList"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="doubleList"></param>
+        /// <returns></returns>
+        public static bool TryToDoubleList(this string valueString, out DoubleList doubleList)
+        {
+            try
+            {
+                doubleList = ToDoubleList(valueString);
+                return true;
+            }
+            catch
+            {
+                doubleList = new DoubleList();
+                return false;
+            }
+        }
     }
 }

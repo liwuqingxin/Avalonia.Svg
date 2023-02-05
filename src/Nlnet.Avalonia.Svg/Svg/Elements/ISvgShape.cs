@@ -14,7 +14,9 @@ public interface ISvgShape :
     IStrokeWidthSetter,
     IStrokeLineCapSetter,
     IStrokeLineJoinSetter,
-    IStrokeMiterLimitSetter
+    IStrokeMiterLimitSetter,
+    IStrokeDashArraySetter,
+    IStrokeDashOffsetSetter
 {
 
 }

@@ -9,18 +9,19 @@ namespace Nlnet.Avalonia.Svg;
 /// </summary>
 public static class SvgTypes
 {
-    public const string Double     = "double";
-    public const string Bool       = "bool";
-    public const string Int        = "int";
-    public const string String     = "string";
-    public const string Brush      = nameof(global::Avalonia.Media.IBrush);
-    public const string Thickness  = nameof(global::Avalonia.Thickness);
-    public const string Geometry   = nameof(global::Avalonia.Media.Geometry);
-    public const string PointList  = nameof(global::Nlnet.Avalonia.Svg.PointList);
-    public const string Transform  = nameof(global::Avalonia.Media.Transform);
-    public const string FillRule   = nameof(global::Avalonia.Media.FillRule);
-    public const string PenLineCap = nameof(global::Avalonia.Media.PenLineCap);
+    public const string Double      = "double";
+    public const string Bool        = "bool";
+    public const string Int         = "int";
+    public const string String      = "string";
+    public const string Brush       = nameof(global::Avalonia.Media.IBrush);
+    public const string Thickness   = nameof(global::Avalonia.Thickness);
+    public const string Geometry    = nameof(global::Avalonia.Media.Geometry);
+    public const string Transform   = nameof(global::Avalonia.Media.Transform);
+    public const string FillRule    = nameof(global::Avalonia.Media.FillRule);
+    public const string PenLineCap  = nameof(global::Avalonia.Media.PenLineCap);
     public const string PenLineJoin = nameof(global::Avalonia.Media.PenLineJoin);
+    public const string PointList   = nameof(global::Nlnet.Avalonia.Svg.PointList);
+    public const string DoubleList  = nameof(global::Nlnet.Avalonia.Svg.DoubleList);
 }
 
 /// <summary>
@@ -64,6 +65,8 @@ public static class SvgProperties
     public const string StrokeLineCap    = "stroke-linecap";
     public const string StrokeLineJoin   = "stroke-linejoin";
     public const string StrokeMiterLimit = "stroke-miterlimit";
+    public const string StrokeDashArray  = "stroke-dasharray";
+    public const string StrokeDashOffset = "stroke-dashoffset";
     public const string StopOpacity      = "stop-opacity";
     public const string StopColor        = "stop-color";
     public const string CX               = "cx";
