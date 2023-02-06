@@ -6,7 +6,6 @@ namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.line))]
 public class SvgLine : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
-    IClassSetter,
     IX1Setter,
     IX2Setter,
     IY1Setter,

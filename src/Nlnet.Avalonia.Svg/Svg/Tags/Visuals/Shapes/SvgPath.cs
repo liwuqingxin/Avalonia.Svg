@@ -5,11 +5,8 @@ namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.path))]
 public class SvgPath : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
-    IClassSetter, 
     IDataSetter
 {
-    public string? Class { get; set; }
-
     public Geometry? Data { get; set; }
 
     public SvgPath()

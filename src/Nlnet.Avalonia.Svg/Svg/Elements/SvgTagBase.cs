@@ -9,6 +9,16 @@ namespace Nlnet.Avalonia.Svg;
 /// </summary>
 public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 {
+    #region Svg tag properties
+
+    string? IClassSetter.Class { get; set; }
+
+    string? IIdSetter.Id { get; set; }
+
+    #endregion
+
+
+
     #region ISvgTag
 
     private string? _tagName;

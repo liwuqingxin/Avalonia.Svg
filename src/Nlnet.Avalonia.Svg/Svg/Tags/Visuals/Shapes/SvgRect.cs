@@ -9,7 +9,6 @@ namespace Nlnet.Avalonia.Svg;
 /// </summary>
 [TagFactoryGenerator(nameof(SvgTags.rect))]
 public class SvgRect : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
-    IIdSetter,
     IXSetter,
     IYSetter,
     IWidthSetter,

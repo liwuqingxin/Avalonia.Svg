@@ -5,7 +5,6 @@ namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.polyline))]
 public class SvgPolyline : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
-    IClassSetter,
     IPointsSetter
 {
     public string? Class { get; set; }

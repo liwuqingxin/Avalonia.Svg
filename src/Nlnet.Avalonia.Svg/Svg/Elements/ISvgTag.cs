@@ -5,7 +5,9 @@ namespace Nlnet.Avalonia.Svg;
 /// <summary>
 /// Standard svg tag definition.
 /// </summary>
-public interface ISvgTag
+public interface ISvgTag : 
+    IClassSetter, 
+    IIdSetter
 {
     /// <summary>
     /// Properties deferred to set value.
