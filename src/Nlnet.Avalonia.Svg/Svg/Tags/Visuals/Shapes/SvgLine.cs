@@ -17,12 +17,6 @@ public class SvgLine : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
     public double? Y1    { get; set; }
     public double? Y2    { get; set; }
 
-    public SvgLine()
-    {
-        this.TryAddApplier(new ClassApplier());
-        this.TryAddApplier(new DeferredPropertiesApplier());
-    }
-
     public override void OnPropertiesFetched()
     {
         if (X1 != null && X2 != null && Y1 != null && Y2 != null)

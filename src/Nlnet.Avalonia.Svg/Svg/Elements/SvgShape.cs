@@ -42,6 +42,13 @@ namespace Nlnet.Avalonia.Svg
         public override Rect RenderBounds => RenderGeometry?.GetRenderBounds(GetPen()) ?? Rect.Empty;
 
 
+        protected SvgShape()
+        {
+            this.TryAddApplier(new ClassApplier());
+            this.TryAddApplier(new DeferredPropertiesApplier());
+        }
+
+
         public override void ApplyTransforms()
         {
             if (OriginalGeometry == null)

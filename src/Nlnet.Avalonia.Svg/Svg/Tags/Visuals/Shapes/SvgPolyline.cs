@@ -11,12 +11,6 @@ public class SvgPolyline : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 
     public PointList? Points { get; set; }
 
-    public SvgPolyline()
-    {
-        this.TryAddApplier(new ClassApplier());
-        this.TryAddApplier(new DeferredPropertiesApplier());
-    }
-
     public override void OnPropertiesFetched()
     {
         if (Points != null)

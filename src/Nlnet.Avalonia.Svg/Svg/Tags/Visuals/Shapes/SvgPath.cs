@@ -9,12 +9,6 @@ public class SvgPath : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 {
     public Geometry? Data { get; set; }
 
-    public SvgPath()
-    {
-        this.TryAddApplier(new ClassApplier());
-        this.TryAddApplier(new DeferredPropertiesApplier());
-    }
-
     public override void OnPropertiesFetched()
     {
         if (Data != null)

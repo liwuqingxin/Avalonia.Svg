@@ -20,12 +20,6 @@ public class SvgRect : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
     public double? Width  { get; set; }
     public double? Height { get; set; }
 
-    public SvgRect()
-    {
-        this.TryAddApplier(new ClassApplier());
-        this.TryAddApplier(new DeferredPropertiesApplier());
-    }
-
     public override void OnPropertiesFetched()
     {
         if (X != null && Y != null && Width != null && Height != null)
