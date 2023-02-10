@@ -10,9 +10,7 @@ namespace Nlnet.Avalonia.Svg
     /// </summary>
     public class LightRadialGradientBrush : 
         LightGradientBrush, 
-        IRadialGradientBrush, 
-        IGradientBrush, 
-        IBrush
+        IRadialGradientBrush
     {
         public RelativePoint Center { get; set; }
 
@@ -51,12 +49,17 @@ namespace Nlnet.Avalonia.Svg
         /// Initializes a new instance of the Avalonia.Media.Immutable.LightRadialGradientBrush class.
         /// </summary>
         /// <param name="source">The brush from which this brush's properties should be copied.</param>
-        public LightRadialGradientBrush(RadialGradientBrush source)
+        public LightRadialGradientBrush(IRadialGradientBrush source)
             : base(source)
         {
             Center = source.Center;
             GradientOrigin = source.GradientOrigin;
             Radius = source.Radius;
+        }
+
+        public override LightBrush Clone()
+        {
+            return new LightRadialGradientBrush(this);
         }
     }
 }

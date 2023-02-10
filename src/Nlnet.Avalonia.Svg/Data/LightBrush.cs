@@ -24,5 +24,11 @@ namespace Nlnet.Avalonia.Svg
         /// Gets the origin of the brushes <see cref="P:Avalonia.Media.IBrush.Transform" />
         /// </summary>
         public RelativePoint TransformOrigin { get; set; }
+
+        /// <summary>
+        /// Clone a <see cref="LightBrush"/>.
+        /// </summary>
+        /// <returns></returns>
+        public abstract LightBrush Clone();
     }
 }

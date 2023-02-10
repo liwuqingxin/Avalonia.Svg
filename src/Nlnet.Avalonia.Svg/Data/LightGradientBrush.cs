@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
@@ -8,7 +9,7 @@ namespace Nlnet.Avalonia.Svg
     /// <summary>
     /// A brush that draws with a gradient.
     /// </summary>
-    public abstract class LightGradientBrush : LightBrush, IGradientBrush, IBrush
+    public abstract class LightGradientBrush : LightBrush, IGradientBrush
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Nlnet.Avalonia.Svg.LightGradientBrush" /> class.
@@ -36,9 +37,9 @@ namespace Nlnet.Avalonia.Svg
         /// Initializes a new instance of the <see cref="T:Nlnet.Avalonia.Svg.LightGradientBrush" /> class.
         /// </summary>
         /// <param name="source">The brush from which this brush's properties should be copied.</param>
-        protected LightGradientBrush(GradientBrush source)
+        protected LightGradientBrush(IGradientBrush source)
         {
-            var gradientStops   = source.GradientStops.ToImmutable();
+            var gradientStops   = source.GradientStops.ToList();
             var opacity         = source.Opacity;
             var transform1      = source.Transform;
             var transform2      = transform1?.ToImmutable();
@@ -53,12 +54,6 @@ namespace Nlnet.Avalonia.Svg
         }
 
         public IReadOnlyList<IGradientStop> GradientStops { get; }
-
-        public double Opacity { get; set; }
-
-        public ITransform? Transform { get; set; }
-
-        public RelativePoint TransformOrigin { get; set; }
 
         public GradientSpreadMethod SpreadMethod { get; set; }
     }

@@ -72,7 +72,7 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            var fill        = this.GetPropertyValue<IFillSetter, LightBrush>();
+            var fill        = this.GetPropertyValue<IFillSetter, LightBrush>()?.Clone();
             var fillRule    = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
             var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
             
@@ -101,7 +101,7 @@ namespace Nlnet.Avalonia.Svg
                 return _pen;
             }
 
-            var stroke        = this.GetPropertyValue<IStrokeSetter, LightBrush>();
+            var stroke        = this.GetPropertyValue<IStrokeSetter, LightBrush>()?.Clone();
             var strokeOpacity = this.GetPropertyStructValue<IStrokeOpacitySetter, double>();
             var strokeWidth   = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
             var lineCap       = this.GetPropertyStructValue<IStrokeLineCapSetter, PenLineCap>();

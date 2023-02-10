@@ -45,8 +45,8 @@ namespace Nlnet.Avalonia.Svg
         /// Initializes a new instance of the <see cref="T:Avalonia.Media.Immutable.LightLineGradientBrush" /> class.
         /// </summary>
         /// <param name="source">The brush from which this brush's properties should be copied.</param>
-        public LightLineGradientBrush(LinearGradientBrush source)
-            : base((GradientBrush) source)
+        public LightLineGradientBrush(ILinearGradientBrush source)
+            : base(source)
         {
             this.StartPoint = source.StartPoint;
             this.EndPoint   = source.EndPoint;
@@ -57,5 +57,10 @@ namespace Nlnet.Avalonia.Svg
 
         /// <inheritdoc />
         public RelativePoint EndPoint { get; set; }
+
+        public override LightBrush Clone()
+        {
+            return new LightLineGradientBrush(this);
+        }
     }
 }

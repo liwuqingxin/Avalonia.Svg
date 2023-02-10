@@ -13,7 +13,6 @@ namespace Nlnet.Avalonia.Svg
     internal class LightSolidColorBrush : 
         LightBrush,
         ISolidColorBrush,
-        IBrush,
         IEquatable<LightSolidColorBrush>
     {
         /// <summary>
@@ -59,21 +58,11 @@ namespace Nlnet.Avalonia.Svg
         /// Gets the color of the brush.
         /// </summary>
         public Color Color { get; }
-
-        /// <summary>
-        /// Gets or sets the opacity of the brush.
-        /// </summary>
-        public double Opacity { get; set; }
-
-        /// <summary>
-        /// Gets the transform of the brush.
-        /// </summary>
-        public ITransform? Transform { get; set; }
-
-        /// <summary>
-        /// Gets the transform origin of the brush
-        /// </summary>
-        public RelativePoint TransformOrigin { get; set; }
+        
+        public override LightBrush Clone()
+        {
+            return new LightSolidColorBrush(this);
+        }
 
         public bool Equals(LightSolidColorBrush? other)
         {
