@@ -10,10 +10,10 @@ namespace Nlnet.Avalonia.Svg
     /// Fills an area with a solid color. The difference between this and <see cref="ImmutableSolidColorBrush"/>
     /// is that some properties of this class can be modified.
     /// </summary>
-    internal class LightSolidColorBrush :
+    internal class LightSolidColorBrush : 
+        LightBrush,
         ISolidColorBrush,
-        IBrush, 
-        ILightBrush,
+        IBrush,
         IEquatable<LightSolidColorBrush>
     {
         /// <summary>

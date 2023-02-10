@@ -63,11 +63,11 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
-        /// Convert value string to <see cref="ILightBrush"/>.
+        /// Convert value string to <see cref="LightBrush"/>.
         /// </summary>
         /// <param name="valueString"></param>
         /// <returns></returns>
-        public static ILightBrush ToILightBrush(this string valueString)
+        public static LightBrush ToLightBrush(this string valueString)
         {
             if (valueString == "none")
             {
@@ -78,16 +78,16 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
-        /// Try to convert value string to <see cref="ILightBrush"/>.
+        /// Try to convert value string to <see cref="LightBrush"/>.
         /// </summary>
         /// <param name="valueString"></param>
         /// <param name="brush"></param>
         /// <returns></returns>
-        public static bool TryToILightBrush(this string valueString, out ILightBrush? brush)
+        public static bool TryToLightBrush(this string valueString, out LightBrush? brush)
         {
             try
             {
-                brush = ToILightBrush(valueString);
+                brush = ToLightBrush(valueString);
                 return true;
             }
             catch

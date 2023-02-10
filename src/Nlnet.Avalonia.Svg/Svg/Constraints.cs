@@ -13,7 +13,7 @@ public static class SvgTypes
     public const string Bool                 = "bool";
     public const string Int                  = "int";
     public const string String               = "string";
-    public const string Brush                = nameof(global::Nlnet.Avalonia.Svg.ILightBrush);
+    public const string Brush                = nameof(global::Nlnet.Avalonia.Svg.LightBrush);
     public const string Thickness            = nameof(global::Avalonia.Thickness);
     public const string Geometry             = nameof(global::Avalonia.Media.Geometry);
     public const string Transform            = nameof(global::Avalonia.Media.Transform);
@@ -34,7 +34,7 @@ public static class SvgDefaultValues
     public const string Zero                    = "0d";
     public const string One                     = "1d";
     public const string Four                    = "4d";
-    public const string BrushBlack              = "Brushes.Black";
+    public const string BrushBlack              = "new LightSolidColorBrush(Colors.Black)";
     public const string BrushTransparent        = "Brushes.Transparent";
     public const string FillRuleNonZero         = "global::Avalonia.Media.FillRule.NonZero";
     public const string PenLineCapNonZero       = "global::Avalonia.Media.PenLineCap.Flat";

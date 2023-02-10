@@ -4,15 +4,15 @@ using Avalonia.Media;
 namespace Nlnet.Avalonia.Svg;
 
 /// <summary>
-/// Abstract base setter for <see cref="ILightBrush"/>.
+/// Abstract base setter for <see cref="LightBrush"/>.
 /// </summary>
 public abstract class AbstractBrushSetter : AbstractDeferredSetter
 {
-    protected ILightBrush? Value;
+    protected LightBrush? Value;
 
     public override void InitializeValue(string setterValue)
     {
-        Value = setterValue.ToILightBrush();
+        Value = setterValue.ToLightBrush();
     }
 
     public override void InitializeDeferredValue(ISvgContext context, string deferredSetterValue)
@@ -27,7 +27,7 @@ public abstract class AbstractBrushSetter : AbstractDeferredSetter
             if (Value == null && match.Groups.Count > 2)
             {
                 var defaultValueString = match.Groups[2].Value;
-                defaultValueString.TryToILightBrush(out Value);
+                defaultValueString.TryToLightBrush(out Value);
             }
         }
     }

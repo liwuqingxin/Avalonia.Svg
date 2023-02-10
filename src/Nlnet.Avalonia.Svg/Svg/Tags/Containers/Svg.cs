@@ -40,7 +40,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
 
     private Dictionary<string, ISvgStyle> Styles { get; } = new();
 
-    private Dictionary<string, ILightBrush> Brushes { get; } = new();
+    private Dictionary<string, LightBrush> Brushes { get; } = new();
 
     private List<ISvgRenderable> Renderables { get; } = new();
 
@@ -50,7 +50,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
 
     IReadOnlyDictionary<string, ISvgStyle> ISvgContext.Styles => this.Styles;
 
-    IReadOnlyDictionary<string, ILightBrush> ISvgContext.Brushes => this.Brushes;
+    IReadOnlyDictionary<string, LightBrush> ISvgContext.Brushes => this.Brushes;
 
     IReadOnlyList<ISvgRenderable> ISvgContext.Renderables => this.Renderables;
 

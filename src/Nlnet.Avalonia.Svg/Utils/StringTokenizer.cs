@@ -156,7 +156,7 @@ namespace Nlnet.Avalonia.Svg.Utils
             return false;
         }
 
-        public bool TryReadBrush(out ILightBrush? brush)
+        public bool TryReadBrush(out LightBrush? brush)
         {
             if (_results.Length <= _index)
             {

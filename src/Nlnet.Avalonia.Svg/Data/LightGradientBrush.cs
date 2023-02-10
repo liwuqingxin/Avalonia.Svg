@@ -8,7 +8,7 @@ namespace Nlnet.Avalonia.Svg
     /// <summary>
     /// A brush that draws with a gradient.
     /// </summary>
-    public abstract class LightGradientBrush : IGradientBrush, IBrush, ILightBrush
+    public abstract class LightGradientBrush : LightBrush, IGradientBrush, IBrush
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Nlnet.Avalonia.Svg.LightGradientBrush" /> class.

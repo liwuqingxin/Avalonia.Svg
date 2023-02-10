@@ -12,12 +12,12 @@ namespace Nlnet.Avalonia.Svg
         IStrokeSetter,
         IStrokeWidthSetter
     {
-        public ILightBrush? Fill
+        public LightBrush? Fill
         {
             get;
             set;
         }
-        public ILightBrush? Stroke
+        public LightBrush? Stroke
         {
             get;
             set;

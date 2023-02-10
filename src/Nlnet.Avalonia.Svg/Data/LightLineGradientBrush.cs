@@ -13,8 +13,7 @@ namespace Nlnet.Avalonia.Svg
         LightGradientBrush,
         ILinearGradientBrush,
         IGradientBrush,
-        IBrush, 
-        ILightBrush
+        IBrush
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Nlnet.Avalonia.Svg.LightLineGradientBrush" /> class.

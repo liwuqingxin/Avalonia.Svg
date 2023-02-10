@@ -15,7 +15,7 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
     IY2Setter,
     IGradientSpreadMethodSetter
 {
-    private ILightBrush? _brush;
+    private LightBrush? _brush;
 
     public double? X1
     {
@@ -49,7 +49,7 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
         set => ((IIdSetter)this).Id = value;
     }
 
-    ILightBrush ISvgBrushProvider.GetBrush()
+    LightBrush ISvgBrushProvider.GetBrush()
     {
         if (_brush != null)
         {

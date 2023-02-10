@@ -16,5 +16,5 @@ public interface ISvgBrushProvider
     /// Brush instance.
     /// </summary>
     /// <returns></returns>
-    public ILightBrush GetBrush();
+    public LightBrush GetBrush();
 }

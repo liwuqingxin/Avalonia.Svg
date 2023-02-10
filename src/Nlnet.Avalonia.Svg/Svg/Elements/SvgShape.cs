@@ -15,13 +15,13 @@ namespace Nlnet.Avalonia.Svg
         /// </summary>
         protected GeometryGroup? RenderGeometry;
 
-        ILightBrush? IFillSetter.Fill { get; set; }
+        LightBrush? IFillSetter.Fill { get; set; }
 
         FillRule? IFillRuleSetter.FillRule { get; set; }
 
         double? IFillOpacitySetter.FillOpacity { get; set; }
 
-        ILightBrush? IStrokeSetter.Stroke { get; set; }
+        LightBrush? IStrokeSetter.Stroke { get; set; }
 
         double? IStrokeOpacitySetter.StrokeOpacity { get; set; }
 
@@ -72,13 +72,17 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            var fill        = this.GetPropertyValue<IFillSetter, ILightBrush>();
+            var fill        = this.GetPropertyValue<IFillSetter, LightBrush>();
             var fillRule    = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
             var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
             
             // TODO 应当计算位置、偏移量来控制色彩的偏移；
             // TODO 相对坐标计算标准不一样
-            ToImmutableBrush(fill, fillOpacity, Transform?.Value ?? Matrix.Identity);
+            if (fill != null)
+            {
+                fill.Opacity   = fillOpacity;
+                //fill.Transform = Transform;
+            }
 
             RenderGeometry.FillRule = fillRule;
 
@@ -86,36 +90,6 @@ namespace Nlnet.Avalonia.Svg
             {
                 dc.DrawGeometry(fill, GetPen(), RenderGeometry);
             }
-        }
-
-        private static ILightBrush? ToImmutableBrush(ILightBrush? brush, double fillOpacity, Matrix transform)
-        {
-            if (brush == null)
-            {
-                return null;
-            }
-
-            switch (brush)
-            {
-                case Brush b:
-                    b.Opacity = fillOpacity;
-                    if (b.Transform == null)
-                    {
-                        b.Transform = new MatrixTransform(transform);
-                    }
-                    break;
-                case LightSolidColorBrush solidColorBrush:
-                    solidColorBrush.Opacity   = fillOpacity;
-                    if (solidColorBrush.Transform == null)
-                    {
-                        solidColorBrush.Transform = new MatrixTransform(transform);
-                    }
-                    break;
-                //default:
-                //    throw new NotSupportedException($"Invalid brush type of {brush.GetType()}");
-            }
-
-            return brush;
         }
 
         private IPen? _pen;
@@ -127,7 +101,7 @@ namespace Nlnet.Avalonia.Svg
                 return _pen;
             }
 
-            var stroke        = this.GetPropertyValue<IStrokeSetter, ILightBrush>();
+            var stroke        = this.GetPropertyValue<IStrokeSetter, LightBrush>();
             var strokeOpacity = this.GetPropertyStructValue<IStrokeOpacitySetter, double>();
             var strokeWidth   = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
             var lineCap       = this.GetPropertyStructValue<IStrokeLineCapSetter, PenLineCap>();
@@ -147,24 +121,12 @@ namespace Nlnet.Avalonia.Svg
 
             var dashStyle = new DashStyle(dashArray, dashOffset);
 
-            ApplyOpacityToBrush(stroke, strokeOpacity);
+            if (stroke != null)
+            {
+                stroke.Opacity = strokeOpacity;
+            }
 
             return _pen = new Pen(stroke, strokeWidth, dashStyle, lineCap, lineJoin, miterLimit);
-        }
-
-        private static void ApplyOpacityToBrush(ILightBrush? brush, double opacity)
-        {
-            switch (brush)
-            {
-                case Brush b:
-                    b.Opacity = opacity;
-                    break;
-                case LightSolidColorBrush solidColorBrush:
-                    solidColorBrush.Opacity = opacity;
-                    break;
-                //default:
-                //    throw new NotSupportedException($"Invalid brush type of {brush?.GetType()}");
-            }
         }
     }
 }
