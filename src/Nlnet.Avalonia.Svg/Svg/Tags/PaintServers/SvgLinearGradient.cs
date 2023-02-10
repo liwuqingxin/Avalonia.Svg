@@ -6,15 +6,15 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.linearGradient))]
-public class SvgLinearGradient : SvgTagBase, ISvgBrushProvider, IIdSetter, IX1Setter, IX2Setter, IY1Setter, IY2Setter
+public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
+    IX1Setter, 
+    IX2Setter, 
+    IY1Setter, 
+    IY2Setter,
+    IGradientSpreadMethodSetter
 {
     private IBrush? _brush;
 
-    public string? Id
-    {
-        get;
-        set;
-    }
     public double? X1
     {
         get;
@@ -35,11 +35,16 @@ public class SvgLinearGradient : SvgTagBase, ISvgBrushProvider, IIdSetter, IX1Se
         get;
         set;
     }
+    public GradientSpreadMethod? GradientSpreadMethod
+    {
+        get;
+        set;
+    }
 
     string? ISvgBrushProvider.Id
     {
-        get => this.Id;
-        set => this.Id = value;
+        get => ((IIdSetter)this).Id;
+        set => ((IIdSetter)this).Id = value;
     }
 
     IBrush ISvgBrushProvider.GetBrush()
@@ -52,9 +57,14 @@ public class SvgLinearGradient : SvgTagBase, ISvgBrushProvider, IIdSetter, IX1Se
         var brush = new LinearGradientBrush
         {
             // ref https://www.w3.org/TR/SVG2/pservers.html#LinearGradientElementX1Attribute
-            StartPoint = new RelativePoint(X1 ?? 0, Y1 ?? 0, RelativeUnit.Relative),
-            EndPoint   = new RelativePoint(X2 ?? 1, Y2 ?? 0, RelativeUnit.Relative)
+            StartPoint = new RelativePoint(X1 ?? 0, Y1 ?? 0, RelativeUnit.Absolute),
+            EndPoint   = new RelativePoint(X2 ?? 1, Y2 ?? 0, RelativeUnit.Absolute)
         };
+        
+        if (GradientSpreadMethod != null)
+        {
+            brush.SpreadMethod = GradientSpreadMethod.Value;
+        }
 
         if (this.Children != null)
         {

@@ -2,6 +2,7 @@
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
+// ReSharper disable NonReadonlyMemberInGetHashCode
 
 namespace Nlnet.Avalonia.Svg
 {
@@ -69,10 +70,7 @@ namespace Nlnet.Avalonia.Svg
         /// <summary>
         /// Gets the transform of the brush.
         /// </summary>
-        public ITransform? Transform
-        {
-            get;
-        }
+        public ITransform? Transform { get; set; }
 
         /// <summary>
         /// Gets the transform origin of the brush
@@ -98,7 +96,7 @@ namespace Nlnet.Avalonia.Svg
             return (object?)other != null && this.Equals(other);
         }
 
-        public override int GetHashCode() => this.Color.GetHashCode() * 397 /*^ this.Opacity.GetHashCode()*/ ^ (this.Transform == null ? 0 : this.Transform.GetHashCode());
+        public override int GetHashCode() => this.Color.GetHashCode() * 397 ^ this.Opacity.GetHashCode() ^ (this.Transform == null ? 0 : this.Transform.GetHashCode());
 
         public static bool operator ==(ImmutableColorSolidColorBrush left, ImmutableColorSolidColorBrush right) => object.Equals((object)left, (object)right);
 

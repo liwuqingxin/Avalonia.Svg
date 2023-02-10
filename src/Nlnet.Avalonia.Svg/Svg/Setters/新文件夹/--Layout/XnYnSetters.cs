@@ -31,7 +31,7 @@ public class Y1Setter : AbstractDoubleSetter
     }
 }
 
-[SetterGenerator(nameof(SvgProperties.X2), SvgTypes.Double, SvgDefaultValues.Zero, false)]
+[SetterGenerator(nameof(SvgProperties.X2), SvgTypes.Double, SvgDefaultValues.One, false)]
 public class X2Setter : AbstractDoubleSetter
 {
     public override void Set(ISvgTag tag)

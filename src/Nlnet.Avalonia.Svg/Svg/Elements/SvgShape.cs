@@ -75,8 +75,11 @@ namespace Nlnet.Avalonia.Svg
             var fill        = this.GetPropertyValue<IFillSetter, IBrush>();
             var fillRule    = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
             var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
-
-            ApplyOpacityToBrush(fill, fillOpacity);
+        
+            // TODO 将各种类型的brush重新实现一遍，支持修改opacity和transform；
+            // TODO 应当计算位置、偏移量来控制色彩的偏移；
+            // TODO 相对坐标计算标准不一样
+            ToImmutableBrush(fill, fillOpacity, Transform?.Value ?? Matrix.Identity);
 
             RenderGeometry.FillRule = fillRule;
 
@@ -84,6 +87,36 @@ namespace Nlnet.Avalonia.Svg
             {
                 dc.DrawGeometry(fill, GetPen(), RenderGeometry);
             }
+        }
+
+        private static IBrush? ToImmutableBrush(IBrush? brush, double fillOpacity, Matrix transform)
+        {
+            if (brush == null)
+            {
+                return null;
+            }
+
+            switch (brush)
+            {
+                case Brush b:
+                    b.Opacity = fillOpacity;
+                    if (b.Transform == null)
+                    {
+                        b.Transform = new MatrixTransform(transform);
+                    }
+                    break;
+                case ImmutableColorSolidColorBrush solidColorBrush:
+                    solidColorBrush.Opacity   = fillOpacity;
+                    if (solidColorBrush.Transform == null)
+                    {
+                        solidColorBrush.Transform = new MatrixTransform(transform);
+                    }
+                    break;
+                //default:
+                //    throw new NotSupportedException($"Invalid brush type of {brush.GetType()}");
+            }
+
+            return brush.ToImmutable();
         }
 
         private IPen? _pen;
@@ -130,6 +163,8 @@ namespace Nlnet.Avalonia.Svg
                 case ImmutableColorSolidColorBrush solidColorBrush:
                     solidColorBrush.Opacity = opacity;
                     break;
+                //default:
+                //    throw new NotSupportedException($"Invalid brush type of {brush?.GetType()}");
             }
         }
     }

@@ -426,6 +426,10 @@ namespace Nlnet.Avalonia.Svg
             {
                 return PenLineJoin.Round;
             }
+            else if (string.Equals(valueString, "miter-clip") || string.Equals(valueString, "arcs"))
+            {
+                return PenLineJoin.Miter;
+            }
 
             return PenLineJoin.Miter;
         }
@@ -504,6 +508,57 @@ namespace Nlnet.Avalonia.Svg
                 doubleList = new DoubleList();
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Convert value string to <see cref="GradientSpreadMethod"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static GradientSpreadMethod ToGradientSpreadMethod(this string valueString)
+        {
+            if (string.Equals(valueString, GradientSpreadMethod.Pad.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                return GradientSpreadMethod.Pad;
+            }
+            else if (string.Equals(valueString, GradientSpreadMethod.Reflect.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                return GradientSpreadMethod.Reflect;
+            }
+            else if (string.Equals(valueString, GradientSpreadMethod.Repeat.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                return GradientSpreadMethod.Repeat;
+            }
+
+            return GradientSpreadMethod.Pad;
+        }
+
+        /// <summary>
+        /// Try to convert value string to <see cref="GradientSpreadMethod"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="penLineJoin"></param>
+        /// <returns></returns>
+        public static bool TryToGradientSpreadMethod(this string valueString, out GradientSpreadMethod penLineJoin)
+        {
+            if (string.Equals(valueString, GradientSpreadMethod.Pad.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                penLineJoin = GradientSpreadMethod.Pad;
+                return true;
+            }
+            else if (string.Equals(valueString, GradientSpreadMethod.Reflect.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                penLineJoin = GradientSpreadMethod.Reflect;
+                return true;
+            }
+            else if (string.Equals(valueString, GradientSpreadMethod.Repeat.ToString(), StringComparison.CurrentCultureIgnoreCase))
+            {
+                penLineJoin = GradientSpreadMethod.Repeat;
+                return true;
+            }
+
+            penLineJoin = GradientSpreadMethod.Pad;
+            return false;
         }
     }
 }
