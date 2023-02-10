@@ -12,7 +12,8 @@ namespace Nlnet.Avalonia.Svg
     /// </summary>
     internal class LightSolidColorBrush :
         ISolidColorBrush,
-        IBrush,
+        IBrush, 
+        ILightBrush,
         IEquatable<LightSolidColorBrush>
     {
         /// <summary>

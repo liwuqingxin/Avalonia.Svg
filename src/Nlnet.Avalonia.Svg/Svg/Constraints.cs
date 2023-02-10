@@ -13,7 +13,7 @@ public static class SvgTypes
     public const string Bool                 = "bool";
     public const string Int                  = "int";
     public const string String               = "string";
-    public const string Brush                = nameof(global::Avalonia.Media.IBrush);
+    public const string Brush                = nameof(global::Nlnet.Avalonia.Svg.ILightBrush);
     public const string Thickness            = nameof(global::Avalonia.Thickness);
     public const string Geometry             = nameof(global::Avalonia.Media.Geometry);
     public const string Transform            = nameof(global::Avalonia.Media.Transform);

@@ -16,7 +16,7 @@ public interface ISvgContext
     /// <summary>
     /// All brushes.
     /// </summary>
-    public IReadOnlyDictionary<string, IBrush> Brushes { get; }
+    public IReadOnlyDictionary<string, ILightBrush> Brushes { get; }
 
     /// <summary>
     /// All renderable elements.

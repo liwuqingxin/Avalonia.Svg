@@ -15,13 +15,13 @@ namespace Nlnet.Avalonia.Svg
         /// </summary>
         protected GeometryGroup? RenderGeometry;
 
-        IBrush? IFillSetter.Fill { get; set; }
+        ILightBrush? IFillSetter.Fill { get; set; }
 
         FillRule? IFillRuleSetter.FillRule { get; set; }
 
         double? IFillOpacitySetter.FillOpacity { get; set; }
 
-        IBrush? IStrokeSetter.Stroke { get; set; }
+        ILightBrush? IStrokeSetter.Stroke { get; set; }
 
         double? IStrokeOpacitySetter.StrokeOpacity { get; set; }
 
@@ -72,11 +72,10 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            var fill        = this.GetPropertyValue<IFillSetter, IBrush>();
+            var fill        = this.GetPropertyValue<IFillSetter, ILightBrush>();
             var fillRule    = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
             var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
-        
-            // TODO 将各种类型的brush重新实现一遍，支持修改opacity和transform；
+            
             // TODO 应当计算位置、偏移量来控制色彩的偏移；
             // TODO 相对坐标计算标准不一样
             ToImmutableBrush(fill, fillOpacity, Transform?.Value ?? Matrix.Identity);
@@ -89,7 +88,7 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        private static IBrush? ToImmutableBrush(IBrush? brush, double fillOpacity, Matrix transform)
+        private static ILightBrush? ToImmutableBrush(ILightBrush? brush, double fillOpacity, Matrix transform)
         {
             if (brush == null)
             {
@@ -116,7 +115,7 @@ namespace Nlnet.Avalonia.Svg
                 //    throw new NotSupportedException($"Invalid brush type of {brush.GetType()}");
             }
 
-            return brush.ToImmutable();
+            return brush;
         }
 
         private IPen? _pen;
@@ -128,7 +127,7 @@ namespace Nlnet.Avalonia.Svg
                 return _pen;
             }
 
-            var stroke        = this.GetPropertyValue<IStrokeSetter, IBrush>();
+            var stroke        = this.GetPropertyValue<IStrokeSetter, ILightBrush>();
             var strokeOpacity = this.GetPropertyStructValue<IStrokeOpacitySetter, double>();
             var strokeWidth   = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
             var lineCap       = this.GetPropertyStructValue<IStrokeLineCapSetter, PenLineCap>();
@@ -153,7 +152,7 @@ namespace Nlnet.Avalonia.Svg
             return _pen = new Pen(stroke, strokeWidth, dashStyle, lineCap, lineJoin, miterLimit);
         }
 
-        private static void ApplyOpacityToBrush(IBrush? brush, double opacity)
+        private static void ApplyOpacityToBrush(ILightBrush? brush, double opacity)
         {
             switch (brush)
             {

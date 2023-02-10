@@ -156,7 +156,7 @@ namespace Nlnet.Avalonia.Svg.Utils
             return false;
         }
 
-        public bool TryReadBrush(out IBrush? brush)
+        public bool TryReadBrush(out ILightBrush? brush)
         {
             if (_results.Length <= _index)
             {
@@ -166,7 +166,7 @@ namespace Nlnet.Avalonia.Svg.Utils
 
             try
             {
-                brush = Brush.Parse(_results[_index]);
+                brush = new LightSolidColorBrush(Color.Parse(_results[_index]));
                 _index++;
                 return true;
             }
