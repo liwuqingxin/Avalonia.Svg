@@ -71,11 +71,10 @@ namespace Nlnet.Avalonia.Svg
         {
             if (valueString == "none")
             {
-                return Brushes.Transparent;
+                return new LightSolidColorBrush(Colors.Transparent);
             }
 
-            //return Brush.Parse(valueString);
-            return new ImmutableColorSolidColorBrush(Color.Parse(valueString));
+            return new LightSolidColorBrush(Color.Parse(valueString));
         }
 
         /// <summary>

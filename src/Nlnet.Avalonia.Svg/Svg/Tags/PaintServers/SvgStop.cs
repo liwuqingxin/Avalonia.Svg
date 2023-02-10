@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 
 namespace Nlnet.Avalonia.Svg;
 
@@ -25,18 +26,16 @@ public class SvgStopFactory : ISvgTagFactory
 
 public class SvgStop : SvgTagBase
 {
-    public GradientStop GradientStop { get; set; }
+    public ImmutableGradientStop GradientStop { get; set; }
 
     public SvgStop(double offset, double opacity, Color color)
     {
-        GradientStop = new GradientStop
-        {
-            //
-            // NOTE Opacity of GradientStop is not supported in Avalonia 11.0.0-preview4.
-            // So we apply it to the color.
-            //
-            Color = Color.FromArgb((byte)(opacity * color.A), color.R, color.G, color.B),
-            Offset = offset,
-        };
+        //
+        // NOTE Opacity of GradientStop is not supported in Avalonia 11.0.0-preview4.
+        // So we apply it to the color.
+        //
+        GradientStop = new ImmutableGradientStop(
+            offset,
+            Color.FromArgb((byte) (opacity * color.A), color.R, color.G, color.B));
     }
 }

@@ -8,12 +8,12 @@ namespace Nlnet.Avalonia.Svg
 {
     /// <summary>
     /// Fills an area with a solid color. The difference between this and <see cref="ImmutableSolidColorBrush"/>
-    /// is that the opacity of this class can be modified.
+    /// is that some properties of this class can be modified.
     /// </summary>
-    internal class ImmutableColorSolidColorBrush :
+    internal class LightSolidColorBrush :
         ISolidColorBrush,
         IBrush,
-        IEquatable<ImmutableColorSolidColorBrush>
+        IEquatable<LightSolidColorBrush>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Avalonia.Media.Immutable.ImmutableColorSolidColorBrush" /> class.
@@ -21,7 +21,7 @@ namespace Nlnet.Avalonia.Svg
         /// <param name="color">The color to use.</param>
         /// <param name="opacity">The opacity of the brush.</param>
         /// <param name="transform">The transform of the brush.</param>
-        public ImmutableColorSolidColorBrush(Color color, double opacity = 1.0, ImmutableTransform? transform = null)
+        public LightSolidColorBrush(Color color, double opacity = 1.0, ITransform? transform = null)
         {
             this.Color     = color;
             this.Opacity   = opacity;
@@ -32,7 +32,7 @@ namespace Nlnet.Avalonia.Svg
         /// Initializes a new instance of the <see cref="T:Avalonia.Media.Immutable.ImmutableColorSolidColorBrush" /> class.
         /// </summary>
         /// <param name="color">The color to use.</param>
-        public ImmutableColorSolidColorBrush(uint color)
+        public LightSolidColorBrush(uint color)
           : this(Color.FromUInt32(color))
         {
 
@@ -42,7 +42,7 @@ namespace Nlnet.Avalonia.Svg
         /// Initializes a new instance of the <see cref="T:Avalonia.Media.Immutable.ImmutableColorSolidColorBrush" /> class.
         /// </summary>
         /// <param name="source">The brush from which this brush's properties should be copied.</param>
-        public ImmutableColorSolidColorBrush(ISolidColorBrush source)
+        public LightSolidColorBrush(ISolidColorBrush source)
         {
             var color = source.Color;
             var opacity = source.Opacity;
@@ -57,10 +57,7 @@ namespace Nlnet.Avalonia.Svg
         /// <summary>
         /// Gets the color of the brush.
         /// </summary>
-        public Color Color
-        {
-            get;
-        }
+        public Color Color { get; }
 
         /// <summary>
         /// Gets or sets the opacity of the brush.
@@ -75,9 +72,9 @@ namespace Nlnet.Avalonia.Svg
         /// <summary>
         /// Gets the transform origin of the brush
         /// </summary>
-        public RelativePoint TransformOrigin { get; }
+        public RelativePoint TransformOrigin { get; set; }
 
-        public bool Equals(ImmutableColorSolidColorBrush? other)
+        public bool Equals(LightSolidColorBrush? other)
         {
             if ((object?)other == null)
                 return false;
@@ -92,15 +89,15 @@ namespace Nlnet.Avalonia.Svg
 
         public override bool Equals(object? obj)
         {
-            var other = obj as ImmutableColorSolidColorBrush;
+            var other = obj as LightSolidColorBrush;
             return (object?)other != null && this.Equals(other);
         }
 
         public override int GetHashCode() => this.Color.GetHashCode() * 397 ^ this.Opacity.GetHashCode() ^ (this.Transform == null ? 0 : this.Transform.GetHashCode());
 
-        public static bool operator ==(ImmutableColorSolidColorBrush left, ImmutableColorSolidColorBrush right) => object.Equals((object)left, (object)right);
+        public static bool operator ==(LightSolidColorBrush left, LightSolidColorBrush right) => object.Equals((object)left, (object)right);
 
-        public static bool operator !=(ImmutableColorSolidColorBrush left, ImmutableColorSolidColorBrush right) => !object.Equals((object)left, (object)right);
+        public static bool operator !=(LightSolidColorBrush left, LightSolidColorBrush right) => !object.Equals((object)left, (object)right);
 
         /// <summary>
         /// Returns a string representation of the brush.

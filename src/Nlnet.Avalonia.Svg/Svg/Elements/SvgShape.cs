@@ -105,7 +105,7 @@ namespace Nlnet.Avalonia.Svg
                         b.Transform = new MatrixTransform(transform);
                     }
                     break;
-                case ImmutableColorSolidColorBrush solidColorBrush:
+                case LightSolidColorBrush solidColorBrush:
                     solidColorBrush.Opacity   = fillOpacity;
                     if (solidColorBrush.Transform == null)
                     {
@@ -160,7 +160,7 @@ namespace Nlnet.Avalonia.Svg
                 case Brush b:
                     b.Opacity = opacity;
                     break;
-                case ImmutableColorSolidColorBrush solidColorBrush:
+                case LightSolidColorBrush solidColorBrush:
                     solidColorBrush.Opacity = opacity;
                     break;
                 //default:

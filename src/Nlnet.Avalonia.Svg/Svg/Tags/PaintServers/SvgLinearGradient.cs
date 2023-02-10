@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
@@ -54,24 +56,16 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
             return _brush;
         }
 
-        var brush = new LinearGradientBrush
-        {
-            // ref https://www.w3.org/TR/SVG2/pservers.html#LinearGradientElementX1Attribute
-            StartPoint = new RelativePoint(X1 ?? 0, Y1 ?? 0, RelativeUnit.Absolute),
-            EndPoint   = new RelativePoint(X2 ?? 1, Y2 ?? 0, RelativeUnit.Absolute)
-        };
-        
-        if (GradientSpreadMethod != null)
-        {
-            brush.SpreadMethod = GradientSpreadMethod.Value;
-        }
+        // ref https://www.w3.org/TR/SVG2/pservers.html#LinearGradientElementX1Attribute
+        _brush = new LightLineGradientBrush(
+            gradientStops: Children?.OfType<SvgStop>().Select(s => s.GradientStop).ToList() ?? new List<ImmutableGradientStop>(),
+            opacity: 1,
+            transform: null,
+            transformOrigin: null,
+            spreadMethod: GradientSpreadMethod ?? global::Avalonia.Media.GradientSpreadMethod.Pad,
+            startPoint: new RelativePoint(X1 ?? 0, Y1 ?? 0, RelativeUnit.Relative),
+            endPoint: new RelativePoint(X2   ?? 1, Y2 ?? 0, RelativeUnit.Relative));
 
-        if (this.Children != null)
-        {
-            brush.GradientStops.AddRange(this.Children.OfType<SvgStop>().Select(s => s.GradientStop));
-        }
-
-        _brush = brush;
         return _brush;
     }
 }
