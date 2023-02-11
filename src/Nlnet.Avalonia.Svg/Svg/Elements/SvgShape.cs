@@ -1,8 +1,10 @@
 ﻿using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 
 namespace Nlnet.Avalonia.Svg
 {
+    // TODO 属性值优先级问题：Presentation Property Setting vs CSS Style Setting；
     public class SvgShape : SvgRenderable, ISvgShape
     {
         /// <summary>
@@ -81,7 +83,8 @@ namespace Nlnet.Avalonia.Svg
             if (fill != null)
             {
                 fill.Opacity   = fillOpacity;
-                //fill.Transform = Transform;
+                // TODO 这里放开会闪烁；
+                fill.Transform = Transform;
             }
 
             RenderGeometry.FillRule = fillRule;
@@ -119,14 +122,14 @@ namespace Nlnet.Avalonia.Svg
                 }
             }
 
-            var dashStyle = new DashStyle(dashArray, dashOffset);
+            var dashStyle = new ImmutableDashStyle(dashArray ?? new DoubleList(), dashOffset);
 
             if (stroke != null)
             {
                 stroke.Opacity = strokeOpacity;
             }
 
-            return _pen = new Pen(stroke, strokeWidth, dashStyle, lineCap, lineJoin, miterLimit);
+            return _pen = new ImmutablePen(stroke, strokeWidth, dashStyle, lineCap, lineJoin, miterLimit);
         }
     }
 }

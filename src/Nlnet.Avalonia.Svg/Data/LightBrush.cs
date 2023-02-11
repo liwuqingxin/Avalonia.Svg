@@ -21,7 +21,7 @@ namespace Nlnet.Avalonia.Svg
         public ITransform? Transform { get; set; }
 
         /// <summary>
-        /// Gets the origin of the brushes <see cref="P:Avalonia.Media.IBrush.Transform" />
+        /// Gets the origin of the brushes <see cref="P:Avalonia.Media.IBrush.Transform" />.
         /// </summary>
         public RelativePoint TransformOrigin { get; set; }
 
