@@ -49,34 +49,5 @@
                  AcceptsReturn="True"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                  Text="{Binding EditableSvgData}" />
-        <StackPanel Grid.Column="1">
-            <Border Width="100" Height="20">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="25,0" SpreadMethod="Pad">
-                        <GradientStop Color="Green" Offset="0"/>
-                        <GradientStop Color="Red" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-            </Border>
-            <Border Width="100" Height="20">
-				<Border.Background>
-					<LinearGradientBrush StartPoint="0,0" EndPoint="25,0" SpreadMethod="Reflect">
-						<GradientStop Color="Green" Offset="0"/>
-						<GradientStop Color="Red" Offset="1"/>
-					</LinearGradientBrush>
-				</Border.Background>
-			</Border>
-			<Border Width="100" Height="20">
-                <Border.RenderTransform>
-                    <TranslateTransform X="13"/>
-                </Border.RenderTransform>
-                <Border.Background>
-					<LinearGradientBrush StartPoint="0,0" EndPoint="25,0" SpreadMethod="Repeat">
-                        <GradientStop Color="Green" Offset="0"/>
-                        <GradientStop Color="Red" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-            </Border>
-        </StackPanel>
     </Grid>
 </Window>

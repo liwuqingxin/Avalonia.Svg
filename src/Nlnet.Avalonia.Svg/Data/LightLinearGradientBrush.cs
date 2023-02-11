@@ -8,7 +8,7 @@ namespace Nlnet.Avalonia.Svg
     /// <summary>
     /// A brush that draws with a linear gradient. It is almost like to <see cref="ImmutableLinearGradientBrush"/>.
     /// </summary>
-    public class LightLineGradientBrush :
+    public class LightLinearGradientBrush :
         LightGradientBrush,
         ILinearGradientBrush,
         IGradientBrush,
@@ -24,7 +24,7 @@ namespace Nlnet.Avalonia.Svg
         /// <param name="spreadMethod">The spread method.</param>
         /// <param name="startPoint">The start point for the gradient.</param>
         /// <param name="endPoint">The end point for the gradient.</param>
-        public LightLineGradientBrush(
+        public LightLinearGradientBrush(
             IReadOnlyList<ImmutableGradientStop> gradientStops,
             double                               opacity         = 1.0,
             ITransform?                          transform       = null,
@@ -44,7 +44,7 @@ namespace Nlnet.Avalonia.Svg
         /// Initializes a new instance of the <see cref="T:Avalonia.Media.Immutable.LightLineGradientBrush" /> class.
         /// </summary>
         /// <param name="source">The brush from which this brush's properties should be copied.</param>
-        public LightLineGradientBrush(ILinearGradientBrush source)
+        public LightLinearGradientBrush(ILinearGradientBrush source)
             : base(source)
         {
             this.StartPoint = source.StartPoint;
@@ -59,7 +59,7 @@ namespace Nlnet.Avalonia.Svg
 
         public override LightBrush Clone()
         {
-            return new LightLineGradientBrush(this);
+            return new LightLinearGradientBrush(this);
         }
     }
 }

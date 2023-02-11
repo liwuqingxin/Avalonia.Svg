@@ -57,7 +57,7 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
         }
 
         // ref https://www.w3.org/TR/SVG2/pservers.html#LinearGradientElementX1Attribute
-        _brush = new LightLineGradientBrush(
+        _brush = new LightLinearGradientBrush(
             gradientStops: Children?.OfType<SvgStop>().Select(s => s.GradientStop).ToList() ?? new List<ImmutableGradientStop>(),
             opacity: 1,
             transform: null,

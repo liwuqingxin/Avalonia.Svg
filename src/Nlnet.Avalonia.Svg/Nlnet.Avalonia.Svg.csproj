@@ -8,31 +8,6 @@
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 	</PropertyGroup>
 	<ItemGroup>
-	  <Compile Remove="Svg\Setters\Aria\_doc.cs" />
-	  <Compile Remove="Svg\Setters\Conditional Processing\_doc.cs" />
-	  <Compile Remove="Svg\Setters\Geometry Properties\_doc.cs" />
-	  <Compile Remove="Svg\Setters\Graphical Event\_doc.cs" />
-	  <Compile Remove="Svg\Setters\Core\_doc.cs" />
-	  <Compile Remove="Svg\Setters\Document Element Event\_doc.cs" />
-	  <Compile Remove="Svg\Setters\Global Event\_doc.cs" />
-	  <Compile Remove="Svg\Setters\Painting\_doc.cs" />
-	  <Compile Remove="Svg\Setters\Presentation\_doc.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Remove=".gitignore" />
-	</ItemGroup>
-	<ItemGroup>
-	  <None Include="Svg\Setters\Aria\_doc.cs" />
-	  <None Include="Svg\Setters\Conditional Processing\_doc.cs" />
-	  <None Include="Svg\Setters\Geometry Properties\_doc.cs" />
-	  <None Include="Svg\Setters\Graphical Event\_doc.cs" />
-	  <None Include="Svg\Setters\Core\_doc.cs" />
-	  <None Include="Svg\Setters\Document Element Event\_doc.cs" />
-	  <None Include="Svg\Setters\Global Event\_doc.cs" />
-	  <None Include="Svg\Setters\Painting\_doc.cs" />
-	  <None Include="Svg\Setters\Presentation\_doc.cs" />
-	</ItemGroup>
-	<ItemGroup>
 		<!--This helps with theme dll-s trimming.
 	If you will publish your application in self-contained mode with p:PublishTrimmed=true and it will use Fluent theme Default theme will be trimmed from the output and vice versa.
 	https://github.com/AvaloniaUI/Avalonia/issues/5593 -->

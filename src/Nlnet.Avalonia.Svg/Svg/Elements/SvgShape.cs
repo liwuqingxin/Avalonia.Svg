@@ -88,7 +88,6 @@ namespace Nlnet.Avalonia.Svg
             var fillRule    = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
             var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
             
-            // TODO 应当计算位置、偏移量来控制色彩的偏移；
             // TODO 相对坐标计算标准不一样
             if (fill != null)
             {
