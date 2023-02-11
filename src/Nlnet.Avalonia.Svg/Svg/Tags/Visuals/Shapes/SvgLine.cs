@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
@@ -17,11 +18,13 @@ public class SvgLine : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
     public double? Y1    { get; set; }
     public double? Y2    { get; set; }
 
-    public override void OnPropertiesFetched()
+    protected override Geometry? OnCreateOriginalGeometry()
     {
-        if (X1 != null && X2 != null && Y1 != null && Y2 != null)
+        if (X1 == null || Y1 == null || X2 == null || Y2 == null)
         {
-            OriginalGeometry = new LineGeometry(new Point(X1.Value, Y1.Value), new Point(X2.Value, Y2.Value));
+            return null;
         }
+
+        return new LineGeometry(new Point(X1.Value, Y1.Value), new Point(X2.Value, Y2.Value));
     }
 }

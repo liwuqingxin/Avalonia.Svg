@@ -1,4 +1,6 @@
-﻿using Avalonia.Media;
+﻿using Avalonia;
+using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
@@ -11,11 +13,8 @@ public class SvgPolyline : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 
     public PointList? Points { get; set; }
 
-    public override void OnPropertiesFetched()
+    protected override Geometry? OnCreateOriginalGeometry()
     {
-        if (Points != null)
-        {
-            OriginalGeometry = new PolylineGeometry(Points, false);
-        }
+        return Points != null ? new PolylineGeometry(Points, false) : null;
     }
 }

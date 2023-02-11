@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Immutable;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
@@ -26,7 +26,7 @@ namespace Nlnet.Avalonia.Svg
             RelativePoint?                       transformOrigin,
             GradientSpreadMethod                 spreadMethod)
         {
-            this.GradientStops   = (IReadOnlyList<IGradientStop>)gradientStops;
+            this.GradientStops   = gradientStops;
             this.Opacity         = opacity;
             this.Transform       = transform;
             this.TransformOrigin = transformOrigin ?? RelativePoint.TopLeft;
@@ -39,7 +39,7 @@ namespace Nlnet.Avalonia.Svg
         /// <param name="source">The brush from which this brush's properties should be copied.</param>
         protected LightGradientBrush(IGradientBrush source)
         {
-            var gradientStops   = source.GradientStops.ToList();
+            var gradientStops   = source.GradientStops.ToImmutableArray();
             var opacity         = source.Opacity;
             var transform1      = source.Transform;
             var transform2      = transform1?.ToImmutable();

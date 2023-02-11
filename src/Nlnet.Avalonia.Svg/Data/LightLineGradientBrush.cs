@@ -6,8 +6,7 @@ using Avalonia.Media.Immutable;
 namespace Nlnet.Avalonia.Svg
 {
     /// <summary>
-    /// A brush that draws with a linear gradient.
-    /// It is almost like to <see cref="ImmutableLinearGradientBrush"/>.
+    /// A brush that draws with a linear gradient. It is almost like to <see cref="ImmutableLinearGradientBrush"/>.
     /// </summary>
     public class LightLineGradientBrush :
         LightGradientBrush,

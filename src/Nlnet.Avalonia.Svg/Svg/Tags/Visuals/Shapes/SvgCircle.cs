@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
@@ -16,11 +17,13 @@ public class SvgCircle : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 
     public double? R { get; set; }
 
-    public override void OnPropertiesFetched()
+    protected override Geometry? OnCreateOriginalGeometry()
     {
         if (CX != null && CY != null && R != null)
         {
-            OriginalGeometry = new EllipseGeometry(new Rect(CX.Value - R.Value, CY.Value - R.Value, R.Value * 2, R.Value * 2));
+            return new EllipseGeometry(new Rect(CX.Value - R.Value, CY.Value - R.Value, R.Value * 2, R.Value * 2));
         }
+
+        return null;
     }
 }

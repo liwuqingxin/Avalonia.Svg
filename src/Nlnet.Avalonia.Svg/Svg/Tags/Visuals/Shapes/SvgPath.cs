@@ -1,4 +1,6 @@
-﻿using Avalonia.Media;
+﻿using Avalonia;
+using Avalonia.Media;
+using Avalonia.Media.Immutable;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
@@ -9,11 +11,8 @@ public class SvgPath : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 {
     public Geometry? Data { get; set; }
 
-    public override void OnPropertiesFetched()
+    protected override Geometry? OnCreateOriginalGeometry()
     {
-        if (Data != null)
-        {
-            OriginalGeometry = Data;
-        }
+        return Data;
     }
 }

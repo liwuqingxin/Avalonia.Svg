@@ -10,7 +10,9 @@ namespace Nlnet.Avalonia.Svg
     /// </summary>
     public class LightRadialGradientBrush : 
         LightGradientBrush, 
-        IRadialGradientBrush
+        IRadialGradientBrush,
+        IGradientBrush,
+        IBrush
     {
         public RelativePoint Center { get; set; }
 

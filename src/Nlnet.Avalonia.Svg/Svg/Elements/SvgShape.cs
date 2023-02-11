@@ -5,7 +5,7 @@ using Avalonia.Media.Immutable;
 namespace Nlnet.Avalonia.Svg
 {
     // TODO 属性值优先级问题：Presentation Property Setting vs CSS Style Setting；
-    public class SvgShape : SvgRenderable, ISvgShape
+    public abstract class SvgShape : SvgRenderable, ISvgShape
     {
         /// <summary>
         /// The original geometry that the svg describes.
@@ -50,6 +50,16 @@ namespace Nlnet.Avalonia.Svg
             this.TryAddApplier(new DeferredPropertiesApplier());
         }
 
+        public sealed override void OnPropertiesFetched()
+        {
+            OriginalGeometry = OnCreateOriginalGeometry();
+        }
+
+        /// <summary>
+        /// This function should return a <see cref="Geometry"/>? as the origin geometry.
+        /// </summary>
+        /// <returns></returns>
+        protected abstract Geometry? OnCreateOriginalGeometry();
 
         public override void ApplyTransforms()
         {
@@ -82,9 +92,8 @@ namespace Nlnet.Avalonia.Svg
             // TODO 相对坐标计算标准不一样
             if (fill != null)
             {
-                fill.Opacity   = fillOpacity;
-                // TODO 这里放开会闪烁；
-                fill.Transform = Transform;
+                ApplyBrushOpacity(fill, fillOpacity);
+                ApplyBrushTransform(fill);
             }
 
             RenderGeometry.FillRule = fillRule;
@@ -94,6 +103,7 @@ namespace Nlnet.Avalonia.Svg
                 dc.DrawGeometry(fill, GetPen(), RenderGeometry);
             }
         }
+
 
         private IPen? _pen;
 
@@ -126,10 +136,45 @@ namespace Nlnet.Avalonia.Svg
 
             if (stroke != null)
             {
-                stroke.Opacity = strokeOpacity;
+                ApplyBrushOpacity(stroke, strokeOpacity);
+                ApplyBrushTransform(stroke);
             }
 
             return _pen = new ImmutablePen(stroke, strokeWidth, dashStyle, lineCap, lineJoin, miterLimit);
+        }
+
+        private void ApplyBrushOpacity(LightBrush lightBrush, double opacity)
+        {
+            lightBrush.Opacity = opacity;
+        }
+
+        private void ApplyBrushTransform(LightBrush lightBrush)
+        {
+            var immutableTransform = GetBrushTransform();
+            if (immutableTransform == null)
+            {
+                return;
+            }
+
+            if (lightBrush.Transform != null)
+            {
+                // Transform must be immutable, or the element rendered will be flickering.
+                immutableTransform = new ImmutableTransform(lightBrush.Transform.Value * immutableTransform.Value);
+            }
+
+            lightBrush.Transform = immutableTransform;
+        }
+
+        /// <summary>
+        /// Get the immutable transform for brush. Note that the brush coordinate system is
+        /// relative to the origin of the <see cref="DrawingContext"/>.
+        /// </summary>
+        /// <returns></returns>
+        protected virtual ImmutableTransform? GetBrushTransform()
+        {
+            var t1 = Transform?.Value ?? Matrix.Identity;
+            var t2 = new Matrix(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, this.Bounds.Left, this.Bounds.Top, 1.0);
+            return new ImmutableTransform(t1 * t2);
         }
     }
 }
