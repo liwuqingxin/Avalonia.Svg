@@ -14,6 +14,7 @@ public class SvgRadialGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
     IRSetter,
     IFXSetter,
     IFYSetter,
+    IFRSetter,
     IGradientSpreadMethodSetter,
     IGradientUnitsSetter,
     IGradientTransformSetter
@@ -41,6 +42,11 @@ public class SvgRadialGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
         set;
     }
     public double? FY
+    {
+        get;
+        set;
+    }
+    public double? FR
     {
         get;
         set;
@@ -107,18 +113,30 @@ public class SvgRadialGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
             : RelativeUnit.Absolute;
 
         var spreadMethod = GradientSpreadMethod ?? global::Avalonia.Media.GradientSpreadMethod.Pad;
-        
+        var gradientStops = Children?.OfType<SvgStop>().Select(s => s.GradientStop).ToList() ?? new List<ImmutableGradientStop>();
+
         var cx = CX ?? 0.5;
         var cy = CY ?? 0.5;
         var rx = FX ?? cx;
         var ry = FY ?? cy;
-        
+
         // Avalonia does not support different value for vertical and horizontal direction.
-        var r = R ?? 0.5; 
+        // BUG radius of radial gradient in avalonia is determined by width of the element to be rendered.
+        var r  = R  ?? 0.5;
+        var fr = FR ?? 0d;
+
+        if (FR is > 0 && FR < r)
+        {
+            gradientStops = gradientStops.Select(s =>
+            {
+                var offsetLength = ((r - fr) * s.Offset + fr) / r;
+                return new ImmutableGradientStop(offsetLength, s.Color);
+            }).ToList();
+        }
 
         // ref https://www.w3.org/TR/SVG2/pservers.html#LinearGradientElementX1Attribute
         var gradientBrush = new LightRadialGradientBrush(
-            gradientStops: Children?.OfType<SvgStop>().Select(s => s.GradientStop).ToList() ?? new List<ImmutableGradientStop>(),
+            gradientStops: gradientStops,
             opacity: 1,
             transform: GradientTransform,
             transformOrigin: null,

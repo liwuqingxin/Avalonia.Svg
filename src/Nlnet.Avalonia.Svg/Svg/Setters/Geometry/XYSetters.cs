@@ -87,31 +87,3 @@ public class RYSetter : AbstractDoubleSetter
         setter.RY = Value;
     }
 }
-
-[SetterGenerator(nameof(SvgProperties.FX), SvgTypes.Double, SvgDefaultValues.Half, false)]
-public class FXSetter : AbstractDoubleSetter
-{
-    public override void Set(ISvgTag tag)
-    {
-        if (tag is not IFXSetter setter)
-        {
-            return;
-        }
-
-        setter.FX = Value;
-    }
-}
-
-[SetterGenerator(nameof(SvgProperties.FY), SvgTypes.Double, SvgDefaultValues.Half, false)]
-public class FYSetter : AbstractDoubleSetter
-{
-    public override void Set(ISvgTag tag)
-    {
-        if (tag is not IFYSetter setter)
-        {
-            return;
-        }
-
-        setter.FY = Value;
-    }
-}

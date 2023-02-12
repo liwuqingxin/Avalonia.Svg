@@ -6,7 +6,7 @@
   <!-- fx="150" fy="100" fr="0" -->
 
   <defs>
-    <radialGradient id="MyGradient1" gradientUnits="userSpaceOnUse" cx="50" cy="100" r="40">
+    <radialGradient id="MyGradient1" gradientUnits="userSpaceOnUse" cx="100" cy="100" r="50" fx="100" fy="100" fr="30">
       <stop offset="0%" stop-color="#A8F" />
       <stop offset="50%" stop-color="#FDC" />
       <stop offset="100%" stop-color="#A8F" />

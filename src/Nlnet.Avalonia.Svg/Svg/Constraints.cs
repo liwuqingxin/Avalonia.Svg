@@ -85,6 +85,7 @@ public static class SvgProperties
     public const string X2                   = "x2";
     public const string Y2                   = "y2";
     public const string R                    = "r";
+    public const string FR                   = "fr";
     public const string Width                = "width";
     public const string Height               = "height";
     public const string Transform            = "transform";
