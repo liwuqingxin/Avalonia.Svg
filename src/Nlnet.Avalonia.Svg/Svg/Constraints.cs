@@ -1,6 +1,4 @@
-﻿using Avalonia.Media;
-
-namespace Nlnet.Avalonia.Svg;
+﻿namespace Nlnet.Avalonia.Svg;
 // ReSharper disable InconsistentNaming
 // ReSharper disable IdentifierTypo
 
@@ -23,6 +21,7 @@ public static class SvgTypes
     public const string GradientSpreadMethod = nameof(global::Avalonia.Media.GradientSpreadMethod);
     public const string PointList            = nameof(global::Nlnet.Avalonia.Svg.PointList);
     public const string DoubleList           = nameof(global::Nlnet.Avalonia.Svg.DoubleList);
+    public const string GradientUnit         = nameof(global::Nlnet.Avalonia.Svg.GradientUnit);
 }
 
 /// <summary>
@@ -30,16 +29,17 @@ public static class SvgTypes
 /// </summary>
 public static class SvgDefaultValues
 {
-    public const string Null                    = "null";
-    public const string Zero                    = "0d";
-    public const string One                     = "1d";
-    public const string Four                    = "4d";
-    public const string BrushBlack              = "new LightSolidColorBrush(Colors.Black)";
-    public const string BrushTransparent        = "Brushes.Transparent";
-    public const string FillRuleNonZero         = "global::Avalonia.Media.FillRule.NonZero";
-    public const string PenLineCapNonZero       = "global::Avalonia.Media.PenLineCap.Flat";
-    public const string PenLineJoinNonZero      = "global::Avalonia.Media.PenLineJoin.Miter";
-    public const string GradientSpreadMethodPad = "global::Avalonia.Media.GradientSpreadMethod.Pad";
+    public const string Null                          = "null";
+    public const string Zero                          = "0d";
+    public const string One                           = "1d";
+    public const string Four                          = "4d";
+    public const string BrushBlack                    = "new LightSolidColorBrush(Colors.Black)";
+    public const string BrushTransparent              = "Brushes.Transparent";
+    public const string FillRuleNonZero               = "global::Avalonia.Media.FillRule.NonZero";
+    public const string PenLineCapNonZero             = "global::Avalonia.Media.PenLineCap.Flat";
+    public const string PenLineJoinNonZero            = "global::Avalonia.Media.PenLineJoin.Miter";
+    public const string GradientSpreadMethodPad       = "global::Avalonia.Media.GradientSpreadMethod.Pad";
+    public const string GradientUnitObjectBoundingBox = "global::Nlnet.Avalonia.Svg.GradientUnit.objectBoundingBox";
 }
 
 /// <summary>
@@ -86,6 +86,7 @@ public static class SvgProperties
     public const string Height               = "height";
     public const string Transform            = "transform";
     public const string GradientSpreadMethod = "spreadMethod";
+    public const string GradientUnits        = "gradientUnits";
 
 }
 

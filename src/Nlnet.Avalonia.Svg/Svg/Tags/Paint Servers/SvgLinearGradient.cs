@@ -13,7 +13,8 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
     IX2Setter, 
     IY1Setter, 
     IY2Setter,
-    IGradientSpreadMethodSetter
+    IGradientSpreadMethodSetter,
+    IGradientUnitsSetter
 {
     private LightBrush? _brush;
 
@@ -42,6 +43,11 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
         get;
         set;
     }
+    public GradientUnit? GradientUnits
+    {
+        get;
+        set;
+    }
 
     string? ISvgBrushProvider.Id
     {
@@ -57,15 +63,18 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
         }
 
         // ref https://www.w3.org/TR/SVG2/pservers.html#LinearGradientElementX1Attribute
-        _brush = new LightLinearGradientBrush(
+        var gradientBrush = new LightLinearGradientBrush(
             gradientStops: Children?.OfType<SvgStop>().Select(s => s.GradientStop).ToList() ?? new List<ImmutableGradientStop>(),
             opacity: 1,
             transform: null,
             transformOrigin: null,
             spreadMethod: GradientSpreadMethod ?? global::Avalonia.Media.GradientSpreadMethod.Pad,
             startPoint: new RelativePoint(X1 ?? 0, Y1 ?? 0, RelativeUnit.Relative),
-            endPoint: new RelativePoint(X2   ?? 1, Y2 ?? 0, RelativeUnit.Relative));
+            endPoint: new RelativePoint(X2   ?? 1, Y2 ?? 0, RelativeUnit.Relative))
+        {
+            Unit = GradientUnits ?? GradientUnit.objectBoundingBox
+        };
 
-        return _brush;
+        return _brush = gradientBrush;
     }
 }

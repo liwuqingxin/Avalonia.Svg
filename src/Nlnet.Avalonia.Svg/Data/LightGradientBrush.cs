@@ -9,7 +9,7 @@ namespace Nlnet.Avalonia.Svg
     /// <summary>
     /// A brush that draws with a gradient.
     /// </summary>
-    public abstract class LightGradientBrush : LightBrush, IGradientBrush
+    public abstract class LightGradientBrush : LightBrush, IGradientBrush, IGradientInfo
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Nlnet.Avalonia.Svg.LightGradientBrush" /> class.
@@ -56,5 +56,17 @@ namespace Nlnet.Avalonia.Svg
         public IReadOnlyList<IGradientStop> GradientStops { get; }
 
         public GradientSpreadMethod SpreadMethod { get; set; }
+
+
+
+        #region IGradientInfo
+
+        public GradientUnit Unit
+        {
+            get;
+            set;
+        }
+
+        #endregion
     }
 }

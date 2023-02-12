@@ -149,6 +149,9 @@ namespace Nlnet.Avalonia.Svg
 
         private void ApplyBrushTransform(LightBrush lightBrush)
         {
+            // 1. userSpaceOnUse使用绝对坐标，objectBoundingBox使用百分比
+            // 2. userSpaceOnUse将父容器的Bounds作为坐标系（不受transform，无论父级还是自己的影响，受自己的Bounds位置影响）；
+            //    objectBoundingBox则使用自己的Bounds作为坐标系；
             var immutableTransform = GetBrushTransform();
             if (immutableTransform == null)
             {
