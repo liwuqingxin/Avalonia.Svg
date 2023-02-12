@@ -31,13 +31,15 @@ namespace Nlnet.Avalonia.Svg
             this.Transform       = transform;
             this.TransformOrigin = transformOrigin ?? RelativePoint.TopLeft;
             this.SpreadMethod    = spreadMethod;
+
+            this.GradientUnit = GradientUnit.objectBoundingBox;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Nlnet.Avalonia.Svg.LightGradientBrush" /> class.
         /// </summary>
         /// <param name="source">The brush from which this brush's properties should be copied.</param>
-        protected LightGradientBrush(IGradientBrush source)
+        protected LightGradientBrush(LightGradientBrush source)
         {
             var gradientStops   = source.GradientStops.ToImmutableArray();
             var opacity         = source.Opacity;
@@ -51,6 +53,8 @@ namespace Nlnet.Avalonia.Svg
             this.Transform       = transform2;
             this.TransformOrigin = transformOrigin ?? RelativePoint.TopLeft;
             this.SpreadMethod    = spreadMethod;
+
+            this.GradientUnit = source.GradientUnit;
         }
 
         public IReadOnlyList<IGradientStop> GradientStops { get; }
@@ -61,11 +65,7 @@ namespace Nlnet.Avalonia.Svg
 
         #region IGradientInfo
 
-        public GradientUnit Unit
-        {
-            get;
-            set;
-        }
+        public GradientUnit GradientUnit { get; init; }
 
         #endregion
     }

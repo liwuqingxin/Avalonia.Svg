@@ -17,6 +17,10 @@ namespace Nlnet.Avalonia.Svg
         /// </summary>
         protected GeometryGroup? RenderGeometry;
 
+
+
+        #region Svg Properties
+
         LightBrush? IFillSetter.Fill { get; set; }
 
         FillRule? IFillRuleSetter.FillRule { get; set; }
@@ -39,9 +43,14 @@ namespace Nlnet.Avalonia.Svg
 
         double? IStrokeDashOffsetSetter.StrokeDashOffset { get; set; }
 
+        #endregion
+
+
+
         public override Rect Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;
 
         public override Rect RenderBounds => RenderGeometry?.GetRenderBounds(GetPen()) ?? Rect.Empty;
+
 
 
         protected SvgShape()
@@ -87,13 +96,9 @@ namespace Nlnet.Avalonia.Svg
             var fill        = this.GetPropertyValue<IFillSetter, LightBrush>()?.Clone();
             var fillRule    = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
             var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
-            
-            // TODO 相对坐标计算标准不一样
-            if (fill != null)
-            {
-                ApplyBrushOpacity(fill, fillOpacity);
-                ApplyBrushTransform(fill);
-            }
+
+            ApplyBrushOpacity(fill, fillOpacity);
+            ApplyBrushTransform(fill);
 
             RenderGeometry.FillRule = fillRule;
 
@@ -130,29 +135,36 @@ namespace Nlnet.Avalonia.Svg
                     dashArray[i] /= strokeWidth;
                 }
             }
+            dashOffset /= strokeWidth;
 
             var dashStyle = new ImmutableDashStyle(dashArray ?? new DoubleList(), dashOffset);
 
-            if (stroke != null)
-            {
-                ApplyBrushOpacity(stroke, strokeOpacity);
-                ApplyBrushTransform(stroke);
-            }
+            ApplyBrushOpacity(stroke, strokeOpacity);
+            ApplyBrushTransform(stroke);
 
             return _pen = new ImmutablePen(stroke, strokeWidth, dashStyle, lineCap, lineJoin, miterLimit);
         }
 
-        private void ApplyBrushOpacity(LightBrush lightBrush, double opacity)
+        private void ApplyBrushOpacity(LightBrush? lightBrush, double opacity)
         {
+            if (lightBrush == null)
+            {
+                return;
+            }
+
             lightBrush.Opacity = opacity;
         }
 
-        private void ApplyBrushTransform(LightBrush lightBrush)
+        private void ApplyBrushTransform(LightBrush? lightBrush)
         {
-            // 1. userSpaceOnUse使用绝对坐标，objectBoundingBox使用百分比
+            if (lightBrush is not LightGradientBrush gradientBrush)
+            {
+                return;
+            }
+
             // 2. userSpaceOnUse将父容器的Bounds作为坐标系（不受transform，无论父级还是自己的影响，受自己的Bounds位置影响）；
             //    objectBoundingBox则使用自己的Bounds作为坐标系；
-            var immutableTransform = GetBrushTransform();
+            var immutableTransform = GetBrushTransform(gradientBrush.GradientUnit);
             if (immutableTransform == null)
             {
                 return;
@@ -169,14 +181,28 @@ namespace Nlnet.Avalonia.Svg
 
         /// <summary>
         /// Get the immutable transform for brush. Note that the brush coordinate system is
-        /// relative to the origin of the <see cref="DrawingContext"/>.
+        /// relative to the origin of the <see cref="DrawingContext"/> canvas in avalonia.
         /// </summary>
+        /// <param name="gradientUnit"></param>
         /// <returns></returns>
-        protected virtual ImmutableTransform? GetBrushTransform()
+        protected virtual ImmutableTransform? GetBrushTransform(GradientUnit gradientUnit)
         {
-            var t1 = Transform?.Value ?? Matrix.Identity;
-            var t2 = new Matrix(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, this.Bounds.Left, this.Bounds.Top, 1.0);
-            return new ImmutableTransform(t1 * t2);
+            switch (gradientUnit)
+            {
+                case GradientUnit.objectBoundingBox:
+                {
+                    var t1 = Transform?.Value ?? Matrix.Identity;
+                    var t2 = new Matrix(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, this.Bounds.Left, this.Bounds.Top, 1.0);
+                    return new ImmutableTransform(t1 * t2);
+                }
+                case GradientUnit.userSpaceOnUse:
+                {
+                    var t1 = Transform?.Value ?? Matrix.Identity;
+                    return new ImmutableTransform(t1);
+                }
+            }
+
+            return null;
         }
     }
 }

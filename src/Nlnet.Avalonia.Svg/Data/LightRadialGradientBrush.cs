@@ -51,7 +51,7 @@ namespace Nlnet.Avalonia.Svg
         /// Initializes a new instance of the Avalonia.Media.Immutable.LightRadialGradientBrush class.
         /// </summary>
         /// <param name="source">The brush from which this brush's properties should be copied.</param>
-        public LightRadialGradientBrush(IRadialGradientBrush source)
+        public LightRadialGradientBrush(LightRadialGradientBrush source)
             : base(source)
         {
             Center = source.Center;

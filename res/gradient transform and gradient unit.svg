@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="linearGradient-1" x1="0%" y1="0%" x2="100%" y2="0%" spreadMethod="pad">
+            <stop offset="40%" stop-color="red"></stop>
+            <stop offset="60%" stop-color="green"></stop>
+        </linearGradient>
+        <linearGradient id="linearGradient-2" x1="0%" y1="0%" x2="100" y2="0%" spreadMethod="pad" gradientUnits="userSpaceOnUse">
+            <stop offset="40%" stop-color="red"></stop>
+            <stop offset="60%" stop-color="green"></stop>
+        </linearGradient>
+    </defs>
+
+    <g transform="translate(-20,0)">
+        <g transform="translate(10,0)">
+            <rect x="30" y="0" width="100" height="100" fill="url(#linearGradient-1)" stroke="blue" transform="translate(30,0)"/>
+            <rect x="30" y="120" width="100" height="100" fill="url(#linearGradient-2)" stroke="blue" transform="translate(30,0)"/>
+        </g>
+    </g>
+
+</svg>

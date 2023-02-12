@@ -62,6 +62,12 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
             return _brush;
         }
 
+        // The 'userSpaceOnUse' use absolute coordinate. And the 'objectBoundingBox' use
+        // relative (percentage) value.
+        var relativeUnit = GradientUnits is GradientUnit.objectBoundingBox or null
+            ? RelativeUnit.Relative
+            : RelativeUnit.Absolute;
+
         // ref https://www.w3.org/TR/SVG2/pservers.html#LinearGradientElementX1Attribute
         var gradientBrush = new LightLinearGradientBrush(
             gradientStops: Children?.OfType<SvgStop>().Select(s => s.GradientStop).ToList() ?? new List<ImmutableGradientStop>(),
@@ -69,10 +75,10 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
             transform: null,
             transformOrigin: null,
             spreadMethod: GradientSpreadMethod ?? global::Avalonia.Media.GradientSpreadMethod.Pad,
-            startPoint: new RelativePoint(X1 ?? 0, Y1 ?? 0, RelativeUnit.Relative),
-            endPoint: new RelativePoint(X2   ?? 1, Y2 ?? 0, RelativeUnit.Relative))
+            startPoint: new RelativePoint(X1 ?? 0, Y1 ?? 0, relativeUnit),
+            endPoint: new RelativePoint(X2   ?? 1, Y2 ?? 0, relativeUnit))
         {
-            Unit = GradientUnits ?? GradientUnit.objectBoundingBox
+            GradientUnit = GradientUnits ?? GradientUnit.objectBoundingBox
         };
 
         return _brush = gradientBrush;
