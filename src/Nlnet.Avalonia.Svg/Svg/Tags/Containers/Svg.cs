@@ -66,7 +66,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
         {
             using (dc.PushSetTransform(_alignTransform?.Value ?? Matrix.Identity))
             {
-                this.Children?.Render(dc);
+                this.Children?.RenderRecursively(dc);
             }
         }
     }

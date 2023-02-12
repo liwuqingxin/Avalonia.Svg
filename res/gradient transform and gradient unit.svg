@@ -4,7 +4,7 @@
             <stop offset="40%" stop-color="red"></stop>
             <stop offset="60%" stop-color="green"></stop>
         </linearGradient>
-        <linearGradient id="linearGradient-2" x1="0%" y1="0%" x2="100" y2="0%" spreadMethod="pad" gradientUnits="userSpaceOnUse">
+        <linearGradient id="linearGradient-2" x1="0%" y1="0%" x2="100" y2="0%" spreadMethod="pad" gradientUnits="userSpaceOnUse" gradientTransform="scale(2)">
             <stop offset="40%" stop-color="red"></stop>
             <stop offset="60%" stop-color="green"></stop>
         </linearGradient>

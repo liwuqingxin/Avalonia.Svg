@@ -86,7 +86,7 @@ namespace Nlnet.Avalonia.Svg
         /// </summary>
         /// <param name="children"></param>
         /// <param name="dc"></param>
-        public static void Render(this List<ISvgTag>? children, DrawingContext dc)
+        public static void RenderRecursively(this List<ISvgTag>? children, DrawingContext dc)
         {
             children?.ForEach(c => c.VisitSvgTagTree(tag =>
             {

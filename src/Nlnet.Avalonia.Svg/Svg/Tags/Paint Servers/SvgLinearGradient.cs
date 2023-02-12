@@ -14,7 +14,8 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
     IY1Setter, 
     IY2Setter,
     IGradientSpreadMethodSetter,
-    IGradientUnitsSetter
+    IGradientUnitsSetter,
+    IGradientTransformSetter
 {
     private LightBrush? _brush;
 
@@ -44,6 +45,11 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
         set;
     }
     public GradientUnit? GradientUnits
+    {
+        get;
+        set;
+    }
+    public Transform? GradientTransform
     {
         get;
         set;
@@ -78,7 +84,8 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
             startPoint: new RelativePoint(X1 ?? 0, Y1 ?? 0, relativeUnit),
             endPoint: new RelativePoint(X2   ?? 1, Y2 ?? 0, relativeUnit))
         {
-            GradientUnit = GradientUnits ?? GradientUnit.objectBoundingBox
+            GradientUnit = GradientUnits ?? GradientUnit.objectBoundingBox,
+            Transform = GradientTransform,
         };
 
         return _brush = gradientBrush;

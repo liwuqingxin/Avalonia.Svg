@@ -87,6 +87,7 @@ public static class SvgProperties
     public const string Transform            = "transform";
     public const string GradientSpreadMethod = "spreadMethod";
     public const string GradientUnits        = "gradientUnits";
+    public const string GradientTransform    = "gradientTransform";
 
 }
 

@@ -15,7 +15,7 @@ public class SvgGroup : SvgContainer, ISvgRenderable
         {
             using (dc.PushSetTransform(Transform?.Value ?? Matrix.Identity))
             {
-                this.Children?.Render(dc);
+                this.Children?.RenderRecursively(dc);
             }
         }
     }
