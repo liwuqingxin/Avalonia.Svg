@@ -47,7 +47,7 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
     {
         public string PropertyName { get; set; }
 
-        public string PropertyTypeName { get; set; }
+        public Type PropertyType { get; set; }
 
         public string DefaultValue { get; set; }
 
@@ -55,10 +55,10 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
 
         public string ParserMethodName { get; set; }
 
-        public SetterGeneratorAttribute(string propertyName, string propertyTypeName, string defaultValue, bool isNullable = true)
+        public SetterGeneratorAttribute(string propertyName, Type propertyType, string defaultValue, bool isNullable = true)
         {
             PropertyName = propertyName;
-            PropertyTypeName = propertyTypeName;
+            PropertyType = propertyType;
             DefaultValue = defaultValue;
             IsNullable = isNullable;
         }
@@ -67,7 +67,7 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
 
         public void Initialize(GeneratorInitializationContext context)
         {
-            //Debugger.Launch();
+            Debugger.Launch();
 
             // 注册一个语法接收器，会在每次生成时被创建
             context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
@@ -138,6 +138,10 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
             var propertyType     = attributeData.ConstructorArguments[1].Value?.ToString();
             var defaultValue     = attributeData.ConstructorArguments[2].Value?.ToString();
             var isNullable       = attributeData.ConstructorArguments[3].Value?.ToString();
+
+            //TypedConstant property2 = attributeData.NamedArguments[1].Value;
+            //var typeString = property2.Value.GetType().ToString();
+
             var parserMethodName = propertyType;
             if (attributeData.NamedArguments.Length > 0)
             {
