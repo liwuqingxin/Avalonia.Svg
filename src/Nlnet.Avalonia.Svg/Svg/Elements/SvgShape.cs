@@ -162,8 +162,6 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            // 2. userSpaceOnUse将父容器的Bounds作为坐标系（不受transform，无论父级还是自己的影响，受自己的Bounds位置影响）；
-            //    objectBoundingBox则使用自己的Bounds作为坐标系；
             var immutableTransform = GetBrushTransform(gradientBrush.GradientUnit);
             if (immutableTransform == null)
             {
@@ -189,6 +187,9 @@ namespace Nlnet.Avalonia.Svg
         {
             switch (gradientUnit)
             {
+                // The userSpaceOnUse uses container's bounds as coordinate system.
+                // The objectBoundingBox uses the element that is to be rendered with gradient
+                // brush as coordinate system.
                 case GradientUnit.objectBoundingBox:
                 {
                     var t1 = Transform?.Value ?? Matrix.Identity;

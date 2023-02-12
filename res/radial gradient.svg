@@ -1,0 +1,35 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <title>Example radgrad01</title>
+  <desc>Fill a rectangle by referencing a radial gradient paint server.</desc>
+
+  <!-- fx="150" fy="100" fr="0" -->
+
+  <defs>
+    <radialGradient id="MyGradient1" gradientUnits="userSpaceOnUse" cx="50" cy="100" r="40">
+      <stop offset="0%" stop-color="#A8F" />
+      <stop offset="50%" stop-color="#FDC" />
+      <stop offset="100%" stop-color="#A8F" />
+    </radialGradient>
+
+    <radialGradient id="MyGradient2" gradientUnits="objectBoundingBox" cx="50%" cy="50%" r="0.5" gradientTransform="rotate(20)">
+      <stop offset="0%" stop-color="#A8F" />
+      <stop offset="50%" stop-color="#FDC" />
+      <stop offset="100%" stop-color="#A8F" />
+    </radialGradient>
+
+    <radialGradient id="MyGradient3" gradientUnits="objectBoundingBox" cx="50%" cy="50%" r="0.5"
+        fx="0.5" fy="0.1" fr="0.1">
+      <stop offset="0%" stop-color="#A8F" />
+      <stop offset="50%" stop-color="#FDC" />
+      <stop offset="100%" stop-color="#A8F" />
+    </radialGradient>
+  </defs>
+
+  <!-- The rectangle is filled using a radial gradient paint server -->
+  <g>
+    <rect fill="url(#MyGradient1)" stroke="black" stroke-width="2" x="0" y="25" width="250" height="150"/>
+    <rect fill="url(#MyGradient2)" stroke="black" stroke-width="2" x="0" y="225" width="250" height="150"/>
+    <rect fill="url(#MyGradient3)" stroke="black" stroke-width="2" x="0" y="425" width="150" height="150"/>
+  </g>
+</svg>

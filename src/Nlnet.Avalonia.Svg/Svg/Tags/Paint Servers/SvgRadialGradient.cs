@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Numerics;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
@@ -9,34 +7,40 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[TagFactoryGenerator(nameof(SvgTags.linearGradient))]
-public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
-    IX1Setter,
-    IX2Setter,
-    IY1Setter,
-    IY2Setter,
+[TagFactoryGenerator(nameof(SvgTags.radialGradient))]
+public class SvgRadialGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
+    ICXSetter,
+    ICYSetter,
+    IRSetter,
+    IFXSetter,
+    IFYSetter,
     IGradientSpreadMethodSetter,
     IGradientUnitsSetter,
     IGradientTransformSetter
 {
     private LightBrush? _brush;
 
-    public double? X1
+    public double? CX
     {
         get;
         set;
     }
-    public double? X2
+    public double? CY
     {
         get;
         set;
     }
-    public double? Y1
+    public double? R
     {
         get;
         set;
     }
-    public double? Y2
+    public double? FX
+    {
+        get;
+        set;
+    }
+    public double? FY
     {
         get;
         set;
@@ -59,8 +63,8 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
 
     string? ISvgBrushProvider.Id
     {
-        get => ((IIdSetter) this).Id;
-        set => ((IIdSetter) this).Id = value;
+        get => ((IIdSetter)this).Id;
+        set => ((IIdSetter)this).Id = value;
     }
 
     LightBrush ISvgBrushProvider.GetBrush()
@@ -102,15 +106,26 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
             ? RelativeUnit.Relative
             : RelativeUnit.Absolute;
 
+        var spreadMethod = GradientSpreadMethod ?? global::Avalonia.Media.GradientSpreadMethod.Pad;
+        
+        var cx = CX ?? 0.5;
+        var cy = CY ?? 0.5;
+        var rx = FX ?? cx;
+        var ry = FY ?? cy;
+        
+        // Avalonia does not support different value for vertical and horizontal direction.
+        var r = R ?? 0.5; 
+
         // ref https://www.w3.org/TR/SVG2/pservers.html#LinearGradientElementX1Attribute
-        var gradientBrush = new LightLinearGradientBrush(
+        var gradientBrush = new LightRadialGradientBrush(
             gradientStops: Children?.OfType<SvgStop>().Select(s => s.GradientStop).ToList() ?? new List<ImmutableGradientStop>(),
             opacity: 1,
             transform: GradientTransform,
             transformOrigin: null,
-            spreadMethod: GradientSpreadMethod ?? global::Avalonia.Media.GradientSpreadMethod.Pad,
-            startPoint: new RelativePoint(X1 ?? 0, Y1 ?? 0, relativeUnit),
-            endPoint: new RelativePoint(X2   ?? 1, Y2 ?? 0, relativeUnit))
+            spreadMethod: spreadMethod,
+            center: new RelativePoint(cx, cy, relativeUnit),
+            gradientOrigin: new RelativePoint(rx, ry, relativeUnit),
+            radius:r)
         {
             GradientUnit = GradientUnits ?? GradientUnit.objectBoundingBox,
         };

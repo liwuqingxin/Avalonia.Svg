@@ -31,6 +31,7 @@ public static class SvgDefaultValues
 {
     public const string Null                          = "null";
     public const string Zero                          = "0d";
+    public const string Half                          = "0.5d";
     public const string One                           = "1d";
     public const string Four                          = "4d";
     public const string BrushBlack                    = "new LightSolidColorBrush(Colors.Black)";
@@ -75,6 +76,8 @@ public static class SvgProperties
     public const string CY                   = "cy";
     public const string RX                   = "rx";
     public const string RY                   = "ry";
+    public const string FX                   = "fx";
+    public const string FY                   = "fy";
     public const string X                    = "x";
     public const string Y                    = "y";
     public const string X1                   = "x1";
