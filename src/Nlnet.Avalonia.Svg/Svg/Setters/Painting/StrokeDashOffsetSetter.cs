@@ -2,7 +2,7 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.StrokeDashOffset), typeof(double), SvgDefaultValues.Zero, false)]
+[SetterGenerator(typeof(double), SvgDefaultValues.Zero, false)]
 public class StrokeDashOffsetSetter : AbstractDoubleSetter
 {
     public override void Set(ISvgTag tag)

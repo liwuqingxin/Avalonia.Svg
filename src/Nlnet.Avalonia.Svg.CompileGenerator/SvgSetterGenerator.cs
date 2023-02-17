@@ -45,8 +45,6 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     internal sealed class SetterGeneratorAttribute : Attribute
     {
-        public string PropertyName { get; set; }
-
         public Type PropertyType { get; set; }
 
         public string DefaultValue { get; set; }
@@ -55,9 +53,8 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
 
         public string ParserMethodName { get; set; }
 
-        public SetterGeneratorAttribute(string propertyName, Type propertyType, string defaultValue, bool isNullable = true)
+        public SetterGeneratorAttribute(Type propertyType, string defaultValue, bool isNullable = true)
         {
-            PropertyName = propertyName;
             PropertyType = propertyType;
             DefaultValue = defaultValue;
             IsNullable = isNullable;
@@ -134,10 +131,10 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
             }
 
             var namespaceName    = classSymbol.ContainingNamespace.ToDisplayString();
-            var property         = attributeData.ConstructorArguments[0].Value?.ToString();
-            var propertyType     = attributeData.ConstructorArguments[1].Value?.ToString();
-            var defaultValue     = attributeData.ConstructorArguments[2].Value?.ToString();
-            var isNullable       = attributeData.ConstructorArguments[3].Value?.ToString();
+            var property         = classSymbol.Name.Remove(classSymbol.Name.Length - 6, 6);
+            var propertyType     = attributeData.ConstructorArguments[0].Value?.ToString();
+            var defaultValue     = attributeData.ConstructorArguments[1].Value?.ToString();
+            var isNullable       = attributeData.ConstructorArguments[2].Value?.ToString();
             var parserMethodName = propertyType;
             if (parserMethodName != null && parserMethodName.Contains("."))
             {

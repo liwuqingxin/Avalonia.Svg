@@ -2,7 +2,7 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.Stroke), typeof(LightBrush), SvgDefaultValues.BrushTransparent)]
+[SetterGenerator(typeof(LightBrush), SvgDefaultValues.BrushTransparent)]
 public class StrokeSetter : AbstractBrushSetter
 {
     public override void Set(ISvgTag tag)

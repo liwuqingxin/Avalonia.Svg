@@ -2,7 +2,7 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.Points), typeof(PointList), SvgDefaultValues.Null, false)]
+[SetterGenerator(typeof(PointList), SvgDefaultValues.Null, false)]
 public class PointsSetter : AbstractPointsSetter
 {
     public override void Set(ISvgTag tag)

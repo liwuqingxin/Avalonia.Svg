@@ -8,7 +8,7 @@ public enum GradientUnit
     userSpaceOnUse = 1,
 }
 
-[SetterGenerator(nameof(SvgProperties.GradientUnits), typeof(GradientUnit), SvgDefaultValues.GradientUnitObjectBoundingBox, false)]
+[SetterGenerator(typeof(GradientUnit), SvgDefaultValues.GradientUnitObjectBoundingBox, false)]
 public class GradientUnitsSetter : AbstractEnumSetter<GradientUnit>
 {
     public override void Set(ISvgTag tag)

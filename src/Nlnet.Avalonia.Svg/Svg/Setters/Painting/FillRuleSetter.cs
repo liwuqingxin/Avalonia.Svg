@@ -3,7 +3,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.FillRule), typeof(FillRule), SvgDefaultValues.FillRuleNonZero, false)]
+[SetterGenerator(typeof(FillRule), SvgDefaultValues.FillRuleNonZero, false)]
 public class FillRuleSetter : AbstractEnumSetter<FillRule>
 {
     public override void Set(ISvgTag tag)

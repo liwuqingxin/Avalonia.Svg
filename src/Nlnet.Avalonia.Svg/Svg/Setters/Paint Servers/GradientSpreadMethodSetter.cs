@@ -3,7 +3,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.GradientSpreadMethod), typeof(GradientSpreadMethod), SvgDefaultValues.GradientSpreadMethodPad, false)]
+[SetterGenerator(typeof(GradientSpreadMethod), SvgDefaultValues.GradientSpreadMethodPad, false)]
 public class GradientSpreadMethodSetter : AbstractEnumSetter<GradientSpreadMethod>
 {
     public override void Set(ISvgTag tag)

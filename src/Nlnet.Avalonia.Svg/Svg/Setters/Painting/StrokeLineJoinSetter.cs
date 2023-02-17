@@ -3,7 +3,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.StrokeLineJoin), typeof(PenLineJoin), SvgDefaultValues.PenLineJoinNonZero, false)]
+[SetterGenerator(typeof(PenLineJoin), SvgDefaultValues.PenLineJoinNonZero, false)]
 public class StrokeLineJoinSetter : AbstractEnumSetter<PenLineJoin>
 {
     public override void Set(ISvgTag tag)

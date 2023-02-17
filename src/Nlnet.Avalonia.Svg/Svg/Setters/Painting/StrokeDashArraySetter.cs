@@ -2,7 +2,7 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.StrokeDashArray), typeof(DoubleList), SvgDefaultValues.Null)]
+[SetterGenerator(typeof(DoubleList), SvgDefaultValues.Null)]
 public class StrokeDashArraySetter : AbstractDoubleListSetter
 {
     public override void Set(ISvgTag tag)

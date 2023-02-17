@@ -3,7 +3,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.Data), typeof(Geometry), SvgDefaultValues.Null)]
+[SetterGenerator(typeof(Geometry), SvgDefaultValues.Null)]
 public class DataSetter : AbstractGeometrySetter
 {
     public override void Set(ISvgTag tag)
