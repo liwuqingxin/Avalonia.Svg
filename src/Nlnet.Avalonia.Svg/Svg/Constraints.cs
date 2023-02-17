@@ -7,18 +7,18 @@
 /// </summary>
 public static class SvgDefaultValues
 {
-    public const string Null                          = "null";
-    public const string Zero                          = "0d";
-    public const string Half                          = "0.5d";
-    public const string One                           = "1d";
-    public const string Four                          = "4d";
-    public const string BrushBlack                    = "new LightSolidColorBrush(Colors.Black)";
-    public const string BrushTransparent              = "Brushes.Transparent";
-    public const string FillRuleNonZero               = "global::Avalonia.Media.FillRule.NonZero";
-    public const string PenLineCapNonZero             = "global::Avalonia.Media.PenLineCap.Flat";
-    public const string PenLineJoinNonZero            = "global::Avalonia.Media.PenLineJoin.Miter";
-    public const string GradientSpreadMethodPad       = "global::Avalonia.Media.GradientSpreadMethod.Pad";
-    public const string GradientUnitObjectBoundingBox = "global::Nlnet.Avalonia.Svg.GradientUnit.objectBoundingBox";
+    public const string Null                         = "null";
+    public const string Zero                         = "0d";
+    public const string Half                         = "0.5d";
+    public const string One                          = "1d";
+    public const string Four                         = "4d";
+    public const string BrushBlack                   = "new LightSolidColorBrush(Colors.Black)";
+    public const string BrushTransparent             = "Brushes.Transparent";
+    public const string FillRuleNonZero              = "global::Avalonia.Media.FillRule.NonZero";
+    public const string PenLineCapNonZero            = "global::Avalonia.Media.PenLineCap.Flat";
+    public const string PenLineJoinNonZero           = "global::Avalonia.Media.PenLineJoin.Miter";
+    public const string GradientSpreadMethodPad      = "global::Avalonia.Media.GradientSpreadMethod.Pad";
+    public const string SvgUnitObjectBoundingBox     = "global::Nlnet.Avalonia.Svg.SvgUnit.objectBoundingBox";
 }
 
 /// <summary>
@@ -70,7 +70,9 @@ public static class SvgProperties
     public const string GradientSpreadMethod = "spreadMethod";
     public const string GradientUnits        = "gradientUnits";
     public const string GradientTransform    = "gradientTransform";
-
+    public const string PatternUnits         = "patternUnits";
+    public const string PatternContentUnits  = "patternContentUnits";
+    public const string PatternTransform     = "patternTransform";
 }
 
 /// <summary>

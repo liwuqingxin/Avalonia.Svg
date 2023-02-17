@@ -56,7 +56,7 @@ public class SvgRadialGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
         get;
         set;
     }
-    public GradientUnit? GradientUnits
+    public SvgUnit? GradientUnits
     {
         get;
         set;
@@ -108,7 +108,7 @@ public class SvgRadialGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
         // user coordinate system.
         //
         // TODO 在userSpaceOnUse下，暂时没有处理%值，应该从ViewBox中取Bounds，按照这个计算百分比
-        var relativeUnit = GradientUnits is GradientUnit.objectBoundingBox or null
+        var relativeUnit = GradientUnits is SvgUnit.objectBoundingBox or null
             ? RelativeUnit.Relative
             : RelativeUnit.Absolute;
 
@@ -145,7 +145,7 @@ public class SvgRadialGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
             gradientOrigin: new RelativePoint(rx, ry, relativeUnit),
             radius:r)
         {
-            GradientUnit = GradientUnits ?? GradientUnit.objectBoundingBox,
+            GradientUnit = GradientUnits ?? SvgUnit.objectBoundingBox,
         };
 
         return _brush = gradientBrush;

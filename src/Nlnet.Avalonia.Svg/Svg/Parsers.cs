@@ -561,24 +561,24 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
-        /// Convert value string to <see cref="GradientUnit"/>.
+        /// Convert value string to <see cref="SvgUnit"/>.
         /// </summary>
         /// <param name="valueString"></param>
         /// <returns></returns>
-        public static GradientUnit ToGradientUnit(this string valueString)
+        public static SvgUnit ToSvgUnit(this string valueString)
         {
-            return Enum.Parse<GradientUnit>(valueString);
+            return Enum.Parse<SvgUnit>(valueString);
         }
 
         /// <summary>
-        /// Try to convert value string to <see cref="GradientUnit"/>.
+        /// Try to convert value string to <see cref="SvgUnit"/>.
         /// </summary>
         /// <param name="valueString"></param>
         /// <param name="gradientUnit"></param>
         /// <returns></returns>
-        public static bool TryToGradientUnit(this string valueString, out GradientUnit gradientUnit)
+        public static bool TryToSvgUnit(this string valueString, out SvgUnit gradientUnit)
         {
-            return Enum.TryParse<GradientUnit>(valueString, out gradientUnit);
+            return Enum.TryParse<SvgUnit>(valueString, out gradientUnit);
         }
     }
 }

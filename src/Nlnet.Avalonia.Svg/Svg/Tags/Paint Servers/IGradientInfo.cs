@@ -2,5 +2,5 @@
 
 public interface IGradientInfo
 {
-    public GradientUnit GradientUnit { get; }
+    public SvgUnit GradientUnit { get; }
 }

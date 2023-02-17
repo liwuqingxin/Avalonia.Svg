@@ -3,16 +3,16 @@
 namespace Nlnet.Avalonia.Svg;
 
 [SetterGenerator(typeof(SvgUnit), SvgDefaultValues.SvgUnitObjectBoundingBox, false)]
-public class GradientUnitsSetter : AbstractEnumSetter<SvgUnit>
+public class PatternContentUnitsSetter : AbstractEnumSetter<SvgUnit>
 {
     public override void Set(ISvgTag tag)
     {
-        if (tag is not IGradientUnitsSetter setter)
+        if (tag is not IPatternContentUnitsSetter setter)
         {
             return;
         }
 
-        setter.GradientUnits = Value;
+        setter.PatternContentUnits = Value;
     }
 
     public override void InitializeValue(string setterValue)

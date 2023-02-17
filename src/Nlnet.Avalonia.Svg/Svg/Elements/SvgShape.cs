@@ -183,20 +183,20 @@ namespace Nlnet.Avalonia.Svg
         /// </summary>
         /// <param name="gradientUnit"></param>
         /// <returns></returns>
-        protected virtual ImmutableTransform? GetBrushTransform(GradientUnit gradientUnit)
+        protected virtual ImmutableTransform? GetBrushTransform(SvgUnit gradientUnit)
         {
             switch (gradientUnit)
             {
                 // The userSpaceOnUse uses container's bounds as coordinate system.
                 // The objectBoundingBox uses the element that is to be rendered with gradient
                 // brush as coordinate system.
-                case GradientUnit.objectBoundingBox:
+                case SvgUnit.objectBoundingBox:
                 {
                     var t1 = Transform?.Value ?? Matrix.Identity;
                     var t2 = new Matrix(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, this.Bounds.Left, this.Bounds.Top, 1.0);
                     return new ImmutableTransform(t1 * t2);
                 }
-                case GradientUnit.userSpaceOnUse:
+                case SvgUnit.userSpaceOnUse:
                 {
                     var t1 = Transform?.Value ?? Matrix.Identity;
                     return new ImmutableTransform(t1);

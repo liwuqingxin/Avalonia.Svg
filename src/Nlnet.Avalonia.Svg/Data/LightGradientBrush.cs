@@ -32,7 +32,7 @@ namespace Nlnet.Avalonia.Svg
             this.TransformOrigin = transformOrigin ?? RelativePoint.TopLeft;
             this.SpreadMethod    = spreadMethod;
 
-            this.GradientUnit = GradientUnit.objectBoundingBox;
+            this.GradientUnit = SvgUnit.objectBoundingBox;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Nlnet.Avalonia.Svg
 
         #region IGradientInfo
 
-        public GradientUnit GradientUnit { get; init; }
+        public SvgUnit GradientUnit { get; init; }
 
         #endregion
     }
