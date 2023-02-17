@@ -3,28 +3,6 @@
 // ReSharper disable IdentifierTypo
 
 /// <summary>
-/// All svg property types.
-/// </summary>
-public static class SvgTypes
-{
-    public const string Double               = "double";
-    public const string Bool                 = "bool";
-    public const string Int                  = "int";
-    public const string String               = "string";
-    public const string Brush                = nameof(global::Nlnet.Avalonia.Svg.LightBrush);
-    public const string Thickness            = nameof(global::Avalonia.Thickness);
-    public const string Geometry             = nameof(global::Avalonia.Media.Geometry);
-    public const string Transform            = nameof(global::Avalonia.Media.Transform);
-    public const string FillRule             = nameof(global::Avalonia.Media.FillRule);
-    public const string PenLineCap           = nameof(global::Avalonia.Media.PenLineCap);
-    public const string PenLineJoin          = nameof(global::Avalonia.Media.PenLineJoin);
-    public const string GradientSpreadMethod = nameof(global::Avalonia.Media.GradientSpreadMethod);
-    public const string PointList            = nameof(global::Nlnet.Avalonia.Svg.PointList);
-    public const string DoubleList           = nameof(global::Nlnet.Avalonia.Svg.DoubleList);
-    public const string GradientUnit         = nameof(global::Nlnet.Avalonia.Svg.GradientUnit);
-}
-
-/// <summary>
 /// Svg property default value strings.
 /// </summary>
 public static class SvgDefaultValues

@@ -3,7 +3,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.StrokeLineCap), SvgTypes.PenLineCap, SvgDefaultValues.PenLineCapNonZero, false)]
+[SetterGenerator(nameof(SvgProperties.StrokeLineCap), typeof(PenLineCap), SvgDefaultValues.PenLineCapNonZero, false)]
 public class StrokeLineCapSetter : AbstractEnumSetter<PenLineCap>
 {
     public override void Set(ISvgTag tag)

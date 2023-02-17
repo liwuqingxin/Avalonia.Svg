@@ -67,7 +67,7 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
 
         public void Initialize(GeneratorInitializationContext context)
         {
-            Debugger.Launch();
+            //Debugger.Launch();
 
             // 注册一个语法接收器，会在每次生成时被创建
             context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
@@ -138,11 +138,12 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
             var propertyType     = attributeData.ConstructorArguments[1].Value?.ToString();
             var defaultValue     = attributeData.ConstructorArguments[2].Value?.ToString();
             var isNullable       = attributeData.ConstructorArguments[3].Value?.ToString();
-
-            //TypedConstant property2 = attributeData.NamedArguments[1].Value;
-            //var typeString = property2.Value.GetType().ToString();
-
             var parserMethodName = propertyType;
+            if (parserMethodName != null && parserMethodName.Contains("."))
+            {
+                var index = parserMethodName.LastIndexOf(".", StringComparison.Ordinal);
+                parserMethodName = parserMethodName.Substring(index+1);
+            }
             if (attributeData.NamedArguments.Length > 0)
             {
                 var typedConstant = attributeData.NamedArguments
@@ -150,9 +151,12 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
                     .FirstOrDefault(tuple => tuple.Key == SetterGeneratorAttributeParserMethodName).Value;
                 parserMethodName = typedConstant.Value?.ToString();
             }
-
-            propertyType     = Capitalize(propertyType);
             parserMethodName = Capitalize(parserMethodName);
+
+            if (propertyType != null && propertyType.Contains("."))
+            {
+                propertyType = $"global::{propertyType}";
+            }
             var nullablePropertyType = isNullable == true.ToString() ? $"{propertyType}?" : propertyType;
 
             // 开始构建要生成的代码

@@ -1,8 +1,9 @@
 ﻿using Nlnet.Avalonia.Svg.CompileGenerator;
+using System;
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.Id), SvgTypes.String, SvgDefaultValues.Null)]
+[SetterGenerator(nameof(SvgProperties.Id), typeof(string), SvgDefaultValues.Null)]
 public class IdSetter : AbstractStringSetter
 {
     public override void Set(ISvgTag tag)

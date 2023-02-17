@@ -1,8 +1,9 @@
-﻿using Nlnet.Avalonia.Svg.CompileGenerator;
+﻿using Avalonia.Media;
+using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.Data), SvgTypes.Geometry, SvgDefaultValues.Null)]
+[SetterGenerator(nameof(SvgProperties.Data), typeof(Geometry), SvgDefaultValues.Null)]
 public class DataSetter : AbstractGeometrySetter
 {
     public override void Set(ISvgTag tag)

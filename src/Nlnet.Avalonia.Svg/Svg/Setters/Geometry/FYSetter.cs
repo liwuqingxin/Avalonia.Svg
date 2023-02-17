@@ -2,7 +2,7 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(nameof(SvgProperties.FY), SvgTypes.Double, SvgDefaultValues.Half, false)]
+[SetterGenerator(nameof(SvgProperties.FY), typeof(double), SvgDefaultValues.Half, false)]
 public class FYSetter : AbstractDoubleSetter
 {
     public override void Set(ISvgTag tag)
