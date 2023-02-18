@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using System.Linq;
-using System.Numerics;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
@@ -10,14 +8,16 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.linearGradient))]
-public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
+public class SvgLinearGradient : SvgPaintServer, ISvgPaintServer, ISvgBrushProvider,
     IX1Setter,
     IX2Setter,
     IY1Setter,
     IY2Setter,
     IGradientSpreadMethodSetter,
     IGradientUnitsSetter,
-    IGradientTransformSetter
+    IGradientTransformSetter,
+    IHrefSetter,
+    IXHrefSetter
 {
     private LightBrush? _brush;
 
@@ -56,6 +56,54 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
         get;
         set;
     }
+    string? IHrefSetter.Href
+    {
+        get;
+        set;
+    }
+    public string? XHref
+    {
+        get;
+        set;
+    }
+
+
+
+    protected override string? Href => ((IHrefSetter)this).Href ?? XHref;
+
+    protected override void EnsureTemplateCore(ISvgContext context, SvgPaintServer paintServer)
+    {
+        var template = (SvgLinearGradient)paintServer;
+
+        if (X1 == null && template.X1 != null) X1 = template.X1;
+        if (X2 == null && template.X2 != null) X2 = template.X2;
+        if (Y1 == null && template.Y1 != null) Y1 = template.Y1;
+        if (Y2 == null && template.Y2 != null) Y2 = template.Y2;
+
+        if (GradientUnits == null && template.GradientUnits != null)
+        {
+            GradientUnits = template.GradientUnits;
+        }
+        if (GradientTransform == null && template.GradientTransform != null)
+        {
+            GradientTransform = template.GradientTransform;
+        }
+        if (GradientSpreadMethod == null && template.GradientSpreadMethod != null)
+        {
+            GradientSpreadMethod = template.GradientSpreadMethod;
+        }
+
+        var stops = Children?.OfType<SvgStop>().ToList();
+        var templateStops = template.Children?.OfType<SvgStop>().ToList();
+        if ((stops == null || stops.Count == 0) && templateStops is { Count: >= 0 })
+        {
+            Children = template.Children;
+        }
+    }
+
+
+
+    #region ISvgBrushProvider
 
     string? ISvgBrushProvider.Id
     {
@@ -63,12 +111,14 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
         set => ((IIdSetter) this).Id = value;
     }
 
-    LightBrush ISvgBrushProvider.GetBrush()
+    LightBrush ISvgBrushProvider.GetBrush(ISvgContext context)
     {
         if (_brush != null)
         {
             return _brush;
         }
+
+        EnsureTemplate(context);
 
         //
         // ref https://www.w3.org/TR/SVG2/pservers.html#LinearGradientAttributes
@@ -117,4 +167,6 @@ public class SvgLinearGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
 
         return _brush = gradientBrush;
     }
+
+    #endregion
 }

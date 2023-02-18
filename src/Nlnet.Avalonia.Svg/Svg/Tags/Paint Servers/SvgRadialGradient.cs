@@ -8,7 +8,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.radialGradient))]
-public class SvgRadialGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
+public class SvgRadialGradient : SvgPaintServer, ISvgPaintServer, ISvgBrushProvider,
     ICXSetter,
     ICYSetter,
     IRSetter,
@@ -17,7 +17,9 @@ public class SvgRadialGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
     IFRSetter,
     IGradientSpreadMethodSetter,
     IGradientUnitsSetter,
-    IGradientTransformSetter
+    IGradientTransformSetter,
+    IHrefSetter,
+    IXHrefSetter
 {
     private LightBrush? _brush;
 
@@ -66,6 +68,56 @@ public class SvgRadialGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
         get;
         set;
     }
+    string? IHrefSetter.Href
+    {
+        get;
+        set;
+    }
+    public string? XHref
+    {
+        get;
+        set;
+    }
+
+
+
+    protected override string? Href => ((IHrefSetter)this).Href ?? XHref;
+
+    protected override void EnsureTemplateCore(ISvgContext context, SvgPaintServer paintServer)
+    {
+        var template = (SvgRadialGradient)paintServer;
+
+        if (CX == null && template.CX != null) CX = template.CX;
+        if (CY == null && template.CY != null) CY = template.CY;
+        if (R  == null && template.R  != null) R  = template.R;
+        if (FX == null && template.FX != null) FX = template.FX;
+        if (FY == null && template.FY != null) FY = template.FY;
+        if (FR == null && template.FR != null) FR = template.FR;
+
+        if (GradientUnits == null && template.GradientUnits != null)
+        {
+            GradientUnits = template.GradientUnits;
+        }
+        if (GradientTransform == null && template.GradientTransform != null)
+        {
+            GradientTransform = template.GradientTransform;
+        }
+        if (GradientSpreadMethod == null && template.GradientSpreadMethod != null)
+        {
+            GradientSpreadMethod = template.GradientSpreadMethod;
+        }
+
+        var stops         = Children?.OfType<SvgStop>().ToList();
+        var templateStops = template.Children?.OfType<SvgStop>().ToList();
+        if ((stops == null || stops.Count == 0) && templateStops is { Count: >= 0 })
+        {
+            Children = template.Children;
+        }
+    }
+
+
+
+    #region ISvgBrushProvider
 
     string? ISvgBrushProvider.Id
     {
@@ -73,12 +125,14 @@ public class SvgRadialGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
         set => ((IIdSetter)this).Id = value;
     }
 
-    LightBrush ISvgBrushProvider.GetBrush()
+    LightBrush ISvgBrushProvider.GetBrush(ISvgContext context)
     {
         if (_brush != null)
         {
             return _brush;
         }
+
+        EnsureTemplate(context);
 
         //
         // ref https://www.w3.org/TR/SVG2/pservers.html#LinearGradientAttributes
@@ -150,4 +204,6 @@ public class SvgRadialGradient : SvgTagBase, ISvgPaintServer, ISvgBrushProvider,
 
         return _brush = gradientBrush;
     }
+
+    #endregion
 }

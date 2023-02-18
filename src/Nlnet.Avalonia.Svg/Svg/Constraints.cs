@@ -26,7 +26,8 @@ public static class SvgDefaultValues
 /// </summary>
 public static class SvgProperties
 {
-    public const string Href                 = "xlink:href";
+    public const string Href                 = "href";
+    public const string XHref                = "xlink:href";
     public const string Class                = "class";
     public const string Id                   = "id";
     public const string Version              = "version";

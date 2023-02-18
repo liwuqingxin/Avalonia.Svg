@@ -19,6 +19,11 @@ public interface ISvgContext
     public IReadOnlyDictionary<string, LightBrush> Brushes { get; }
 
     /// <summary>
+    /// All tags that have a id.
+    /// </summary>
+    public IReadOnlyDictionary<string, ISvgTag> IdTags { get; }
+
+    /// <summary>
     /// All renderable elements.
     /// </summary>
     public IReadOnlyList<ISvgRenderable> Renderables { get; }

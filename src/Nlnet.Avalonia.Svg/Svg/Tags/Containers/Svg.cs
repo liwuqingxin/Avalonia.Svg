@@ -42,6 +42,8 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
 
     private Dictionary<string, LightBrush> Brushes { get; } = new();
 
+    private Dictionary<string, ISvgTag> IdTags { get; } = new();
+
     private List<ISvgRenderable> Renderables { get; } = new();
 
 
@@ -51,6 +53,8 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
     IReadOnlyDictionary<string, ISvgStyle> ISvgContext.Styles => this.Styles;
 
     IReadOnlyDictionary<string, LightBrush> ISvgContext.Brushes => this.Brushes;
+
+    IReadOnlyDictionary<string, ISvgTag> ISvgContext.IdTags => this.IdTags;
 
     IReadOnlyList<ISvgRenderable> ISvgContext.Renderables => this.Renderables;
 
@@ -95,27 +99,39 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
 
     internal void PrepareContext()
     {
+        // Prepare all elements with id.
         this.VisitSvgTagTree(tag =>
         {
-            switch (tag)
+            if (string.IsNullOrEmpty(tag.Id) == false)
             {
-                case ISvgStyleProvider styleProvider:
+                // BUG If id is duplicate, now we drop it.
+                this.IdTags.TryAdd(tag.Id, tag);
+            }
+        });
+
+        // Prepare styles, brushes, renderables...
+        this.VisitSvgTagTree(tag =>
+        {
+            // ReSharper disable once ConvertIfStatementToSwitchStatement
+            if (tag is ISvgStyleProvider styleProvider)
+            {
+                foreach (var style in styleProvider.GetStyles())
                 {
-                    foreach (var style in styleProvider.GetStyles())
-                    {
-                        this.Styles.Add(style.Class, style);
-                    }
-                    break;
+                    this.Styles.Add(style.Class, style);
                 }
-                case ISvgBrushProvider brushProvider:
-                    if (brushProvider.Id != null)
-                    {
-                        this.Brushes.Add(brushProvider.Id, brushProvider.GetBrush());
-                    }
-                    break;
-                case ISvgRenderable renderable:
-                    this.Renderables.Add(renderable);
-                    break;
+            }
+
+            if (tag is ISvgBrushProvider brushProvider)
+            {
+                if (brushProvider.Id != null)
+                {
+                    this.Brushes.Add(brushProvider.Id, brushProvider.GetBrush(this));
+                }
+            }
+
+            if (tag is ISvgRenderable renderable)
+            {
+                this.Renderables.Add(renderable);
             }
         });
     }
