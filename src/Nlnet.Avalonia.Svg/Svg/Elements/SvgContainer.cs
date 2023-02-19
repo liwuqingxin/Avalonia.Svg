@@ -2,18 +2,7 @@
 
 namespace Nlnet.Avalonia.Svg
 {
-    public class SvgContainer : SvgRenderable, ISvgContainer,
-        IFillSetter,
-        IFillRuleSetter,
-        IFillOpacitySetter,
-        IStrokeSetter,
-        IStrokeOpacitySetter,
-        IStrokeWidthSetter,
-        IStrokeLineCapSetter,
-        IStrokeLineJoinSetter,
-        IStrokeMiterLimitSetter,
-        IStrokeDashArraySetter,
-        IStrokeDashOffsetSetter
+    public class SvgContainer : SvgRenderable, ISvgContainer
     {
         public LightBrush? Fill
         {

@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nlnet.Avalonia.Svg.Sample",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nlnet.Avalonia.Svg.Test", "Nlnet.Avalonia.Svg.Test\Nlnet.Avalonia.Svg.Test.csproj", "{BD9F6FB2-3D67-4AD2-BE16-02C36FC472F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nlnet.Avalonia.MessageBox", "Nlnet.Avalonia.MessageBox\Nlnet.Avalonia.MessageBox.csproj", "{E6B266D1-CB27-4155-958E-6B7CC01E3221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nlnet.Avalonia.MessageBox", "Nlnet.Avalonia.MessageBox\Nlnet.Avalonia.MessageBox.csproj", "{E6B266D1-CB27-4155-958E-6B7CC01E3221}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Files", "Solution Files", "{C9431D0A-6930-4A3D-BF50-73CA4A561278}"
+	ProjectSection(SolutionItems) = preProject
+		todo list.txt = todo list.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

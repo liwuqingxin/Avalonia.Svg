@@ -6,7 +6,18 @@
 /// and ‘unknown’.
 /// </summary>
 /// https://www.w3.org/TR/SVG2/struct.html#Groups
-public interface ISvgContainer
+public interface ISvgContainer :
+    IFillSetter,
+    IFillRuleSetter,
+    IFillOpacitySetter,
+    IStrokeSetter,
+    IStrokeOpacitySetter,
+    IStrokeWidthSetter,
+    IStrokeLineCapSetter,
+    IStrokeLineJoinSetter,
+    IStrokeMiterLimitSetter,
+    IStrokeDashArraySetter,
+    IStrokeDashOffsetSetter
 {
 
 }
