@@ -1,48 +1,10 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Xml;
 
 namespace Nlnet.Avalonia.Svg
 {
     internal static class PropertyHelper
     {
-        private static readonly ConcurrentDictionary<Type, List<MethodInfo>> SetterTypeCaches = new();
-
-        /// <summary>
-        /// Try to fetch all properties of svg tag from <see cref="XmlAttributeCollection"/>.
-        /// </summary>
-        /// <param name="attrs"></param>
-        /// <param name="target"></param>
-        public static void FetchPropertiesFrom(this ISvgTag target, XmlAttributeCollection? attrs)
-        {
-            // TODO For convenience here, temporarily use reflection to parse the implemented attribute interface, and then consider performance later.
-
-            if (attrs == null)
-            {
-                return;
-            }
-
-            if (!SetterTypeCaches.TryGetValue(target.GetType(), out var list))
-            {
-                list = target
-                    .GetType()
-                    .GetInterfaces()
-                    .Where(it => it.IsAssignableTo(typeof(IDeferredAdder)))
-                    .Select(type => type.GetMethod($"{type.Name}Parser"))  // We use one setter interface as the standard parse method host.
-                    .Where(m => m != null)
-                    .ToList()!;
-                SetterTypeCaches.TryAdd(target.GetType(), list);
-            }
-
-            foreach (var method in list)
-            {
-                method.Invoke(target, new object?[] {attrs});
-            }
-        }
-
         /// <summary>
         /// Try-convert delegate.
         /// </summary>

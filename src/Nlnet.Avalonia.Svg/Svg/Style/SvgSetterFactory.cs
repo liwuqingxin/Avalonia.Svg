@@ -22,10 +22,10 @@ public static class SvgSetterFactory
 
         SvgSetterFactories = typeof(SvgSetterFactory).Assembly.GetTypes()
             .Where(t => t.IsAssignableTo(typeof(ISvgSetterFactory)))
-            .Select(t => (t.GetCustomAttribute<NameAttribute>(), t))
-            .Where(tuple => tuple.Item1 != null)
-            .Select(tuple => (tuple.Item1, Activator.CreateInstance(tuple.t) as ISvgSetterFactory))
-            .ToDictionary(tuple => tuple.Item1!.Name, tuple => tuple.Item2)!;
+            .Select(t => (attr:t.GetCustomAttribute<NameAttribute>(), facType:t))
+            .Where(tuple => tuple.attr != null)
+            .Select(tuple => (tuple.attr, fac:Activator.CreateInstance(tuple.facType) as ISvgSetterFactory))
+            .ToDictionary(tuple => tuple.attr!.Name, tuple => tuple.fac)!;
     }
 
     /// <summary>

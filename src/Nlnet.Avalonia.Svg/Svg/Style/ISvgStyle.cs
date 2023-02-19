@@ -15,7 +15,7 @@ public interface ISvgStyle
     /// <summary>
     /// Setters of this style.
     /// </summary>
-    public List<ISvgSetter> Setters { get; set; }
+    public IEnumerable<ISvgSetter> Setters { get; set; }
 
     /// <summary>
     /// Apply this style to <see cref="tag"/>.

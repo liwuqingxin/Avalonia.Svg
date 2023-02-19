@@ -139,7 +139,7 @@ namespace Nlnet.Avalonia.Svg.CompileGenerator
             if (parserMethodName != null && parserMethodName.Contains("."))
             {
                 var index = parserMethodName.LastIndexOf(".", StringComparison.Ordinal);
-                parserMethodName = parserMethodName.Substring(index+1);
+                parserMethodName = parserMethodName.Substring(index + 1);
             }
             if (attributeData.NamedArguments.Length > 0)
             {
@@ -189,7 +189,7 @@ namespace {namespaceName}
 
         bool ISvgProperty<I{classSymbol.Name}>.CanInherit => true;
 
-        public void I{classSymbol.Name}Parser(XmlAttributeCollection attrs)
+        public void I{classSymbol.Name}(XmlAttributeCollection attrs)
         {{
             this.ParseOrDefer<I{classSymbol.Name}, {nullablePropertyType}>(attrs, SvgProperties.{property}, Parsers.TryTo{parserMethodName}, (setter, value) => setter.{property} = value);
         }}

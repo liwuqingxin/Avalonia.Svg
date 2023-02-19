@@ -5,9 +5,9 @@ namespace Nlnet.Avalonia.Svg;
 /// <summary>
 /// Default implementation of <see cref="ISvgStyle"/>.
 /// </summary>
-public class SvgStyleInstance : ISvgStyle
+public class SvgStyleImpl : ISvgStyle
 {
-    public SvgStyleInstance(string @class, List<ISvgSetter> setters)
+    public SvgStyleImpl(string @class, IEnumerable<ISvgSetter> setters)
     {
         Class   = @class;
         Setters = setters;
@@ -15,7 +15,7 @@ public class SvgStyleInstance : ISvgStyle
 
     public string Class { get; set; }
 
-    public List<ISvgSetter> Setters { get; set; }
+    public IEnumerable<ISvgSetter> Setters { get; set; }
 
     void ISvgStyle.ApplyTo(ISvgTag tag)
     {

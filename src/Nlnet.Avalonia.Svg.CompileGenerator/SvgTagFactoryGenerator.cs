@@ -149,7 +149,7 @@ public class {tagClassName}Factory : ISvgTagFactory
     public ISvgTag CreateTag(XmlNode xmlNode)
     {{
         var tag = new {tagClassName}();
-        tag.FetchPropertiesFrom(xmlNode.Attributes);
+        SvgInternalServices.PropertyFetcher.Fetch(tag, xmlNode.Attributes);
         tag.OnPropertiesFetched();
         return tag;
     }}

@@ -24,10 +24,10 @@ public static class SvgTagFactory
 
         SvgTagFactories = typeof(SvgTagFactory).Assembly.GetTypes()
             .Where(t => t.IsAssignableTo(typeof(ISvgTagFactory)))
-            .Select(t => (t.GetCustomAttribute<SvgTagAttribute>(), t))
-            .Where(tuple => tuple.Item1 != null)
-            .Select(tuple => (tuple.Item1, Activator.CreateInstance(tuple.t) as ISvgTagFactory))
-            .ToDictionary(tuple => tuple.Item1!.Tag, tuple => tuple.Item2)!;
+            .Select(t => (attr:t.GetCustomAttribute<SvgTagAttribute>(), facType:t))
+            .Where(tuple => tuple.attr != null)
+            .Select(tuple => (tuple.attr, fac:Activator.CreateInstance(tuple.facType) as ISvgTagFactory))
+            .ToDictionary(tuple => tuple.attr!.Tag, tuple => tuple.fac)!;
     }
 
     /// <summary>

@@ -110,7 +110,7 @@ public class SvgStyle : SvgTagBase, ISvgStyleProvider
             return null;
         }
 
-        ISvgStyle style = new SvgStyleInstance(@class, setters);
+        ISvgStyle style = new SvgStyleImpl(@class, setters);
         return style;
     }
 }

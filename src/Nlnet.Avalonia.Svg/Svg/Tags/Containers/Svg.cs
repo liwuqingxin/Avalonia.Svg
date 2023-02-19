@@ -148,7 +148,10 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
             var styles = provider.GetStyles();
             foreach (var style in styles)
             {
-                style.Setters.ForEach(s => s.ApplyDeferredValueString(this));
+                foreach (var setter in style.Setters)
+                {
+                    setter.ApplyDeferredValueString(this);
+                }
             }
         });
     }
