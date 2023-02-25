@@ -66,12 +66,9 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
 
     void ISvg.Render(DrawingContext dc)
     {
-        using (dc.PushTransformContainer())
+        using (dc.PushSetTransform(_alignTransform?.Value ?? Matrix.Identity))
         {
-            using (dc.PushSetTransform(_alignTransform?.Value ?? Matrix.Identity))
-            {
-                this.Children?.RenderRecursively(dc);
-            }
+            this.Children?.RenderRecursively(dc);
         }
     }
 
@@ -140,17 +137,15 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
     {
         this.VisitSvgTagTree(tag =>
         {
-            if (tag is not ISvgStyleProvider provider)
+            if (tag is ISvgStyleProvider provider)
             {
-                return;
-            }
-
-            var styles = provider.GetStyles();
-            foreach (var style in styles)
-            {
-                foreach (var setter in style.Setters)
+                var styles = provider.GetStyles();
+                foreach (var style in styles)
                 {
-                    setter.ApplyDeferredValueString(this);
+                    foreach (var setter in style.Setters)
+                    {
+                        setter.ApplyDeferredValueString(this);
+                    }
                 }
             }
         });

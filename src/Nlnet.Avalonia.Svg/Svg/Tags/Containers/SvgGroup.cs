@@ -11,11 +11,18 @@ public class SvgGroup : SvgContainer, ISvgRenderable
 
     public override void Render(DrawingContext dc)
     {
-        using (dc.PushTransformContainer())
+        if (Transform == null)
         {
-            using (dc.PushSetTransform(Transform?.Value ?? Matrix.Identity))
+            this.Children?.RenderRecursively(dc);
+        }
+        else
+        {
+            using (dc.PushTransformContainer())
             {
-                this.Children?.RenderRecursively(dc);
+                using (dc.PushSetTransform(Transform.Value))
+                {
+                    this.Children?.RenderRecursively(dc);
+                }
             }
         }
     }
