@@ -58,7 +58,7 @@ namespace Nlnet.Avalonia.Svg
         /// </summary>
         /// <param name="tag"></param>
         /// <param name="visitor">if should go on visiting children of this tag, please return true.</param>
-        public static void VisitSvgTagTree(this ISvgTag? tag, Func<ISvgTag, bool> visitor)
+        private static void VisitSvgTagTree(this ISvgTag? tag, Func<ISvgTag, bool> visitor)
         {
             if (tag == null)
             {

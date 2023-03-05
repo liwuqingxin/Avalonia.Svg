@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Media;
+using System.Collections.Generic;
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Nlnet.Avalonia.Svg;
@@ -13,7 +14,7 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
 {
     protected SvgRenderable()
     {
-        this.TryAddApplier(new TransformApplier());
+        
     }
 
     public double? Opacity { get; set; }
@@ -29,7 +30,7 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
     /// <summary>
     /// Apply transforms. In <see cref="SvgRenderable"/>, it renders nothing.
     /// </summary>
-    public virtual void ApplyTransforms()
+    public virtual void ApplyTransforms(Stack<Matrix> transformsContext)
     {
 
     }

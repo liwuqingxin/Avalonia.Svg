@@ -17,9 +17,9 @@ public class SvgGroup : SvgContainer, ISvgRenderable
         }
         else
         {
-            using (dc.PushTransformContainer())
+            //using (dc.PushTransformContainer())
             {
-                using (dc.PushSetTransform(Transform.Value))
+                //using (dc.PushSetTransform(Transform.Value))
                 {
                     this.Children?.RenderRecursively(dc);
                 }

@@ -1,4 +1,8 @@
-﻿using Avalonia.Media;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Avalonia;
+using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg
 {
@@ -58,6 +62,33 @@ namespace Nlnet.Avalonia.Svg
         {
             get;
             set;
+        }
+
+        public override void ApplyTransforms(Stack<Matrix> transformsContext)
+        {
+            if (this.Children != null)
+            {
+                if (Transform != null)
+                {
+                    if (transformsContext.Count > 0)
+                    {
+                        // Transforms of container will affect children.
+                        transformsContext.Push(Transform.Value * transformsContext.Peek());
+                    }
+                    else
+                    {
+                        transformsContext.Push(Transform.Value);
+                    }
+                }
+                foreach (var svgRenderable in this.Children.OfType<ISvgRenderable>())
+                {
+                    svgRenderable.ApplyTransforms(transformsContext);
+                }
+                if (Transform != null)
+                {
+                    transformsContext.Pop();
+                }
+            }
         }
     }
 }

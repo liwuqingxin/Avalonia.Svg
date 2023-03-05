@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
+using Avalonia;
 
 namespace Nlnet.Avalonia.Svg;
 
@@ -71,6 +72,7 @@ public static class SvgTagFactory
         svg.PrepareContext();
         svg.BuildContext();
         svg.ApplyContext(svg);
+        svg.ApplyTransforms(new Stack<Matrix>());
 
         return svg;
     }

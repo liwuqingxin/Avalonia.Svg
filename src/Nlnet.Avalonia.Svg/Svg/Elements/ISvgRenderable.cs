@@ -1,4 +1,6 @@
-﻿using Avalonia.Media;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Avalonia.Media;
 using Avalonia;
 
 namespace Nlnet.Avalonia.Svg
@@ -20,8 +22,7 @@ namespace Nlnet.Avalonia.Svg
         public Rect Bounds { get; }
 
         /// <summary>
-        /// Rendered bounds of the <see cref="ISvgRenderable"/>. After the svg loaded, it will normalize it self and do some transform.
-        /// So the <see cref="RenderBounds"/> is different to <see cref="Bounds"/> normally.
+        /// Rendered bounds of the <see cref="ISvgRenderable"/>. It takes stroke into account.
         /// </summary>
         public Rect RenderBounds { get; }
 
@@ -33,7 +34,7 @@ namespace Nlnet.Avalonia.Svg
         /// <summary>
         /// Apply transforms.
         /// </summary>
-        public void ApplyTransforms();
+        public void ApplyTransforms(Stack<Matrix> transformsContext);
 
         /// <summary>
         /// Render the <see cref="ISvgRenderable"/>.

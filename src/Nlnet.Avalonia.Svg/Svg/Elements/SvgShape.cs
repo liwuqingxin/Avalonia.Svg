@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
+using System.Collections.Generic;
 
 namespace Nlnet.Avalonia.Svg
 {
@@ -70,7 +71,7 @@ namespace Nlnet.Avalonia.Svg
         /// <returns></returns>
         protected abstract Geometry? OnCreateOriginalGeometry();
 
-        public override void ApplyTransforms()
+        public override void ApplyTransforms(Stack<Matrix> transformsContext)
         {
             if (OriginalGeometry == null)
             {
@@ -79,7 +80,20 @@ namespace Nlnet.Avalonia.Svg
 
             RenderGeometry = new GeometryGroup();
             RenderGeometry.Children.Add(OriginalGeometry);
-            RenderGeometry.Transform = Transform;
+            var group = new TransformGroup();
+
+            // Transforms of container will affect children. So we add child's transform first.
+            if (Transform != null)
+            {
+                group.Children.Add(Transform);
+            }
+            var ifContainerTransformed = transformsContext.TryPeek(out var containerMatrix);
+            if (ifContainerTransformed)
+            {
+                group.Children.Add(new MatrixTransform(containerMatrix));
+            }
+
+            RenderGeometry.Transform = group;
         }
 
         /// <summary>
