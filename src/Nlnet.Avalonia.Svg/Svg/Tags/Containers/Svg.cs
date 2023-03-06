@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.CompileGenerator;
@@ -16,8 +15,6 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
     IXSetter,
     IYSetter
 {
-    private Transform? _alignTransform;
-
     public static Svg Empty { get; } = new();
 
     public string? Id
@@ -38,25 +35,22 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
         set;
     }
 
-    private Dictionary<string, ISvgStyle> Styles { get; } = new();
-
-    private Dictionary<string, LightBrush> Brushes { get; } = new();
-
-    private Dictionary<string, ISvgTag> IdTags { get; } = new();
-
-    private List<ISvgRenderable> Renderables { get; } = new();
+    private readonly Dictionary<string, ISvgStyle>  _styles      = new();
+    private readonly Dictionary<string, LightBrush> _brushes     = new();
+    private readonly Dictionary<string, ISvgTag>    _idTags      = new();
+    private readonly List<ISvgRenderable>           _renderables = new();
 
 
 
     #region ISvgContext
 
-    IReadOnlyDictionary<string, ISvgStyle> ISvgContext.Styles => this.Styles;
+    IReadOnlyDictionary<string, ISvgStyle> ISvgContext.Styles => this._styles;
 
-    IReadOnlyDictionary<string, LightBrush> ISvgContext.Brushes => this.Brushes;
+    IReadOnlyDictionary<string, LightBrush> ISvgContext.Brushes => this._brushes;
 
-    IReadOnlyDictionary<string, ISvgTag> ISvgContext.IdTags => this.IdTags;
+    IReadOnlyDictionary<string, ISvgTag> ISvgContext.IdTags => this._idTags;
 
-    IReadOnlyList<ISvgRenderable> ISvgContext.Renderables => this.Renderables;
+    IReadOnlyList<ISvgRenderable> ISvgContext.Renderables => this._renderables;
 
     #endregion
 
@@ -66,10 +60,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
 
     void ISvg.Render(DrawingContext dc)
     {
-        //using (dc.PushSetTransform(Transform?.Value ?? Matrix.Identity))
-        {
-            this.Children?.RenderRecursively(dc);
-        }
+        this.Children?.RenderRecursively(dc);
     }
 
     Size ISvg.GetRenderSize()
@@ -79,7 +70,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
         var right  = 0d;
         var bottom = 0d;
 
-        foreach (var renderable in Renderables)
+        foreach (var renderable in _renderables)
         {
             left   = Math.Min(renderable.RenderBounds.Left, left);
             top    = Math.Min(renderable.RenderBounds.Top,  top);
@@ -102,7 +93,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
             if (string.IsNullOrEmpty(tag.Id) == false)
             {
                 // BUG If id is duplicate, now we drop it.
-                this.IdTags.TryAdd(tag.Id, tag);
+                this._idTags.TryAdd(tag.Id, tag);
             }
         });
 
@@ -114,7 +105,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
             {
                 foreach (var style in styleProvider.GetStyles())
                 {
-                    this.Styles.Add(style.Class, style);
+                    this._styles.Add(style.Class, style);
                 }
             }
 
@@ -122,13 +113,13 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
             {
                 if (brushProvider.Id != null)
                 {
-                    this.Brushes.Add(brushProvider.Id, brushProvider.GetBrush(this));
+                    this._brushes.Add(brushProvider.Id, brushProvider.GetBrush(this));
                 }
             }
 
             if (tag is ISvgRenderable renderable)
             {
-                this.Renderables.Add(renderable);
+                this._renderables.Add(renderable);
             }
         });
     }
@@ -165,7 +156,5 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
                 tag.ApplyContext(context);
             });
         }
-
-        _alignTransform = SvgHelper.GetAlignToTopLeftTransform(Renderables.Select(v => v.Bounds));
     }
 }

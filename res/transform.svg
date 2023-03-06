@@ -1,0 +1,14 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns="http://www.w3.org/2000/svg" fill="none">
+    <g transform="rotate(10)">
+        <g transform="translate(100,0)">
+            <g transform="scale(2,1)">
+                <g transform="translate(100,0)">
+                    <rect transform="rotate(0)" fill="Red" x="100" y="100" width="50" height="50"/>
+                    <rect transform="rotate(0)" fill="Red" x="0" y="100" width="50" height="50"/>
+                    <rect transform="scale(2,2) rotate(45)" fill="green" x="100" y="100" width="50" height="50"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

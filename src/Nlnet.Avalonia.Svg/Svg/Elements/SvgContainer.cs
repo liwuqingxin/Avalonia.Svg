@@ -66,28 +66,30 @@ namespace Nlnet.Avalonia.Svg
 
         public override void ApplyTransforms(Stack<Matrix> transformsContext)
         {
-            if (this.Children != null)
+            if (this.Children == null)
             {
-                if (Transform != null)
+                return;
+            }
+
+            if (Transform != null)
+            {
+                if (transformsContext.Count > 0)
                 {
-                    if (transformsContext.Count > 0)
-                    {
-                        // Transforms of container will affect children.
-                        transformsContext.Push(Transform.Value * transformsContext.Peek());
-                    }
-                    else
-                    {
-                        transformsContext.Push(Transform.Value);
-                    }
+                    // Transforms of container will affect children.
+                    transformsContext.Push(Transform.Value * transformsContext.Peek());
                 }
-                foreach (var svgRenderable in this.Children.OfType<ISvgRenderable>())
+                else
                 {
-                    svgRenderable.ApplyTransforms(transformsContext);
+                    transformsContext.Push(Transform.Value);
                 }
-                if (Transform != null)
-                {
-                    transformsContext.Pop();
-                }
+            }
+            foreach (var svgRenderable in this.Children.OfType<ISvgRenderable>())
+            {
+                svgRenderable.ApplyTransforms(transformsContext);
+            }
+            if (Transform != null)
+            {
+                transformsContext.Pop();
             }
         }
     }

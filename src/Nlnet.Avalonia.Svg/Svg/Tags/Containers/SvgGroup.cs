@@ -11,19 +11,6 @@ public class SvgGroup : SvgContainer, ISvgRenderable
 
     public override void Render(DrawingContext dc)
     {
-        if (Transform == null)
-        {
-            this.Children?.RenderRecursively(dc);
-        }
-        else
-        {
-            //using (dc.PushTransformContainer())
-            {
-                //using (dc.PushSetTransform(Transform.Value))
-                {
-                    this.Children?.RenderRecursively(dc);
-                }
-            }
-        }
+        this.Children?.RenderRecursively(dc);
     }
 }

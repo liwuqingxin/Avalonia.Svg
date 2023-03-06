@@ -13,22 +13,6 @@ namespace Nlnet.Avalonia.Svg
     internal static class SvgHelper
     {
         /// <summary>
-        /// Get transform for aligning all visuals to (0,0) on the whole.
-        /// </summary>
-        /// <param name="rects"></param>
-        /// <returns></returns>
-        public static Transform GetAlignToTopLeftTransform(IEnumerable<Rect> rects)
-        {
-            var topLeftPoints = rects.Select(r => r.TopLeft);
-            // ReSharper disable once PossibleMultipleEnumeration
-            var minX = topLeftPoints.Select(p => p.X).Min();
-            // ReSharper disable once PossibleMultipleEnumeration
-            var minY = topLeftPoints.Select(p => p.Y).Min();
-
-            return new TranslateTransform(-minX, -minY);
-        }
-
-        /// <summary>
         /// Provide a generic visitor for <see cref="ISvgTag"/> tree.
         /// </summary>
         /// <param name="tag"></param>
