@@ -74,6 +74,7 @@ public static class SvgProperties
     public const string PatternUnits         = "patternUnits";
     public const string PatternContentUnits  = "patternContentUnits";
     public const string PatternTransform     = "patternTransform";
+    public const string PreserveAspectRatio  = "preserveAspectRatio";
 }
 
 /// <summary>

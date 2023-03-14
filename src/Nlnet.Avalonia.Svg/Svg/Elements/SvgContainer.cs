@@ -64,6 +64,32 @@ namespace Nlnet.Avalonia.Svg
             set;
         }
 
+1
+        public override Rect RenderBounds => GetContainerRenderBounds();
+
+        private Rect GetContainerRenderBounds()
+        {
+            if (this.Children == null)
+            {
+                return Rect.Empty;
+            }
+
+            var l = double.MaxValue;
+            var r = double.MinValue;
+            var t = double.MaxValue;
+            var b = double.MinValue;
+            var boundsArray = this.Children.OfType<SvgRenderable>().Select(renderable => renderable.RenderBounds);
+            foreach (var rect in boundsArray)
+            {
+                l = Math.Min(l, rect.Left);
+                r = Math.Max(r, rect.Right);
+                t = Math.Min(t, rect.Top);
+                b = Math.Max(b, rect.Bottom);
+            }
+
+            return new Rect(l, t, r - l, b - t);
+        }
+
         public override void ApplyTransforms(Stack<Matrix> transformsContext)
         {
             if (this.Children == null)

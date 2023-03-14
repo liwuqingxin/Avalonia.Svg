@@ -11,13 +11,26 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
     IIdSetter,
     //IVersionSetter,
     //IStyleSetter,
-    //IViewBoxSetter,
+    IViewBoxSetter,
+    IPreserveAspectRatioSetter,
     IXSetter,
     IYSetter
 {
     public static Svg Empty { get; } = new();
 
     public string? Id
+    {
+        get;
+        set;
+    }
+
+    public ViewBox? ViewBox
+    {
+        get;
+        set;
+    }
+
+    public PreserveAspectRatio? PreserveAspectRatio
     {
         get;
         set;
@@ -60,7 +73,22 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
 
     void ISvg.Render(DrawingContext dc)
     {
-        this.Children?.RenderRecursively(dc);
+        2
+        if (ViewBox != null)
+        {
+            var renderBounds = this.RenderBounds;
+            var scaleX       = ViewBox.Width  / renderBounds.Width;
+            var scaleY       = ViewBox.Height / renderBounds.Height;
+
+            using (dc.PushSetTransform(Matrix.CreateScale(scaleX, scaleY)))
+            {
+                this.Children?.RenderRecursively(dc);
+            }
+        }
+        else
+        {
+            this.Children?.RenderRecursively(dc);
+        }
     }
 
     Size ISvg.GetRenderSize()

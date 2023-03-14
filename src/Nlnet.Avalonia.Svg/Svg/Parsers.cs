@@ -580,5 +580,71 @@ namespace Nlnet.Avalonia.Svg
         {
             return Enum.TryParse<SvgUnit>(valueString, out gradientUnit);
         }
+
+        /// <summary>
+        /// Convert value string to <see cref="ViewBox"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static ViewBox? ToViewBox(this string valueString)
+        {
+            if (valueString == "none")
+            {
+                // TODO none 的场景
+                //return new LightSolidColorBrush(Colors.Transparent);
+            }
+
+            return ViewBox.Parse(valueString);
+        }
+
+        /// <summary>
+        /// Try to convert value string to <see cref="ViewBox"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="viewBox"></param>
+        /// <returns></returns>
+        public static bool TryToViewBox(this string valueString, out ViewBox? viewBox)
+        {
+            try
+            {
+                viewBox = ToViewBox(valueString);
+                return true;
+            }
+            catch
+            {
+                viewBox = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Convert value string to <see cref="PreserveAspectRatio"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static PreserveAspectRatio? ToPreserveAspectRatio(this string valueString)
+        {
+            return PreserveAspectRatio.Parse(valueString);
+        }
+
+        /// <summary>
+        /// Try to convert value string to <see cref="PreserveAspectRatio"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="preserveAspectRatio"></param>
+        /// <returns></returns>
+        public static bool TryToPreserveAspectRatio(this string valueString, out PreserveAspectRatio? preserveAspectRatio)
+        {
+            try
+            {
+                preserveAspectRatio = ToPreserveAspectRatio(valueString);
+                return true;
+            }
+            catch
+            {
+                preserveAspectRatio = null;
+                return false;
+            }
+        }
     }
 }

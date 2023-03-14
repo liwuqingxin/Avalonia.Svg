@@ -17,11 +17,13 @@
     <Grid ColumnDefinitions="Auto,*">
         <ScrollViewer>
             <StackPanel>
-                <Viewbox Width="256"
-                         Height="256"
-                         Stretch="Uniform">
+                <Border Margin="5"
+                        Width="256"
+                        Height="256"
+                        BorderBrush="Green"
+                        BorderThickness="1">
                     <controls:Icon IconSvgData="{Binding Path=EditableSvgData}" ShowRenderBounds="True" />
-                </Viewbox>
+                </Border>
                 <ItemsControl Margin="20" Items="{Binding Path=SvgList}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="sample:SvgFileItem">
@@ -29,13 +31,11 @@
                                 <TextBlock Text="{Binding Path=SvgFileName}" />
                                 <Border Grid.Row="1"
                                         Margin="5"
+                                        Width="256"
+                                        Height="256"
                                         BorderBrush="Green"
                                         BorderThickness="1">
-                                    <Viewbox Width="256"
-                                             Height="256"
-                                             Stretch="Uniform">
-                                        <controls:Icon IconSvgData="{Binding Path=SvgData}" ShowRenderBounds="True" />
-                                    </Viewbox>
+                                    <controls:Icon IconSvgData="{Binding Path=SvgData}" ShowRenderBounds="True" />
                                 </Border>
                             </Grid>
                         </DataTemplate>
