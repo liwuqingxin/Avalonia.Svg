@@ -45,7 +45,7 @@ public class SvgStyle : SvgTagBase, ISvgStyleProvider
             return _styles;
         }
 
-        var regex   = new Regex("\\.(.*?)\\{(.*?)\\}", RegexOptions.Singleline);
+        var regex   = new Regex("(.*?)\\{(.*?)\\}", RegexOptions.Singleline);
         var matches = regex.Matches(Content.Replace("\r", "").Replace("\n", "").Replace("\t", ""));
         if (matches.Count <= 0)
         {
@@ -59,19 +59,20 @@ public class SvgStyle : SvgTagBase, ISvgStyleProvider
                 continue;
             }
 
-            var name  = match.Groups[1].Value;
-            var value = match.Groups[2].Value;
-            var style = GetStyleFromStyleString(name, value);
-            if (style != null)
+            var selectorsString = match.Groups[1].Value;
+            var settersString   = match.Groups[2].Value;
+            var selectors       = GetSelectorsFromString(selectorsString);
+            var setters         = GetStyleFromStyleString(settersString);
+            if (selectors != null && setters != null)
             {
-                _styles.Add(style);
+                _styles.Add(new SvgStyleImpl(selectors, setters));
             }
         }
 
         return _styles;
     }
 
-    private static ISvgStyle? GetStyleFromStyleString(string @class, string styleString)
+    private static IEnumerable<ISvgSetter>? GetStyleFromStyleString(string styleString)
     {
         if (string.IsNullOrWhiteSpace(styleString))
         {
@@ -86,14 +87,18 @@ public class SvgStyle : SvgTagBase, ISvgStyleProvider
             {
                 break;
             }
-            var name    = setterString![..setterString!.IndexOf(':')];
+            if (string.IsNullOrWhiteSpace(setterString?.Trim()))
+            {
+                continue;
+            }
+            var name    = setterString[..setterString.IndexOf(':')].Trim();
             var factory = SvgSetterFactory.GetSetterFactory(name);
             if (factory == null)
             {
                 continue;
             }
             var setter = factory.CreateSetter();
-            var valueString = setterString[(setterString.IndexOf(':') + 1)..];
+            var valueString = setterString[(setterString.IndexOf(':') + 1)..].Trim();
             try
             {
                 setter.InitializeValue(valueString);
@@ -110,7 +115,59 @@ public class SvgStyle : SvgTagBase, ISvgStyleProvider
             return null;
         }
 
-        ISvgStyle style = new SvgStyleImpl(@class, setters);
-        return style;
+        return setters;
+    }
+
+    private static IEnumerable<IStyleSelector>? GetSelectorsFromString(string selectorString)
+    {
+        if (string.IsNullOrWhiteSpace(selectorString))
+        {
+            return null;
+        }
+
+        selectorString = selectorString.Trim();
+        var selectors = new List<IStyleSelector>();
+
+        for (var i = 0; i < selectorString.Length; i++)
+        {
+            var ch = selectorString[i];
+            var selector = ReadSelector(selectorString, ref i);
+            switch (ch)
+            {
+                case '.':
+                selectors.Add(new ClassSelector(selector));
+                    break;
+                case '#':
+                    selectors.Add(new IdSelector(selector));
+                    break;
+                default:
+                    selectors.Add(new TagSelector(selector));
+                    break;
+            }
+        }
+
+        if (selectors.Count == 0)
+        {
+            return null;
+        }
+
+        return selectors;
+    }
+
+    private static string ReadSelector(string selectorString, ref int i)
+    {
+        var start = i;
+        i++;
+        while (i < selectorString.Length)
+        {
+            var ch = selectorString[i];
+            if (ch is '.' or '#')
+            {
+                break;
+            }
+            i++;
+        }
+
+        return selectorString.Substring(start, i - start);
     }
 }

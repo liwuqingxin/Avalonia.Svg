@@ -62,7 +62,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
         set;
     }
 
-    private readonly Dictionary<string, ISvgStyle>  _styles      = new();
+    private readonly List<ISvgStyle>                _styles      = new();
     private readonly Dictionary<string, LightBrush> _brushes     = new();
     private readonly Dictionary<string, ISvgTag>    _idTags      = new();
     private readonly List<ISvgRenderable>           _renderables = new();
@@ -71,7 +71,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
 
     #region ISvgContext
 
-    IReadOnlyDictionary<string, ISvgStyle> ISvgContext.Styles => this._styles;
+    IReadOnlyList<ISvgStyle> ISvgContext.Styles => this._styles;
 
     IReadOnlyDictionary<string, LightBrush> ISvgContext.Brushes => this._brushes;
 
@@ -223,7 +223,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
             {
                 foreach (var style in styleProvider.GetStyles())
                 {
-                    this._styles.Add(style.Class, style);
+                    this._styles.Add(style);
                 }
             }
 

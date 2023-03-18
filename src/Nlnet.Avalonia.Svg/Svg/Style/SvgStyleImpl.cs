@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Nlnet.Avalonia.Svg;
 
@@ -7,13 +8,13 @@ namespace Nlnet.Avalonia.Svg;
 /// </summary>
 public class SvgStyleImpl : ISvgStyle
 {
-    public SvgStyleImpl(string @class, IEnumerable<ISvgSetter> setters)
-    {
-        Class   = @class;
-        Setters = setters;
-    }
+    private readonly IEnumerable<IStyleSelector>? _selectors;
 
-    public string Class { get; set; }
+    public SvgStyleImpl(IEnumerable<IStyleSelector>? selectors, IEnumerable<ISvgSetter> setters)
+    {
+        _selectors = selectors;
+        Setters    = setters;
+    }
 
     public IEnumerable<ISvgSetter> Setters { get; set; }
 
@@ -23,5 +24,15 @@ public class SvgStyleImpl : ISvgStyle
         {
             setter.Set(tag);
         }
+    }
+
+    public bool Match(ISvgTag tag)
+    {
+        if (_selectors == null)
+        {
+            return false;
+        }
+
+        return _selectors.Any(s => s.Match(tag));
     }
 }

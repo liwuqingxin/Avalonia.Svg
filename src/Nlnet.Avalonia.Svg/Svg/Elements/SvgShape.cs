@@ -58,7 +58,7 @@ namespace Nlnet.Avalonia.Svg
 
         protected SvgShape()
         {
-            this.TryAddApplier(new ClassApplier());
+            this.TryAddApplier(new StyleApplier());
             this.TryAddApplier(new DeferredPropertiesApplier());
         }
 

@@ -8,11 +8,6 @@ namespace Nlnet.Avalonia.Svg;
 public interface ISvgStyle
 {
     /// <summary>
-    /// Class of this style.
-    /// </summary>
-    public string Class { get; set; }
-
-    /// <summary>
     /// Setters of this style.
     /// </summary>
     public IEnumerable<ISvgSetter> Setters { get; set; }
@@ -22,4 +17,11 @@ public interface ISvgStyle
     /// </summary>
     /// <param name="tag"></param>
     public void ApplyTo(ISvgTag tag);
+
+    /// <summary>
+    /// Check if the style matches the tag.
+    /// </summary>
+    /// <param name="tag"></param>
+    /// <returns></returns>
+    public bool Match(ISvgTag tag);
 }
