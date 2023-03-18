@@ -23,7 +23,8 @@
             <Panel Grid.Row="0"
                    Width="200"
                    Height="200"
-                   Margin="0,0,0,12">
+                   Margin="0,0,0,12"
+                   ZIndex="100">
                 <Border Background="black" Opacity="{Binding #BackGroundOpacity.Value}" />
                 <controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
                                IconSvgData="{Binding Path=EditableSvgData}"

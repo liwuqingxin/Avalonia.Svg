@@ -110,7 +110,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
             else
             {
                 var isSlice = ratio.MeetOrSlice == PreserveAspectRatioMeetOrSlice.slice;
-                GetUniformFactors(viewBoxSize, RenderBounds.Size, isSlice, out var scale2, out var offsetX2, out var offsetY2);
+                GetUniformFactors(viewBoxSize, new Size(RenderBounds.Right, RenderBounds.Bottom), isSlice, out var scale2, out var offsetX2, out var offsetY2);
                 switch (ratio.Align)
                 {
                     case PreserveAspectRatioAlign.xMinYMin:
@@ -155,10 +155,10 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
                 using (dc.PushTransformContainer())
                     this.Children?.RenderRecursively(dc);
             }
-        }
 
-        // Draw view box border.
-        dc.DrawRectangle(new Pen(Brushes.Purple, 1), new Rect(viewBox.Origin.X, viewBox.Origin.Y, viewBox.Width, viewBox.Height));
+            // Draw view box border.
+            dc.DrawRectangle(new Pen(Brushes.Purple, 1), new Rect(viewBox.Origin.X, viewBox.Origin.Y, viewBox.Width, viewBox.Height));
+        }
     }
 
     private static void GetFillFactors(Size parentSize, Size childSize, out double scaleX, out double scaleY)
