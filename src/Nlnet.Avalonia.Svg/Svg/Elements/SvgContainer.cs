@@ -8,6 +8,8 @@ namespace Nlnet.Avalonia.Svg
 {
     public class SvgContainer : SvgRenderable, ISvgContainer
     {
+        private Rect? _rect;
+
         public LightBrush? Fill
         {
             get;
@@ -64,7 +66,7 @@ namespace Nlnet.Avalonia.Svg
             set;
         }
 
-        public override Rect RenderBounds => GetContainerRenderBounds();
+        public override Rect RenderBounds => _rect ??= GetContainerRenderBounds();
 
         private Rect GetContainerRenderBounds()
         {
