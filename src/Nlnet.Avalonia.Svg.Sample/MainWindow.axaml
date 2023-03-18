@@ -52,11 +52,14 @@
             <CheckBox Name="ClipToBounds"
                       Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}"
                       IsChecked="True" />
-            <TextBlock Text="背景透明度：" />
+            <TextBlock Text="Background Opacity:" />
             <Slider Name="BackGroundOpacity"
                     Maximum="1"
                     Minimum="0"
                     Value="0.1" />
+            <ToggleSwitch Command="{Binding MonitorClipboard}"
+                          Content="Switch Monitor Clipboard"
+                          IsVisible="False" />
             <Button Command="{Binding OpenInBrowser}" Content="在浏览器中打开" />
         </StackPanel>
 

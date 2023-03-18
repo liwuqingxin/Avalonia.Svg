@@ -5,6 +5,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml;
+using Avalonia;
+using Avalonia.Input.Platform;
 using JetBrains.Annotations;
 
 namespace Nlnet.Avalonia.Svg.Sample;
@@ -24,8 +29,11 @@ public class SvgFileItem
 public sealed class MainWindowViewModel : INotifyPropertyChanged
 {
     private List<SvgFileItem> _svgList = new();
-    private SvgFileItem?      _selectedSvg;
-    private string?           _editableSvgData;
+    private SvgFileItem? _selectedSvg;
+    private string? _editableSvgData;
+    private Thread? _thClipboardMonitor;
+    private volatile bool _stopMonitorClipboard = true;
+    private string? _lastCopy;
 
     public List<SvgFileItem> SvgList
     {
@@ -68,8 +76,6 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-
-
     public void OpenInBrowser()
     {
         if (string.IsNullOrEmpty(EditableSvgData))
@@ -109,6 +115,66 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             return false;
         }
         return true;
+    }
+
+    public void MonitorClipboard()
+    {
+        if (_stopMonitorClipboard)
+        {
+            _stopMonitorClipboard = false;
+            _thClipboardMonitor = new Thread(ClipboardMonitorWorker)
+            {
+                IsBackground = true,
+            };
+
+            _thClipboardMonitor.Start();
+        }
+        else
+        {
+            if (_thClipboardMonitor != null)
+            {
+                _stopMonitorClipboard = true;
+                _thClipboardMonitor   = null;
+            }
+        }
+    }
+
+    private async void ClipboardMonitorWorker(object? obj)
+    {
+        try
+        {
+            var clipboard = Application.Current?.Clipboard;
+            if (clipboard == null)
+            {
+                return;
+            }
+
+            while (_stopMonitorClipboard == false)
+            {
+
+                try
+                {
+                    var text = await clipboard.GetTextAsync();
+                    if (_lastCopy == text)
+                    {
+                        continue;
+                    }
+                    new XmlDocument().LoadXml(text);
+                    _lastCopy       = text;
+                    EditableSvgData = text;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+
+                Thread.Sleep(100);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 
 
