@@ -1,6 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using JetBrains.Annotations;
 
 namespace Nlnet.Avalonia.Svg.Sample;
@@ -62,6 +66,49 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             _editableSvgData = value;
             OnPropertyChanged();
         }
+    }
+
+
+
+    public void OpenInBrowser()
+    {
+        if (string.IsNullOrEmpty(EditableSvgData))
+        {
+            return;
+        }
+
+        var guid = Guid.NewGuid();
+        var file = Path.Combine(Directory.GetCurrentDirectory(), "temp");
+        Directory.CreateDirectory(file);
+        file = Path.Combine(file, $"{guid}.svg");
+        File.WriteAllText(file, EditableSvgData);
+
+        OpenFile(file);
+    }
+
+    private static bool OpenFile(string filePath)
+    {
+        try
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                filePath = filePath.Replace("&", "^&");
+                Process.Start(new ProcessStartInfo("cmd", $"/c start {filePath}") { CreateNoWindow = true });
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Process.Start("xdg-open", filePath);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                Process.Start("open", filePath);
+            }
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+        return true;
     }
 
 

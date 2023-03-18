@@ -85,7 +85,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
 
     #region ISvg
 
-    void ISvg.Render(DrawingContext dc, Size availableSize)
+    void ISvg.Render(DrawingContext dc, Size availableSize, bool showDiagnosis)
     {
         var viewBox = ViewBox ?? new ViewBox(0, 0, availableSize.Width, availableSize.Height);
         var viewBoxSize = new Size(viewBox.Width, viewBox.Height);
@@ -157,7 +157,10 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
             }
 
             // Draw view box border.
-            dc.DrawRectangle(new Pen(Brushes.Purple, 1), new Rect(viewBox.Origin.X, viewBox.Origin.Y, viewBox.Width, viewBox.Height));
+            if (showDiagnosis)
+            {
+                dc.DrawRectangle(new Pen(Brushes.Green, 1, new DashStyle(new double[] { 5, 5 }, 0)), new Rect(viewBox.Origin.X, viewBox.Origin.Y, viewBox.Width, viewBox.Height));
+            }
         }
     }
 

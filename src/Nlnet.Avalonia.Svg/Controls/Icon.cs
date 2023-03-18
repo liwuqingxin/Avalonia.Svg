@@ -143,16 +143,16 @@ namespace Nlnet.Avalonia.Svg.Controls
 
         #region Dependency Property
 
-        public static bool GetShowRenderBounds(Visual host)
+        public static bool GetShowDiagnosis(Visual host)
         {
-            return host.GetValue(ShowRenderBoundsProperty);
+            return host.GetValue(ShowDiagnosisProperty);
         }
-        public static void SetShowRenderBounds(Visual host, bool value)
+        public static void SetShowDiagnosis(Visual host, bool value)
         {
-            host.SetValue(ShowRenderBoundsProperty, value);
+            host.SetValue(ShowDiagnosisProperty, value);
         }
-        public static readonly AttachedProperty<bool> ShowRenderBoundsProperty = AvaloniaProperty
-            .RegisterAttached<Icon, Visual, bool>("ShowRenderBounds", false, true);
+        public static readonly AttachedProperty<bool> ShowDiagnosisProperty = AvaloniaProperty
+            .RegisterAttached<Icon, Visual, bool>("ShowDiagnosis", false, true);
 
         #endregion
 
@@ -232,7 +232,7 @@ namespace Nlnet.Avalonia.Svg.Controls
             {
                 sender.UpdateVisibility();
             });
-            ShowRenderBoundsProperty.Changed.AddClassHandler<Icon>((icon, args) =>
+            ShowDiagnosisProperty.Changed.AddClassHandler<Icon>((icon, args) =>
             {
                 icon.InvalidateVisual();
             });
@@ -513,7 +513,7 @@ namespace Nlnet.Avalonia.Svg.Controls
             var brush = GetIconBrush(this);
 
             // Border
-            if (GetShowRenderBounds(this))
+            if (GetShowDiagnosis(this))
             {
                 var formattedText = new FormattedText(
                     $"({this.Bounds.Width:#.##}, {this.Bounds.Height:#.##})",
@@ -576,7 +576,7 @@ namespace Nlnet.Avalonia.Svg.Controls
             // Svg
             if (_svg != null)
             {
-                _svg.Render(drawingContext, this.Bounds.Size);
+                _svg.Render(drawingContext, this.Bounds.Size, Icon.GetShowDiagnosis(this));
             }
         }
 

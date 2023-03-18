@@ -13,7 +13,8 @@ namespace Nlnet.Avalonia.Svg
         /// </summary>
         /// <param name="dc"></param>
         /// <param name="availableSize"></param>
-        public void Render(DrawingContext dc, Size availableSize);
+        /// <param name="showDiagnosis"></param>
+        public void Render(DrawingContext dc, Size availableSize, bool showDiagnosis);
 
         /// <summary>
         /// Get the svg render size.

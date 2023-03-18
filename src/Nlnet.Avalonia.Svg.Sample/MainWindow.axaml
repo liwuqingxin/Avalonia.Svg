@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sample="clr-namespace:Nlnet.Avalonia.Svg.Sample"
-        Title="Avalonia.Svg.Sample"
+        Title="Avalonia Svg | Nlnet"
         d:DesignHeight="450"
         d:DesignWidth="800"
         DragDrop.AllowDrop="True"
@@ -28,7 +28,7 @@
                 <Border Background="black" Opacity="{Binding #BackGroundOpacity.Value}" />
                 <controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
                                IconSvgData="{Binding Path=EditableSvgData}"
-                               ShowRenderBounds="{Binding #ShowRenderBounds.IsChecked}" />
+                               ShowDiagnosis="{Binding #ShowDiagnosis.IsChecked}" />
             </Panel>
             <ListBox Grid.Row="1"
                      Width="200"
@@ -47,14 +47,17 @@
                     Margin="12,12,0,12"
                     Orientation="Vertical"
                     Spacing="10">
-            <CheckBox Name="ShowRenderBounds" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}" />
+            <CheckBox Content="Window Topmost" IsChecked="{Binding $parent[Window].Topmost}" />
+            <CheckBox Name="ShowDiagnosis" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}" />
             <CheckBox Name="ClipToBounds"
                       Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}"
                       IsChecked="True" />
+            <TextBlock Text="背景透明度：" />
             <Slider Name="BackGroundOpacity"
                     Maximum="1"
                     Minimum="0"
                     Value="0.1" />
+            <Button Command="{Binding OpenInBrowser}" Content="在浏览器中打开" />
         </StackPanel>
 
         <!-- Code Box -->
