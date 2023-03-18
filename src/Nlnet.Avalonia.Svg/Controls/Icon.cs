@@ -2,6 +2,7 @@
 using System.Globalization;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.Utils;
@@ -519,15 +520,15 @@ namespace Nlnet.Avalonia.Svg.Controls
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     new Typeface(FontFamily.Default),
-                    8,
+                    12,
                     Brushes.Red);
-                drawingContext.DrawText(formattedText, new Point(0, -12));
+                drawingContext.DrawText(formattedText, new Point(0, 0));
 
-                var pen = new Pen(Brushes.Red, 0.5)
+                var pen = new Pen(Brushes.Red, 1)
                 {
                     DashStyle = new DashStyle(new double[] { 5, 5 }, 0)
                 };
-                drawingContext.DrawRectangle(null, pen, new Rect(new Size(this.Bounds.Width, this.Bounds.Height)));
+                drawingContext.DrawRectangle(null, pen, new Rect(-1, -1, this.Bounds.Width + 2, this.Bounds.Height + 2));
             }
 
             // Image
@@ -656,12 +657,12 @@ namespace Nlnet.Avalonia.Svg.Controls
 
         private Size MeasureSvg(Size availableSize)
         {
-            // TODO Stretch for svg
             if (_svg == null)
             {
                 return Size.Empty;
             }
-            return _svg.GetRenderSize();
+
+            return _svg.GetDesiredSize(availableSize);
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -739,7 +740,8 @@ namespace Nlnet.Avalonia.Svg.Controls
             {
                 return Size.Empty;
             }
-            return _svg.GetRenderSize();
+
+            return _svg.GetDesiredSize(finalSize);
         }
 
         #endregion

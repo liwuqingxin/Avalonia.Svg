@@ -19,6 +19,6 @@ namespace Nlnet.Avalonia.Svg
         /// Get the svg render size.
         /// </summary>
         /// <returns></returns>
-        Size GetRenderSize();
+        Size GetDesiredSize(Size availableSize);
     }
 }

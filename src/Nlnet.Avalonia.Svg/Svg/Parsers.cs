@@ -36,6 +36,10 @@ namespace Nlnet.Avalonia.Svg
             {
                 return double.Parse(valueString[..^1]) / 100;
             }
+            else if (Regex.IsMatch(valueString, "^[-0-9.]*px$"))
+            {
+                return double.Parse(valueString[..^2]);
+            }
             else
             {
                 return double.Parse(valueString);

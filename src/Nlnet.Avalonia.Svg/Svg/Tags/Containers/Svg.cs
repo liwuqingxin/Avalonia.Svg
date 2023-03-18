@@ -14,7 +14,9 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
     IViewBoxSetter,
     IPreserveAspectRatioSetter,
     IXSetter,
-    IYSetter
+    IYSetter,
+    IWidthSetter,
+    IHeightSetter
 {
     public static Svg Empty { get; } = new();
 
@@ -48,6 +50,18 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
         set;
     }
 
+    public double? Width
+    {
+        get;
+        set;
+    }
+
+    public double? Height
+    {
+        get;
+        set;
+    }
+
     private readonly Dictionary<string, ISvgStyle>  _styles      = new();
     private readonly Dictionary<string, LightBrush> _brushes     = new();
     private readonly Dictionary<string, ISvgTag>    _idTags      = new();
@@ -76,16 +90,12 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
         var viewBox = ViewBox ?? new ViewBox(0, 0, availableSize.Width, availableSize.Height);
         var viewBoxSize = new Size(viewBox.Width, viewBox.Height);
 
-        // Draw view box border.
-        dc.DrawRectangle(new Pen(Brushes.OrangeRed, 1), new Rect(viewBox.Origin.X, viewBox.Origin.Y, viewBox.Width, viewBox.Height));
-
         GetUniformFactors(availableSize, viewBoxSize, false, out var scale1, out var offsetX1, out var offsetY1);
 
-        // TODO 暂时：Icon 不对 Svg 进行任何缩放，尺寸位置由ViewBox完全决定。
         // The view box should always stretch to the available region and stay on center.
-        //using (dc.PushSetTransform(Matrix.CreateScale(scale1, scale1)))
-        //using (dc.PushPostTransform(Matrix.CreateTranslation(offsetX1, offsetY1)))
-        //using (dc.PushTransformContainer())
+        using (dc.PushSetTransform(Matrix.CreateScale(scale1, scale1)))
+        using (dc.PushPostTransform(Matrix.CreateTranslation(offsetX1, offsetY1)))
+        using (dc.PushTransformContainer())
         {
             var ratio = PreserveAspectRatio ?? new PreserveAspectRatio(PreserveAspectRatioAlign.xMidYMid, PreserveAspectRatioMeetOrSlice.meet);
             if (ratio.Align == PreserveAspectRatioAlign.none)
@@ -146,6 +156,9 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
                     this.Children?.RenderRecursively(dc);
             }
         }
+
+        // Draw view box border.
+        dc.DrawRectangle(new Pen(Brushes.Purple, 1), new Rect(viewBox.Origin.X, viewBox.Origin.Y, viewBox.Width, viewBox.Height));
     }
 
     private static void GetFillFactors(Size parentSize, Size childSize, out double scaleX, out double scaleY)
@@ -163,22 +176,35 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
         offsetY = (parentSize.Height - childSize.Height * scale) / 2;
     }
 
-    Size ISvg.GetRenderSize()
+    Size ISvg.GetDesiredSize(Size availableSize)
     {
-        var left   = 0d;
-        var top    = 0d;
-        var right  = 0d;
-        var bottom = 0d;
+        var width = Width ?? double.NaN;
+        var height = Height ?? double.NaN;
 
-        foreach (var renderable in _renderables)
+        if (double.IsNaN(width) || double.IsInfinity(width))
         {
-            left   = Math.Min(renderable.RenderBounds.Left, left);
-            top    = Math.Min(renderable.RenderBounds.Top,  top);
-            right  = Math.Max(renderable.RenderBounds.Right,  right);
-            bottom = Math.Max(renderable.RenderBounds.Bottom, bottom);
+            if (double.IsInfinity(availableSize.Width))
+            {
+                return Size.Empty;
+            }
+            else
+            {
+                width = availableSize.Width;
+            }
+        }
+        if (double.IsNaN(height) || double.IsInfinity(height))
+        {
+            if (double.IsInfinity(height))
+            {
+                return Size.Empty;
+            }
+            else
+            {
+                height = availableSize.Height;
+            }
         }
 
-        return new Size(right - left, bottom - top);
+        return new Size(width, height);
     }
 
     #endregion
