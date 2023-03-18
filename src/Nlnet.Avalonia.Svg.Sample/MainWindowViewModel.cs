@@ -20,6 +20,7 @@ public class SvgFileItem
 public sealed class MainWindowViewModel : INotifyPropertyChanged
 {
     private List<SvgFileItem> _svgList = new();
+    private SvgFileItem?      _selectedSvg;
     private string?           _editableSvgData;
 
     public List<SvgFileItem> SvgList
@@ -31,6 +32,23 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
                 return;
             _svgList = value;
             OnPropertyChanged();
+        }
+    }
+
+    public SvgFileItem? SelectedSvg
+    {
+        get => _selectedSvg;
+        set
+        {
+            if (Equals(value, _selectedSvg))
+                return;
+            _selectedSvg = value;
+            OnPropertyChanged();
+
+            if (_selectedSvg != null)
+            {
+                EditableSvgData = _selectedSvg.SvgData;
+            }
         }
     }
 

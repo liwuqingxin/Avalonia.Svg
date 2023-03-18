@@ -8,63 +8,61 @@
         Title="Avalonia.Svg.Sample"
         d:DesignHeight="450"
         d:DesignWidth="800"
-        Background="#ffeeeeee"
         DragDrop.AllowDrop="True"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <Design.DataContext>
         <sample:MainWindowViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="Auto,*">
-        <ScrollViewer>
-            <StackPanel>
-                <Panel Width="256"
-                       Height="256"
-                       Margin="5">
-                    <Border Background="black" Opacity="{Binding #BackGroundOpacity.Value}" />
-                    <controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
-                                   IconSvgData="{Binding Path=EditableSvgData}"
-                                   ShowRenderBounds="{Binding #ShowRenderBounds.IsChecked}" />
-                </Panel>
-                <ItemsControl Margin="20" Items="{Binding Path=SvgList}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="sample:SvgFileItem">
-                            <Grid RowDefinitions="Auto,*">
-                                <TextBlock Text="{Binding Path=SvgFileName}" />
-                                <Panel Grid.Row="1"
-                                       Width="256"
-                                       Height="256"
-                                       Margin="5">
-                                    <Border Background="black" Opacity="{Binding #BackGroundOpacity.Value}" />
-                                    <controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
-                                                   IconSvgData="{Binding Path=SvgData}"
-                                                   ShowRenderBounds="{Binding #ShowRenderBounds.IsChecked}" />
-                                </Panel>
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-        </ScrollViewer>
-        <Grid Grid.Column="1" RowDefinitions="Auto,*">
-            <StackPanel Margin="12,12,12,0"
-                        Orientation="Horizontal"
-                        Spacing="10">
-                <CheckBox Name="ShowRenderBounds" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}" />
-                <CheckBox Name="ClipToBounds" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}" />
-                <Slider Name="BackGroundOpacity"
-                        Width="100"
-                        Maximum="1"
-                        Minimum="0"
-                        Value="0.1" />
-            </StackPanel>
-            <TextBox x:Name="TextBox"
-                     Grid.Row="1"
-                     Margin="12"
-                     AcceptsReturn="True"
-                     ScrollViewer.VerticalScrollBarVisibility="Visible"
-                     Text="{Binding EditableSvgData}" />
+    <Grid ColumnDefinitions="Auto,Auto,*">
+
+        <!-- List & Display -->
+        <Grid Grid.Column="0"
+              Margin="12,12,0,12"
+              RowDefinitions="Auto,*">
+            <Panel Grid.Row="0"
+                   Width="200"
+                   Height="200"
+                   Margin="0,0,0,12">
+                <Border Background="black" Opacity="{Binding #BackGroundOpacity.Value}" />
+                <controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
+                               IconSvgData="{Binding Path=EditableSvgData}"
+                               ShowRenderBounds="{Binding #ShowRenderBounds.IsChecked}" />
+            </Panel>
+            <ListBox Grid.Row="1"
+                     Width="200"
+                     Items="{Binding Path=SvgList}"
+                     SelectedItem="{Binding Path=SelectedSvg}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="sample:SvgFileItem">
+                        <TextBlock Text="{Binding Path=SvgFileName}" TextTrimming="{x:Static TextTrimming.CharacterEllipsis}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
 
+        <!-- Settings -->
+        <StackPanel Grid.Column="1"
+                    Margin="12,12,0,12"
+                    Orientation="Vertical"
+                    Spacing="10">
+            <CheckBox Name="ShowRenderBounds" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}" />
+            <CheckBox Name="ClipToBounds"
+                      Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}"
+                      IsChecked="True" />
+            <Slider Name="BackGroundOpacity"
+                    Maximum="1"
+                    Minimum="0"
+                    Value="0.1" />
+        </StackPanel>
+
+        <!-- Code Box -->
+        <TextBox x:Name="TextBox"
+                 Grid.Column="2"
+                 Margin="12"
+                 AcceptsReturn="True"
+                 CornerRadius="0"
+                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                 Text="{Binding EditableSvgData}" />
     </Grid>
 </Window>
