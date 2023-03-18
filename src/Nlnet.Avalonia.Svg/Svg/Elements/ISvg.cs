@@ -12,7 +12,8 @@ namespace Nlnet.Avalonia.Svg
         /// Render the svg document to ui.
         /// </summary>
         /// <param name="dc"></param>
-        public void Render(DrawingContext dc);
+        /// <param name="availableSize"></param>
+        public void Render(DrawingContext dc, Size availableSize);
 
         /// <summary>
         /// Get the svg render size.

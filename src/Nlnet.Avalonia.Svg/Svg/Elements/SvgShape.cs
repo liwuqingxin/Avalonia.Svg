@@ -50,7 +50,9 @@ namespace Nlnet.Avalonia.Svg
 
         public override Rect Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;
 
-        public override Rect RenderBounds => RenderGeometry?.GetRenderBounds(GetPen()) ?? Rect.Empty;
+        public override Rect RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
+
+        //public override Rect RenderBounds => RenderGeometry?.GetRenderBounds(GetPen()) ?? Rect.Empty;
 
 
 

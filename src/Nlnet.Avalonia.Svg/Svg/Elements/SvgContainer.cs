@@ -64,7 +64,6 @@ namespace Nlnet.Avalonia.Svg
             set;
         }
 
-1
         public override Rect RenderBounds => GetContainerRenderBounds();
 
         private Rect GetContainerRenderBounds()

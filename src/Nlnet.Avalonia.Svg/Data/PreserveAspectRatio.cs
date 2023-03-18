@@ -59,6 +59,10 @@ namespace Nlnet.Avalonia.Svg
             {
                 return null;
             }
+            if (str == "none")
+            {
+                return new PreserveAspectRatio(PreserveAspectRatioAlign.none, PreserveAspectRatioMeetOrSlice.meet);
+            }
 
             var tokenizer = new SafeStringTokenizer(str, ' ', ',');
             if (tokenizer.GetCount() == 0)
@@ -70,7 +74,7 @@ namespace Nlnet.Avalonia.Svg
             var meetOrSlice = PreserveAspectRatioMeetOrSlice.meet;
 
             align = Enum.Parse<PreserveAspectRatioAlign>(tokenizer.Item1);
-            if (tokenizer.HasNext())
+            if (tokenizer.GetCount() > 1)
             {
                 meetOrSlice = Enum.Parse<PreserveAspectRatioMeetOrSlice>(tokenizer.Item2);
             }

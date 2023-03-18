@@ -71,24 +71,96 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
 
     #region ISvg
 
-    void ISvg.Render(DrawingContext dc)
+    void ISvg.Render(DrawingContext dc, Size availableSize)
     {
-        2
-        if (ViewBox != null)
-        {
-            var renderBounds = this.RenderBounds;
-            var scaleX       = ViewBox.Width  / renderBounds.Width;
-            var scaleY       = ViewBox.Height / renderBounds.Height;
+        var viewBox = ViewBox ?? new ViewBox(0, 0, availableSize.Width, availableSize.Height);
+        var viewBoxSize = new Size(viewBox.Width, viewBox.Height);
 
-            using (dc.PushSetTransform(Matrix.CreateScale(scaleX, scaleY)))
+        // Draw view box border.
+        dc.DrawRectangle(new Pen(Brushes.OrangeRed, 1), new Rect(viewBox.Origin.X, viewBox.Origin.Y, viewBox.Width, viewBox.Height));
+
+        GetUniformFactors(availableSize, viewBoxSize, false, out var scale1, out var offsetX1, out var offsetY1);
+
+        // TODO 暂时：Icon 不对 Svg 进行任何缩放，尺寸位置由ViewBox完全决定。
+        // The view box should always stretch to the available region and stay on center.
+        //using (dc.PushSetTransform(Matrix.CreateScale(scale1, scale1)))
+        //using (dc.PushPostTransform(Matrix.CreateTranslation(offsetX1, offsetY1)))
+        //using (dc.PushTransformContainer())
+        {
+            var ratio = PreserveAspectRatio ?? new PreserveAspectRatio(PreserveAspectRatioAlign.xMidYMid, PreserveAspectRatioMeetOrSlice.meet);
+            if (ratio.Align == PreserveAspectRatioAlign.none)
             {
-                this.Children?.RenderRecursively(dc);
+                GetFillFactors(viewBoxSize, RenderBounds.Size, out var scaleX2, out var scaleY2);
+                // If the BorderThickness should be taken into account, uncomment it.
+                //using (dc.PushPostTransform(Matrix.CreateTranslation(-RenderBounds.Left, -RenderBounds.Top)))
+                using (dc.PushPostTransform(Matrix.CreateScale(scaleX2, scaleY2)))
+                using (dc.PushTransformContainer())
+                    this.Children?.RenderRecursively(dc);
+            }
+            else
+            {
+                var isSlice = ratio.MeetOrSlice == PreserveAspectRatioMeetOrSlice.slice;
+                GetUniformFactors(viewBoxSize, RenderBounds.Size, isSlice, out var scale2, out var offsetX2, out var offsetY2);
+                switch (ratio.Align)
+                {
+                    case PreserveAspectRatioAlign.xMinYMin:
+                        offsetX2 = 0;
+                        offsetY2 = 0;
+                        break;
+                    case PreserveAspectRatioAlign.xMidYMin:
+                        offsetY2 = 0;
+                        break;
+                    case PreserveAspectRatioAlign.xMaxYMin:
+                        offsetX2 *= 2;
+                        offsetY2 =  0;
+                        break;
+                    case PreserveAspectRatioAlign.xMinYMid:
+                        offsetX2 = 0;
+                        break;
+                    case PreserveAspectRatioAlign.xMidYMid:
+                        break;
+                    case PreserveAspectRatioAlign.xMaxYMid:
+                        offsetX2 *= 2;
+                        break;
+                    case PreserveAspectRatioAlign.xMinYMax:
+                        offsetX2 =  0;
+                        offsetY2 *= 2;
+                        break;
+                    case PreserveAspectRatioAlign.xMidYMax:
+                        offsetY2 *= 2;
+                        break;
+                    case PreserveAspectRatioAlign.xMaxYMax:
+                        offsetX2 *= 2;
+                        offsetY2 *= 2;
+                        break;
+                    case PreserveAspectRatioAlign.none:
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                
+                // If the BorderThickness should be taken into account, uncomment it.
+                //using (dc.PushPostTransform(Matrix.CreateTranslation(-RenderBounds.Left, -RenderBounds.Top)))
+                using (dc.PushPostTransform(Matrix.CreateScale(scale2, scale2)))
+                using (dc.PushPostTransform(Matrix.CreateTranslation(offsetX2, offsetY2)))
+                using (dc.PushTransformContainer())
+                    this.Children?.RenderRecursively(dc);
             }
         }
-        else
-        {
-            this.Children?.RenderRecursively(dc);
-        }
+    }
+
+    private static void GetFillFactors(Size parentSize, Size childSize, out double scaleX, out double scaleY)
+    {
+        scaleX = parentSize.Width  / childSize.Width;
+        scaleY = parentSize.Height / childSize.Height;
+    }
+
+    private static void GetUniformFactors(Size parentSize, Size childSize, bool fit, out double scale, out double offsetX, out double offsetY)
+    {
+        var scaleX = parentSize.Width  / childSize.Width;
+        var scaleY = parentSize.Height / childSize.Height;
+        scale   = fit ? Math.Max(scaleX, scaleY) : Math.Min(scaleX, scaleY);
+        offsetX = (parentSize.Width  - childSize.Width  * scale) / 2;
+        offsetY = (parentSize.Height - childSize.Height * scale) / 2;
     }
 
     Size ISvg.GetRenderSize()

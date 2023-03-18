@@ -575,7 +575,7 @@ namespace Nlnet.Avalonia.Svg.Controls
             // Svg
             if (_svg != null)
             {
-                _svg.Render(drawingContext);
+                _svg.Render(drawingContext, this.Bounds.Size);
             }
         }
 
@@ -656,6 +656,7 @@ namespace Nlnet.Avalonia.Svg.Controls
 
         private Size MeasureSvg(Size availableSize)
         {
+            // TODO Stretch for svg
             if (_svg == null)
             {
                 return Size.Empty;

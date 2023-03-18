@@ -8,6 +8,7 @@
         Title="Avalonia.Svg.Sample"
         d:DesignHeight="450"
         d:DesignWidth="800"
+        Background="#ffeeeeee"
         DragDrop.AllowDrop="True"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
@@ -17,9 +18,9 @@
     <Grid ColumnDefinitions="Auto,*">
         <ScrollViewer>
             <StackPanel>
-                <Border Margin="5"
-                        Width="256"
+                <Border Width="256"
                         Height="256"
+                        Margin="5"
                         BorderBrush="Green"
                         BorderThickness="1">
                     <controls:Icon IconSvgData="{Binding Path=EditableSvgData}" ShowRenderBounds="True" />
@@ -30,9 +31,9 @@
                             <Grid RowDefinitions="Auto,*">
                                 <TextBlock Text="{Binding Path=SvgFileName}" />
                                 <Border Grid.Row="1"
-                                        Margin="5"
                                         Width="256"
                                         Height="256"
+                                        Margin="5"
                                         BorderBrush="Green"
                                         BorderThickness="1">
                                     <controls:Icon IconSvgData="{Binding Path=SvgData}" ShowRenderBounds="True" />
