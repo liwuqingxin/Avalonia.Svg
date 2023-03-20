@@ -239,7 +239,7 @@ namespace Nlnet.Avalonia.Svg.Controls
             IconSvgDataProperty.Changed.AddClassHandler<Icon>((icon, args) =>
             {
                 var data = Icon.GetIconSvgData(icon);
-                icon._svg = string.IsNullOrWhiteSpace(data) ? null : SvgTagFactory.LoadSvg(data);
+                icon._svg = string.IsNullOrWhiteSpace(data) ? null : SvgLoader.LoadSvg(data);
 
                 icon.UpdateVisibility();
                 icon.InvalidateVisual();

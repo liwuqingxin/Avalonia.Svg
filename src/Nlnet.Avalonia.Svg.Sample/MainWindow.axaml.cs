@@ -44,7 +44,7 @@ namespace Nlnet.Avalonia.Svg.Sample
         {
             var svgDir = Path.Combine(Directory.GetCurrentDirectory(), "resources/svg");
             var files = Directory.GetFiles(svgDir);
-            var viewModel = new MainWindowViewModel();
+            var viewModel = new MainWindowViewModel(this);
             
             foreach (var file in files)
             {

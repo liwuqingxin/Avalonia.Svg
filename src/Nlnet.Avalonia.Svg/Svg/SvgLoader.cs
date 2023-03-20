@@ -9,21 +9,21 @@ using Avalonia;
 namespace Nlnet.Avalonia.Svg;
 
 /// <summary>
-/// Svg static factory for building svg and svg tags.
+/// Svg loader for building svg and svg tags.
 /// </summary>
-public static class SvgTagFactory
+public static class SvgLoader
 {
     internal static readonly Dictionary<SvgTags, ISvgTagFactory> SvgTagFactories;
 
     /// <summary>
     /// Pre-load all svg tag factories.
     /// </summary>
-    static SvgTagFactory()
+    static SvgLoader()
     {
         // TODO We can create the factories in need to save memory and initialization time.
         // Also we can pre-create the most popular factories to improve performance.
 
-        SvgTagFactories = typeof(SvgTagFactory).Assembly.GetTypes()
+        SvgTagFactories = typeof(SvgLoader).Assembly.GetTypes()
             .Where(t => t.IsAssignableTo(typeof(ISvgTagFactory)))
             .Select(t => (attr:t.GetCustomAttribute<SvgTagAttribute>(), facType:t))
             .Where(tuple => tuple.attr != null)
@@ -66,15 +66,12 @@ public static class SvgTagFactory
         }
         
         var svgTag = CreateTagFrom(node);
-        var svg = (Svg)svgTag;
+        if (svgTag is IInitializable initializable)
+        {
+            initializable?.Initialize();
+        }
 
-        // Collect, build and apply svg resources.
-        svg.PrepareContext();
-        svg.BuildContext();
-        svg.ApplyContext(svg);
-        svg.ApplyTransforms(new Stack<Matrix>());
-
-        return svg;
+        return (ISvg)svgTag;
     }
 
     private static ISvgTag CreateTagFrom(XmlNode node)

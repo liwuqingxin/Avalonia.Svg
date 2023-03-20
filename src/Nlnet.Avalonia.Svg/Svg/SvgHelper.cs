@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
-using Avalonia;
 using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg
@@ -27,6 +25,24 @@ namespace Nlnet.Avalonia.Svg
             visitor(tag);
 
             if (tag.Children == null)
+            {
+                return;
+            }
+
+            foreach (var child in tag.Children)
+            {
+                child.VisitSvgTagTree(visitor);
+            }
+        }
+
+        /// <summary>
+        /// Provide a generic visitor for <see cref="ISvgTag"/> tree which does not include the root node.
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <param name="visitor"></param>
+        public static void VisitSvgTagTreeWithoutSelf(this ISvgTag? tag, Action<ISvgTag> visitor)
+        {
+            if (tag?.Children == null)
             {
                 return;
             }

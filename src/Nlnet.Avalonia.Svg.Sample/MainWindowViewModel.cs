@@ -5,11 +5,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input.Platform;
+using Avalonia.Platform.Storage;
+using Avalonia.Platform.Storage.FileIO;
 using JetBrains.Annotations;
 
 namespace Nlnet.Avalonia.Svg.Sample;
@@ -28,12 +32,18 @@ public class SvgFileItem
 
 public sealed class MainWindowViewModel : INotifyPropertyChanged
 {
+    private readonly MainWindow _mainWindow;
     private List<SvgFileItem> _svgList = new();
     private SvgFileItem? _selectedSvg;
     private string? _editableSvgData;
     private Thread? _thClipboardMonitor;
     private volatile bool _stopMonitorClipboard = true;
     private string? _lastCopy;
+
+    public MainWindowViewModel(MainWindow mainWindow)
+    {
+        _mainWindow = mainWindow;
+    }
 
     public List<SvgFileItem> SvgList
     {
@@ -115,6 +125,39 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             return false;
         }
         return true;
+    }
+
+    public async Task Save()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(EditableSvgData))
+            {
+                return;
+            }
+
+            var svg = EditableSvgData;
+
+            var storage = await _mainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+            {
+                Title                  = "Áí´æÎª",
+                DefaultExtension       = "svg",
+                ShowOverwritePrompt    = true,
+                SuggestedFileName      = SelectedSvg?.SvgFileName ?? "untitled",
+                SuggestedStartLocation = new BclStorageFolder("./"),
+            });
+
+            if (storage != null)
+            {
+                await using var stream = await storage.OpenWriteAsync();
+                stream.Write(Encoding.UTF8.GetBytes(svg));
+                await stream.FlushAsync();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 
     public void MonitorClipboard()

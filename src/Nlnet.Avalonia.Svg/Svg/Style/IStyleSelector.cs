@@ -14,7 +14,6 @@ namespace Nlnet.Avalonia.Svg
         public TagSelector(string tagName)
         {
             _tagName = tagName;
-
         }
 
         public bool Match(ISvgTag tag)

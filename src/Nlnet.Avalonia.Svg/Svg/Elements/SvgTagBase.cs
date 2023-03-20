@@ -53,12 +53,12 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 
     public virtual void ApplyContext(ISvgContext context)
     {
-        if (_resourceAppliers == null)
+        if (_contextAppliers == null)
         {
             return;
         }
 
-        foreach (var applier in _resourceAppliers)
+        foreach (var applier in _contextAppliers)
         {
             applier.Apply(this, context);
         }
@@ -87,14 +87,14 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 
 
 
-    #region ISvgResourceApplier
+    #region ISvgContextApplier
 
-    private IEnumerable<ISvgContextApplier>? _resourceAppliers;
+    private IEnumerable<ISvgContextApplier>? _contextAppliers;
 
     protected void TryAddApplier(ISvgContextApplier applier)
     {
-        _resourceAppliers ??= new List<ISvgContextApplier>();
-        ((List<ISvgContextApplier>)_resourceAppliers).Add(applier);
+        _contextAppliers ??= new List<ISvgContextApplier>();
+        ((List<ISvgContextApplier>)_contextAppliers).Add(applier);
     }
 
     #endregion

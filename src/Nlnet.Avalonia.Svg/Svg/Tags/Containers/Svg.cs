@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.CompileGenerator;
@@ -7,7 +8,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.svg))]
-public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderable,
+public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderable, IInitializable,
     IIdSetter,
     //IVersionSetter,
     //IStyleSetter,
@@ -203,7 +204,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
 
 
 
-    internal void PrepareContext()
+    private void PrepareContext()
     {
         // Prepare all elements with id.
         this.VisitSvgTagTree(tag =>
@@ -242,22 +243,12 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
         });
     }
 
-    internal void BuildContext()
+    private void BuildContext()
     {
-        this.VisitSvgTagTree(tag =>
+        foreach (var setter in _styles.SelectMany(style => style.Setters))
         {
-            if (tag is ISvgStyleProvider provider)
-            {
-                var styles = provider.GetStyles();
-                foreach (var style in styles)
-                {
-                    foreach (var setter in style.Setters)
-                    {
-                        setter.ApplyDeferredValueString(this);
-                    }
-                }
-            }
-        });
+            setter.ApplyDeferredValueString(this);
+        }
     }
 
     public override void ApplyContext(ISvgContext context)
@@ -267,12 +258,20 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
             return;
         }
 
-        foreach (var child in Children)
+        this.VisitSvgTagTreeWithoutSelf(tag =>
         {
-            child.VisitSvgTagTree(tag =>
-            {
-                tag.ApplyContext(context);
-            });
-        }
+            tag.ApplyContext(context);
+        });
+    }
+
+    void IInitializable.Initialize()
+    {
+        // Collect, build and apply svg context.
+        this.PrepareContext();
+        this.BuildContext();
+        this.ApplyContext(this);
+
+        // Apply transforms.
+        this.ApplyTransforms(new Stack<Matrix>());
     }
 }

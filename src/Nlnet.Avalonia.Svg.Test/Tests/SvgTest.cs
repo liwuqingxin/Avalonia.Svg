@@ -29,7 +29,7 @@ namespace Nlnet.Avalonia.Svg.Test.Tests
 
             TestHelper.RunTestInAvaloniaAppEnvironment(() =>
             {
-                foreach (var pair in SvgTagFactory.SvgTagFactories)
+                foreach (var pair in SvgLoader.SvgTagFactories)
                 {
                     Debug.WriteLine($"==={pair}");
                 }
@@ -39,10 +39,10 @@ namespace Nlnet.Avalonia.Svg.Test.Tests
                     Debug.WriteLine($"--- {pair}");
                 }
 
-                var svg1 = SvgTagFactory.LoadSvg(TestData.SvgData1);
-                var svg2 = SvgTagFactory.LoadSvg(TestData.SvgData2);
-                var svg3 = SvgTagFactory.LoadSvg(TestData.SvgData3);
-                var svg4 = SvgTagFactory.LoadSvg(TestData.SvgData4);
+                var svg1 = SvgLoader.LoadSvg(TestData.SvgData1);
+                var svg2 = SvgLoader.LoadSvg(TestData.SvgData2);
+                var svg3 = SvgLoader.LoadSvg(TestData.SvgData3);
+                var svg4 = SvgLoader.LoadSvg(TestData.SvgData4);
 
                 Assert.IsTrue((svg1 as ISvgTag)!.GetTagName() == SvgTags.svg.ToString());
                 Assert.IsTrue((svg2 as ISvgTag)!.GetTagName() == SvgTags.svg.ToString());

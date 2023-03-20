@@ -61,6 +61,7 @@
                           Content="Switch Monitor Clipboard"
                           IsVisible="False" />
             <Button Command="{Binding OpenInBrowser}" Content="在浏览器中打开" />
+            <Button Command="{Binding Save}" Content="保存" />
         </StackPanel>
 
         <!-- Code Box -->
