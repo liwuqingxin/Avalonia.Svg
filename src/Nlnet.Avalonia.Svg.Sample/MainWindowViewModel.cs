@@ -40,6 +40,11 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private volatile bool _stopMonitorClipboard = true;
     private string? _lastCopy;
 
+    public MainWindowViewModel()
+    {
+        
+    }
+
     public MainWindowViewModel(MainWindow mainWindow)
     {
         _mainWindow = mainWindow;

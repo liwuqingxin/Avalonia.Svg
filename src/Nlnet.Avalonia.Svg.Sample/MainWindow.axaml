@@ -8,7 +8,7 @@
         Title="Avalonia Svg | Nlnet"
         d:DesignHeight="450"
         d:DesignWidth="800"
-        DragDrop.AllowDrop="True"
+        DragDrop.AllowDrop="True" Icon="avares://Nlnet.Avalonia.Svg.Sample/svg.ico"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <Design.DataContext>
@@ -60,8 +60,8 @@
             <ToggleSwitch Command="{Binding MonitorClipboard}"
                           Content="Switch Monitor Clipboard"
                           IsVisible="False" />
-            <Button Command="{Binding OpenInBrowser}" Content="在浏览器中打开" />
-            <Button Command="{Binding Save}" Content="保存" />
+            <Button Command="{Binding OpenInBrowser}" Content="Open in Browser" />
+            <Button Command="{Binding Save}" Content="Save" />
         </StackPanel>
 
         <!-- Code Box -->

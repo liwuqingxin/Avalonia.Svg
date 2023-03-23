@@ -227,6 +227,7 @@ namespace Nlnet.Avalonia.Svg
         /// <returns></returns>
         public static Transform ToTransform(this string valueString)
         {
+            //TODO 支持空格间隔
             var regex = new Regex("(translate\\(.*?\\s*?,\\s*?.*?\\))|(scale\\(.*?\\s*?,\\s*?.*?\\))|(rotate\\(.*?\\))");
             var matches = regex.Matches(valueString);
 
