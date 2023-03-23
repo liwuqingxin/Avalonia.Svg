@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+
+  <rect height="300" width="300" y="0" x="0" fill="none"></rect>
+
+  <g>
+    <path d="M0.5 13.2869C0.5 13.2869 15.5 0.5 30.5 0.5C45.5 0.5 60.5 13.2869 60.5 13.2869C60.5 13.2869 40.323 7.38525 25.323 19.1885C10.323 30.9918 0.5 60.5 0.5 60.5" fill="none" fill-rule="evenodd" stroke="#808080" stroke-width="10" transform="translate(10, 10)" stroke-linejoin="miter" stroke-miterlimit="5"/>
+    <path d="M0.5 13.2869C0.5 13.2869 15.5 0.5 30.5 0.5C45.5 0.5 60.5 13.2869 60.5 13.2869C60.5 13.2869 40.323 7.38525 25.323 19.1885C10.323 30.9918 0.5 60.5 0.5 60.5" fill="none" fill-rule="evenodd" stroke="#ff0000" stroke-width="01" transform="translate(10, 10)"/>
+  </g>
+
+  <g transform="translate(0,100)">
+    <path d="M0.5 13.2869C0.5 13.2869 15.5 0.5 30.5 0.5C45.5 0.5 60.5 13.2869 60.5 13.2869C60.5 13.2869 40.323 7.38525 25.323 19.1885C10.323 30.9918 0.5 60.5 0.5 60.5" fill="none" fill-rule="evenodd" stroke="#808080" stroke-width="10" transform="translate(10, 10)" stroke-linejoin="miter-clip"/>
+    <path d="M0.5 13.2869C0.5 13.2869 15.5 0.5 30.5 0.5C45.5 0.5 60.5 13.2869 60.5 13.2869C60.5 13.2869 40.323 7.38525 25.323 19.1885C10.323 30.9918 0.5 60.5 0.5 60.5" fill="none" fill-rule="evenodd" stroke="#ff0000" stroke-width="01" transform="translate(10, 10)"/>
+  </g>
+
+  <g transform="translate(100,100)">
+    <path d="M0.5 13.2869C0.5 13.2869 15.5 0.5 30.5 0.5C45.5 0.5 60.5 13.2869 60.5 13.2869C60.5 13.2869 40.323 7.38525 25.323 19.1885C10.323 30.9918 0.5 60.5 0.5 60.5" fill="none" fill-rule="evenodd" stroke="#808080" stroke-width="10" transform="translate(10, 10)" stroke-linejoin="round"/>
+    <path d="M0.5 13.2869C0.5 13.2869 15.5 0.5 30.5 0.5C45.5 0.5 60.5 13.2869 60.5 13.2869C60.5 13.2869 40.323 7.38525 25.323 19.1885C10.323 30.9918 0.5 60.5 0.5 60.5" fill="none" fill-rule="evenodd" stroke="#ff0000" stroke-width="01" transform="translate(10, 10)"/>
+  </g>
+
+  <g transform="translate(0,200)">
+    <path d="M0.5 13.2869C0.5 13.2869 15.5 0.5 30.5 0.5C45.5 0.5 60.5 13.2869 60.5 13.2869C60.5 13.2869 40.323 7.38525 25.323 19.1885C10.323 30.9918 0.5 60.5 0.5 60.5" fill="none" fill-rule="evenodd" stroke="#808080" stroke-width="10" transform="translate(10, 10)" stroke-linejoin="bevel"/>
+    <path d="M0.5 13.2869C0.5 13.2869 15.5 0.5 30.5 0.5C45.5 0.5 60.5 13.2869 60.5 13.2869C60.5 13.2869 40.323 7.38525 25.323 19.1885C10.323 30.9918 0.5 60.5 0.5 60.5" fill="none" fill-rule="evenodd" stroke="#ff0000" stroke-width="01" transform="translate(10, 10)"/>
+  </g>
+
+  <g transform="translate(100,200)">
+    <path d="M0.5 13.2869C0.5 13.2869 15.5 0.5 30.5 0.5C45.5 0.5 60.5 13.2869 60.5 13.2869C60.5 13.2869 40.323 7.38525 25.323 19.1885C10.323 30.9918 0.5 60.5 0.5 60.5" fill="none" fill-rule="evenodd" stroke="#808080" stroke-width="10" transform="translate(10, 10)" stroke-linejoin="arcs"/>
+    <path d="M0.5 13.2869C0.5 13.2869 15.5 0.5 30.5 0.5C45.5 0.5 60.5 13.2869 60.5 13.2869C60.5 13.2869 40.323 7.38525 25.323 19.1885C10.323 30.9918 0.5 60.5 0.5 60.5" fill="none" fill-rule="evenodd" stroke="#ff0000" stroke-width="01" transform="translate(10, 10)"/>
+  </g>
+
+</svg>

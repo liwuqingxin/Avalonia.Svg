@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  
+  <path d="M 50,0 75,100 0,40 100,40 25,100 50,0z" fill="yellow" stroke="blue" fill-rule="nonzero" fill-opacity="0.5" transform="translate(100,100)"/>
+  <path d="M 50,0 75,100 0,40 100,40 25,100 50,0z" fill="yellow" stroke="blue" fill-rule="evenodd" fill-opacity="0.5"/>
+  
+</svg>
