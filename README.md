@@ -37,9 +37,9 @@
 
 # A simple SVG Viewer using it.
 
-![image-20230324012006442](doc\imghost\image-20230324012006442.png)
+![image-20230324012006442](/doc/imghost/image-20230324012006442.png)
 
-![image-20230324012210119](doc\imghost\image-20230324012210119.png)
+![image-20230324012210119](/doc/imghost/image-20230324012210119.png)
 
 # SVG Feature
 
