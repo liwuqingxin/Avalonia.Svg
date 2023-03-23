@@ -7,7 +7,7 @@ namespace Nlnet.Avalonia.Svg;
 /// </summary>
 public abstract class AbstractDeferredSetter : ISvgSetter
 {
-    protected string? DeferredValueString;
+    private string? _deferredValueString;
 
     public abstract void Set(ISvgTag tag);
 
@@ -20,16 +20,16 @@ public abstract class AbstractDeferredSetter : ISvgSetter
 
     public void AddDeferredValueString(string valueString)
     {
-        DeferredValueString = valueString;
+        _deferredValueString = valueString;
     }
 
     public void ApplyDeferredValueString(ISvgContext context)
     {
-        if (DeferredValueString == null)
+        if (_deferredValueString == null)
         {
             return;
         }
 
-        InitializeDeferredValue(context, DeferredValueString);
+        InitializeDeferredValue(context, _deferredValueString);
     }
 }

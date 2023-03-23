@@ -15,5 +15,10 @@ public class StyleApplier : ISvgContextApplier
                 style.ApplyTo(tag);
             }
         }
+
+        if (tag is IStyleSetter { Style: { } } styleSetter)
+        {
+            styleSetter.Style.ApplyTo(tag);
+        }
     }
 }

@@ -7,7 +7,8 @@ namespace Nlnet.Avalonia.Svg;
 /// </summary>
 public interface ISvgTag : 
     IClassSetter, 
-    IIdSetter
+    IIdSetter,
+    IStyleSetter
 {
     /// <summary>
     /// Properties deferred to set value.

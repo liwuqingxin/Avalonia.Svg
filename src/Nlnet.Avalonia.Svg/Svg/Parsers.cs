@@ -650,5 +650,35 @@ namespace Nlnet.Avalonia.Svg
                 return false;
             }
         }
+
+        /// <summary>
+        /// Convert value string to <see cref="ISvgStyle"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static ISvgStyle? ToISvgStyle(this string valueString)
+        {
+            return SvgStyleImpl.Parse(null, valueString);
+        }
+
+        /// <summary>
+        /// Try to convert value string to <see cref="ISvgStyle"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="svgStyle"></param>
+        /// <returns></returns>
+        public static bool TryToISvgStyle(this string valueString, out ISvgStyle? svgStyle)
+        {
+            try
+            {
+                svgStyle = ToISvgStyle(valueString);
+                return true;
+            }
+            catch
+            {
+                svgStyle = null;
+                return false;
+            }
+        }
     }
 }

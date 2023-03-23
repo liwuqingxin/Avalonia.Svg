@@ -15,6 +15,8 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 
     string? IIdSetter.Id { get; set; }
 
+    public ISvgStyle? Style { get; set; }
+
     #endregion
 
 
