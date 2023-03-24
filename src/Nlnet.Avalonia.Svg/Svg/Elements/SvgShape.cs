@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 namespace Nlnet.Avalonia.Svg
 {
-    // TODO 属性值优先级问题：Presentation Property Setting vs CSS Style Setting；
     public abstract class SvgShape : SvgRenderable, ISvgShape
     {
         /// <summary>
@@ -55,12 +54,6 @@ namespace Nlnet.Avalonia.Svg
         //public override Rect RenderBounds => RenderGeometry?.GetRenderBounds(GetPen()) ?? Rect.Empty;
 
 
-
-        protected SvgShape()
-        {
-            this.TryAddApplier(new StyleApplier());
-            this.TryAddApplier(new DeferredPropertiesApplier());
-        }
 
         public sealed override void OnPropertiesFetched()
         {

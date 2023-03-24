@@ -11,7 +11,6 @@ namespace Nlnet.Avalonia.Svg;
 public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderable, IInitializable,
     IIdSetter,
     //IVersionSetter,
-    //IStyleSetter,
     IViewBoxSetter,
     IPreserveAspectRatioSetter,
     IXSetter,
@@ -236,7 +235,7 @@ public class Svg : SvgContainer, ISvg, ISvgContext, ISvgContainer, ISvgRenderabl
                 }
             }
 
-            if (tag is ISvgRenderable renderable)
+            if (tag is ISvgRenderable renderable && tag.IsDef == false)
             {
                 this._renderables.Add(renderable);
             }

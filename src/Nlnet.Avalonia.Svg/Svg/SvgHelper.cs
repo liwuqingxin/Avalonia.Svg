@@ -91,6 +91,10 @@ namespace Nlnet.Avalonia.Svg
         {
             children?.ForEach(c => c.VisitSvgTagTree(tag =>
             {
+                if (tag is SvgDefs)
+                {
+                    return false;
+                }
                 if (tag is not ISvgRenderable renderable)
                 {
                     return true;

@@ -102,6 +102,11 @@ public static class SvgLoader
 
         var tag = factory.CreateTag(node);
 
+        if (tag is SvgDefs)
+        {
+            tag.IsDef = true;
+        }
+
         if (!node.HasChildNodes)
         {
             return tag;
@@ -115,7 +120,11 @@ public static class SvgLoader
             .ToList();
 
         tag.Children = childTags;
-        childTags.ForEach(t => t.Parent = tag);
+        childTags.ForEach(t =>
+        {
+            t.Parent = tag;
+            t.IsDef  = tag.IsDef;
+        });
 
         return tag;
     }
