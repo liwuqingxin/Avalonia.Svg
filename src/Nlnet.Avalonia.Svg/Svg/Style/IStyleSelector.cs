@@ -2,6 +2,9 @@
 
 namespace Nlnet.Avalonia.Svg
 {
+    /// <summary>
+    /// It defines a style selector like style selector in css .
+    /// </summary>
     public interface IStyleSelector
     {
         public bool Match(ISvgTag tag);

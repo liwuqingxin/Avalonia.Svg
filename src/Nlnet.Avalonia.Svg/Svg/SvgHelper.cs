@@ -83,29 +83,6 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
-        /// Render children.
-        /// </summary>
-        /// <param name="children"></param>
-        /// <param name="dc"></param>
-        public static void RenderRecursively(this List<ISvgTag>? children, DrawingContext dc)
-        {
-            children?.ForEach(c => c.VisitSvgTagTree(tag =>
-            {
-                if (tag is SvgDefs)
-                {
-                    return false;
-                }
-                if (tag is not ISvgRenderable renderable)
-                {
-                    return true;
-                }
-
-                renderable.Render(dc);
-                return !renderable.RenderBySelf;
-            }));
-        }
-
-        /// <summary>
         /// Try to parse a url definition and get the url.
         /// </summary>
         /// <param name="original"></param>
@@ -127,7 +104,7 @@ namespace Nlnet.Avalonia.Svg
                 return true;
             }
 
-            url    = string.Empty;
+            url = string.Empty;
             token = null;
             return false;
         }

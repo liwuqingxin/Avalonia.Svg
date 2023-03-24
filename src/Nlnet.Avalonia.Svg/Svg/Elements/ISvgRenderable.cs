@@ -27,11 +27,6 @@ namespace Nlnet.Avalonia.Svg
         public Rect RenderBounds { get; }
 
         /// <summary>
-        /// Indicates if this object renders itself and it's children by itself.
-        /// </summary>
-        public bool RenderBySelf { get; }
-
-        /// <summary>
         /// Apply transforms.
         /// </summary>
         public void ApplyTransforms(Stack<Matrix> transformsContext);

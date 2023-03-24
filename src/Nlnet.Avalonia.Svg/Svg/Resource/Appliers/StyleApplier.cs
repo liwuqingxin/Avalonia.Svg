@@ -11,7 +11,6 @@ public class StyleApplier : ISvgContextApplier
     {
         foreach (var style in context.Styles)
         {
-            // TODO Do not consider priority here. Should be repaired.
             if (style.Match(tag))
             {
                 style.ApplyTo(tag);

@@ -26,8 +26,6 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
 
     public virtual Rect RenderBounds => Rect.Empty;
 
-    bool ISvgRenderable.RenderBySelf => false;
-
     /// <summary>
     /// Apply transforms. In <see cref="SvgRenderable"/>, it renders nothing.
     /// </summary>
