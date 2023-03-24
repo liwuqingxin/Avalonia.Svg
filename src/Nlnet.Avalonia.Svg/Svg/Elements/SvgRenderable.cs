@@ -14,8 +14,8 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
 {
     protected SvgRenderable()
     {
-        this.TryAddApplier(new StyleApplier());
-        this.TryAddApplier(new DeferredPropertiesApplier());
+        this.TryAddApplier(StyleApplier.Instance);
+        this.TryAddApplier(DeferredPropertiesApplier.Instance);
     }
 
     public double? Opacity { get; set; }

@@ -5,6 +5,8 @@
 /// </summary>
 public class StyleApplier : ISvgContextApplier
 {
+    public static StyleApplier Instance { get; } = new();
+
     public void Apply(ISvgTag tag, ISvgContext context)
     {
         foreach (var style in context.Styles)
