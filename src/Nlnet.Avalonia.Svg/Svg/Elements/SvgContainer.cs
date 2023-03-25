@@ -135,7 +135,7 @@ namespace Nlnet.Avalonia.Svg
 
         public override void Render(DrawingContext dc)
         {
-            if (this.Children == null)
+            if (this.Children == null || this is SvgDefs)
             {
                 return;
             }
