@@ -43,9 +43,15 @@ This library is distributed under the AGPL 3.0 license. See the [LICENSE](http:/
 
 # SVG Viewer using it.
 
-![image-20230324012006442](doc/imghost/image-20230324012006442.png)
+![image-20230324012006442](doc/imghost/tmp210F.png)
 
-![image-20230324012210119](doc/imghost/image-20230324012210119.png)
+![image-20230324012210119](doc/imghost/tmp4A23.png)
+
+![image-20230324012210119](doc/imghost/tmp1AD9.png)
+
+![image-20230324012210119](doc/imghost/tmpA4E1.png)
+
+![image-20230324012210119](doc/imghost/tmpED0E.png)
 
 # Features
 
@@ -64,7 +70,7 @@ This library is distributed under the AGPL 3.0 license. See the [LICENSE](http:/
 - **Animation** and some other external feature of SVG are not supported, like resolving external resources (such as images) referenced in the SVG file.
 - Performance may be impacted when rendering complex SVG files with a large number of elements or gradients. We have not made any performance optimization about it till now.
 
-:date: **Pattern**, **Use** and **mark** are coming soon.
+:date: **Pattern**, **masker** and **mark** are coming soon.
 
 ### Document Structure
 
@@ -74,7 +80,7 @@ This library is distributed under the AGPL 3.0 license. See the [LICENSE](http:/
 | g           | :heavy_check_mark: |      |
 | defs        | :heavy_check_mark: |      |
 | symbol      | :x:                |      |
-| use         | :date:             |      |
+| use         | :heavy_check_mark: |      |
 | switch      | :x:                |      |
 | desc, title | :date:             |      |
 | matadata    | :date:             |      |
