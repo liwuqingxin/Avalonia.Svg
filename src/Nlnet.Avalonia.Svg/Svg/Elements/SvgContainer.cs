@@ -98,7 +98,6 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-
             var matrix = Matrix.Identity;
 
             // Transform
