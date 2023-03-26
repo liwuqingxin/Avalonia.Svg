@@ -12,6 +12,7 @@ using System.Xml;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input.Platform;
+using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Platform.Storage.FileIO;
 using JetBrains.Annotations;
@@ -223,6 +224,16 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         {
             Console.WriteLine(e);
         }
+    }
+
+    public void ViewGithub()
+    {
+        OpenFile("https://github.com/liwuqingxin/Avalonia.Svg");
+    }
+
+    public void BugReport()
+    {
+        OpenFile("https://github.com/liwuqingxin/Avalonia.Svg/issues/new?assignees=liwuqingxin&labels=bug&template=bug_report.md&title=%5BBUG%5D");
     }
 
 

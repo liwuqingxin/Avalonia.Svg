@@ -15,67 +15,122 @@
     <Design.DataContext>
         <sample:MainWindowViewModel />
     </Design.DataContext>
-    <Grid ColumnDefinitions="Auto,Auto,*">
+    <Grid ColumnDefinitions="Auto,Auto,*,Auto">
 
         <!-- List & Display -->
-        <Grid Grid.Column="0"
-              Margin="12,12,0,12"
-              RowDefinitions="Auto,*">
-            <Panel Grid.Row="0"
-                   Width="200"
-                   Height="200"
-                   Margin="0,0,0,12"
-                   ZIndex="100">
-                <Border Background="black" Opacity="{Binding #BackGroundOpacity.Value}" />
-                <controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
-                               IconStretch="Uniform"
-                               IconSvgData="{Binding Path=EditableSvgData}"
-                               IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/NLNet.svg"
-                               IsHitTestVisible="False"
-                               ShowDiagnosis="{Binding #ShowDiagnosis.IsChecked}" />
-            </Panel>
-            <ListBox Grid.Row="1"
-                     Width="200"
-                     Items="{Binding Path=SvgList}"
-                     SelectedItem="{Binding Path=SelectedSvg}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="sample:SvgFileItem">
-                        <TextBlock Text="{Binding Path=SvgFileName}" TextTrimming="{x:Static TextTrimming.CharacterEllipsis}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </Grid>
+        <Border Grid.Column="0"
+                Margin="12,12,0,12"
+                BorderBrush="Gray"
+                BorderThickness="1">
+            <Grid Margin="12" RowDefinitions="Auto,*">
+                <Panel Grid.Row="0"
+                       Width="200"
+                       Height="200"
+                       Margin="0,0,0,12"
+                       ZIndex="100">
+                    <Border Background="black" Opacity="{Binding #BackGroundOpacity.Value}" />
+                    <controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
+                                   IconStretch="Uniform"
+                                   IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/NLNet.svg"
+                                   IconSvgData="{Binding Path=EditableSvgData}"
+                                   IsHitTestVisible="False"
+                                   Opacity="{Binding #SvgGroundOpacity.Value}"
+                                   ShowDiagnosis="{Binding #ShowDiagnosis.IsChecked}" />
+                </Panel>
+                <ListBox Grid.Row="1"
+                         Width="200"
+                         Items="{Binding Path=SvgList}"
+                         SelectedItem="{Binding Path=SelectedSvg}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="sample:SvgFileItem">
+                            <TextBlock Text="{Binding Path=SvgFileName}" TextTrimming="{x:Static TextTrimming.CharacterEllipsis}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Border>
+
 
         <!-- Settings -->
-        <StackPanel Grid.Column="1"
-                    Margin="12,12,0,12"
-                    Orientation="Vertical"
-                    Spacing="10">
-            <CheckBox Content="Window Topmost" IsChecked="{Binding $parent[Window].Topmost}" />
-            <CheckBox Name="ShowDiagnosis" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}" />
-            <CheckBox Name="ClipToBounds"
-                      Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}"
-                      IsChecked="True" />
-            <TextBlock Text="Background Opacity:" />
-            <Slider Name="BackGroundOpacity"
-                    Maximum="1"
-                    Minimum="0"
-                    Value="0.1" />
-            <ToggleSwitch Command="{Binding MonitorClipboard}"
-                          Content="Switch Monitor Clipboard"
-                          IsVisible="False" />
-            <Button Command="{Binding OpenInBrowser}" Content="Open in Browser" />
-            <Button Command="{Binding Save}" Content="Save" />
-        </StackPanel>
+        <Border Grid.Column="1"
+                Margin="12,12,0,12"
+                BorderBrush="Gray"
+                BorderThickness="1">
+            <StackPanel Margin="12"
+                        Orientation="Vertical"
+                        Spacing="5">
+                <CheckBox Content="Window Topmost" IsChecked="{Binding $parent[Window].Topmost}" />
+                <CheckBox Name="ShowDiagnosis" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}" />
+                <CheckBox Name="ClipToBounds"
+                          Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}"
+                          IsChecked="True" />
+                <TextBlock Text="Background Opacity:" />
+                <Slider Name="BackGroundOpacity"
+                        Maximum="1"
+                        Minimum="0"
+                        Value="0.1" />
+                <TextBlock Text="Svg Opacity:" />
+                <Slider Name="SvgGroundOpacity"
+                        Maximum="1"
+                        Minimum="0"
+                        Value="1" />
+                <ToggleSwitch Command="{Binding MonitorClipboard}"
+                              Content="Switch Monitor Clipboard"
+                              IsVisible="False" />
+                <Button HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Command="{Binding OpenInBrowser}"
+                        Content="Open in Browser" />
+                <Button HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Command="{Binding Save}"
+                        Content="Save" />
+            </StackPanel>
+        </Border>
+
 
         <!-- Code Box -->
         <TextBox x:Name="TextBox"
                  Grid.Column="2"
                  Margin="12"
                  AcceptsReturn="True"
+                 BorderBrush="Gray"
                  CornerRadius="0"
                  Opacity="0.9"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
-                 Text="{Binding EditableSvgData}" />
+                 Text="{Binding EditableSvgData}"
+                 Watermark="Input your svg code here or drag a svg file into this window to show a svg..." />
+
+
+        <!-- Information -->
+        <Border Grid.Column="3"
+                Margin="0,12,12,12"
+                BorderBrush="Gray"
+                BorderThickness="1">
+            <StackPanel Margin="12"
+                        Orientation="Vertical"
+                        Spacing="10">
+                <Button HorizontalAlignment="Stretch" Command="{Binding ViewGithub}">
+                    <Grid ColumnDefinitions="Auto,8,*">
+                        <controls:Icon Width="24"
+                                       Height="24"
+                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/github-fill.svg" />
+                        <TextBlock Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   Text="View it in Github" />
+                    </Grid>
+                </Button>
+                <Button HorizontalAlignment="Stretch" Command="{Binding BugReport}">
+                    <Grid ColumnDefinitions="Auto,8,*">
+                        <controls:Icon Width="24"
+                                       Height="24"
+                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/bug-fill.svg" />
+                        <TextBlock Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   Text="Report an issue" />
+                    </Grid>
+                </Button>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>
