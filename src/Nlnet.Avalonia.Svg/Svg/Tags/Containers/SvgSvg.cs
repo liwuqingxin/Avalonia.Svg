@@ -89,74 +89,77 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
             availableSize = availableSize.WithHeight(this.Height.Value);
         }
 
-        if (this.ViewBox == null)
+        using (dc.PushClip(new Rect(X ?? 0, Y ?? 0, availableSize.Width, availableSize.Height)))
         {
-            base.Render(dc, ctx);
-        }
-        else
-        {
-            var viewBoxSize = new Size(ViewBox.Width, ViewBox.Height);
-            var ratio = PreserveAspectRatio ?? new PreserveAspectRatio(PreserveAspectRatioAlign.xMidYMid, PreserveAspectRatioMeetOrSlice.meet);
-            if (ratio.Align == PreserveAspectRatioAlign.none)
+            if (this.ViewBox == null)
             {
-                GetFillFactors(availableSize, viewBoxSize, out var scaleX, out var scaleY);
-                using (dc.PushPostTransform(Matrix.CreateTranslation(-ViewBox.Origin.X, -ViewBox.Origin.Y)))
-                using (dc.PushPostTransform(Matrix.CreateScale(scaleX, scaleY)))
-                using (dc.PushTransformContainer())
-                    base.Render(dc, ctx);
+                base.Render(dc, ctx);
             }
             else
             {
-                var isSlice = ratio.MeetOrSlice == PreserveAspectRatioMeetOrSlice.slice;
-                GetUniformFactors(availableSize, viewBoxSize, isSlice, out var scale, out var offsetX, out var offsetY);
-                switch (ratio.Align)
+                var viewBoxSize = new Size(ViewBox.Width, ViewBox.Height);
+                var ratio = PreserveAspectRatio ?? new PreserveAspectRatio(PreserveAspectRatioAlign.xMidYMid, PreserveAspectRatioMeetOrSlice.meet);
+                if (ratio.Align == PreserveAspectRatioAlign.none)
                 {
-                    case PreserveAspectRatioAlign.xMinYMin:
-                        offsetX = 0;
-                        offsetY = 0;
-                        break;
-                    case PreserveAspectRatioAlign.xMidYMin:
-                        offsetY = 0;
-                        break;
-                    case PreserveAspectRatioAlign.xMaxYMin:
-                        offsetX *= 2;
-                        offsetY = 0;
-                        break;
-                    case PreserveAspectRatioAlign.xMinYMid:
-                        offsetX = 0;
-                        break;
-                    case PreserveAspectRatioAlign.xMidYMid:
-                        break;
-                    case PreserveAspectRatioAlign.xMaxYMid:
-                        offsetX *= 2;
-                        break;
-                    case PreserveAspectRatioAlign.xMinYMax:
-                        offsetX = 0;
-                        offsetY *= 2;
-                        break;
-                    case PreserveAspectRatioAlign.xMidYMax:
-                        offsetY *= 2;
-                        break;
-                    case PreserveAspectRatioAlign.xMaxYMax:
-                        offsetX *= 2;
-                        offsetY *= 2;
-                        break;
-                    case PreserveAspectRatioAlign.none:
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    GetFillFactors(availableSize, viewBoxSize, out var scaleX, out var scaleY);
+                    using (dc.PushPostTransform(Matrix.CreateTranslation(-ViewBox.Origin.X, -ViewBox.Origin.Y)))
+                    using (dc.PushPostTransform(Matrix.CreateScale(scaleX, scaleY)))
+                    using (dc.PushTransformContainer())
+                        base.Render(dc, ctx);
+                }
+                else
+                {
+                    var isSlice = ratio.MeetOrSlice == PreserveAspectRatioMeetOrSlice.slice;
+                    GetUniformFactors(availableSize, viewBoxSize, isSlice, out var scale, out var offsetX, out var offsetY);
+                    switch (ratio.Align)
+                    {
+                        case PreserveAspectRatioAlign.xMinYMin:
+                            offsetX = 0;
+                            offsetY = 0;
+                            break;
+                        case PreserveAspectRatioAlign.xMidYMin:
+                            offsetY = 0;
+                            break;
+                        case PreserveAspectRatioAlign.xMaxYMin:
+                            offsetX *= 2;
+                            offsetY = 0;
+                            break;
+                        case PreserveAspectRatioAlign.xMinYMid:
+                            offsetX = 0;
+                            break;
+                        case PreserveAspectRatioAlign.xMidYMid:
+                            break;
+                        case PreserveAspectRatioAlign.xMaxYMid:
+                            offsetX *= 2;
+                            break;
+                        case PreserveAspectRatioAlign.xMinYMax:
+                            offsetX = 0;
+                            offsetY *= 2;
+                            break;
+                        case PreserveAspectRatioAlign.xMidYMax:
+                            offsetY *= 2;
+                            break;
+                        case PreserveAspectRatioAlign.xMaxYMax:
+                            offsetX *= 2;
+                            offsetY *= 2;
+                            break;
+                        case PreserveAspectRatioAlign.none:
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+
+                    using (dc.PushPostTransform(Matrix.CreateTranslation(-ViewBox.Origin.X, -ViewBox.Origin.Y)))
+                    using (dc.PushPostTransform(Matrix.CreateScale(scale, scale)))
+                    using (dc.PushPostTransform(Matrix.CreateTranslation(offsetX, offsetY)))
+                    using (dc.PushTransformContainer())
+                        base.Render(dc, ctx);
                 }
 
-                using (dc.PushPostTransform(Matrix.CreateTranslation(-ViewBox.Origin.X, -ViewBox.Origin.Y)))
-                using (dc.PushPostTransform(Matrix.CreateScale(scale, scale)))
-                using (dc.PushPostTransform(Matrix.CreateTranslation(offsetX, offsetY)))
-                using (dc.PushTransformContainer())
-                    base.Render(dc, ctx);
-            }
-
-            // Draw view box border.
-            if (ctx.ShowDiagnosis)
-            {
-                dc.DrawRectangle(new Pen(Brushes.Green, 1, new DashStyle(new double[] { 5, 5 }, 0)), new Rect(ViewBox.Origin.X, ViewBox.Origin.Y, ViewBox.Width, ViewBox.Height));
+                // Draw view box border.
+                if (ctx.ShowDiagnosis)
+                {
+                    dc.DrawRectangle(new Pen(Brushes.Green, 1, new DashStyle(new double[] { 5, 5 }, 0)), new Rect(ViewBox.Origin.X, ViewBox.Origin.Y, ViewBox.Width, ViewBox.Height));
+                }
             }
         }
     }

@@ -8,7 +8,8 @@
         Title="Avalonia Svg | Nlnet"
         d:DesignHeight="450"
         d:DesignWidth="800"
-        DragDrop.AllowDrop="True" Icon="avares://Nlnet.Avalonia.Svg.Sample/svg.ico"
+        DragDrop.AllowDrop="True"
+        Icon="avares://Nlnet.Avalonia.Svg.Sample/svg.ico"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <Design.DataContext>
@@ -28,6 +29,7 @@
                 <Border Background="black" Opacity="{Binding #BackGroundOpacity.Value}" />
                 <controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
                                IconSvgData="{Binding Path=EditableSvgData}"
+                               IsHitTestVisible="False"
                                ShowDiagnosis="{Binding #ShowDiagnosis.IsChecked}" />
             </Panel>
             <ListBox Grid.Row="1"
@@ -70,6 +72,7 @@
                  Margin="12"
                  AcceptsReturn="True"
                  CornerRadius="0"
+                 Opacity="0.9"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                  Text="{Binding EditableSvgData}" />
     </Grid>

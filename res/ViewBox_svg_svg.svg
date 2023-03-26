@@ -1,0 +1,37 @@
+<svg width="450px" height="300px" xmlns="http://www.w3.org/2000/svg">
+
+  <desc>Example PreserveAspectRatio - illustrates preserveAspectRatio attribute</desc>
+
+  <style type="text/css">
+    rect { fill: none; stroke: blue; }
+  </style>
+
+  <defs>
+    <g id="smile">
+      <rect x='.5' y='.5' width='29' height='39' style="fill:none;stroke:red"/>
+    </g>
+  </defs>
+
+  <g id="meet-group-1" transform="translate(100, 60)">
+    <g>
+      <rect x='.5' y='.5' width='49' height='29'/>
+      <svg preserveAspectRatio="xMinYMin meet" viewBox="0 0 30 40" width="50" height="30">
+	<use href="#smile" />
+      </svg>
+    </g>
+    <g transform="translate(70,0)">
+      <rect x='.5' y='.5' width='49' height='29'/>
+      <svg preserveAspectRatio="xMidYMid meet" viewBox="0 0 30 40" width="50" height="30">
+	<use href="#smile" />
+      </svg>
+    </g>
+    <g transform="translate(0,70)">
+      <rect x='.5' y='.5' width='49' height='29'/>
+      <svg preserveAspectRatio="xMaxYMax meet" viewBox="0 0 30 40" width="50" height="30">
+        <use href="#smile" />
+      </svg>
+    </g>
+  </g>
+
+
+</svg>

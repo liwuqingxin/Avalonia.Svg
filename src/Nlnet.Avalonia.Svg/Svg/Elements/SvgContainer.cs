@@ -115,9 +115,12 @@ namespace Nlnet.Avalonia.Svg
 
             using (dc.PushPostTransform(matrix))
             {
-                foreach (var child in Children.OfType<ISvgRenderable>())
+                using (dc.PushTransformContainer())
                 {
-                    child.Render(dc, ctx);
+                    foreach (var child in Children.OfType<ISvgRenderable>())
+                    {
+                        child.Render(dc, ctx);
+                    }
                 }
             }
         }
