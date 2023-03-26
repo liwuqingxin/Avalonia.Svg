@@ -76,40 +76,34 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
         });
     }
 
-    //public override void Render(DrawingContext dc)
-    //{
-
-    //}
-
-
-    #region ISvg
-
-    public void Render(DrawingContext dc, Size availableSize, bool showDiagnosis)
+    public override void Render(DrawingContext dc, ISvgContext ctx)
     {
+        var availableSize = ctx.ContainerSize;
+
         if (this.Width != null)
         {
             availableSize = availableSize.WithWidth(this.Width.Value);
         }
         if (this.Height != null)
         {
-            availableSize = availableSize.WithWidth(this.Height.Value);
+            availableSize = availableSize.WithHeight(this.Height.Value);
         }
 
         if (this.ViewBox == null)
         {
-            this.Render(dc);
+            base.Render(dc, ctx);
         }
         else
         {
             var viewBoxSize = new Size(ViewBox.Width, ViewBox.Height);
-            var ratio       = PreserveAspectRatio ?? new PreserveAspectRatio(PreserveAspectRatioAlign.xMidYMid, PreserveAspectRatioMeetOrSlice.meet);
+            var ratio = PreserveAspectRatio ?? new PreserveAspectRatio(PreserveAspectRatioAlign.xMidYMid, PreserveAspectRatioMeetOrSlice.meet);
             if (ratio.Align == PreserveAspectRatioAlign.none)
             {
                 GetFillFactors(availableSize, viewBoxSize, out var scaleX, out var scaleY);
                 using (dc.PushPostTransform(Matrix.CreateTranslation(-ViewBox.Origin.X, -ViewBox.Origin.Y)))
                 using (dc.PushPostTransform(Matrix.CreateScale(scaleX, scaleY)))
                 using (dc.PushTransformContainer())
-                    Render(dc);
+                    base.Render(dc, ctx);
             }
             else
             {
@@ -156,11 +150,11 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
                 using (dc.PushPostTransform(Matrix.CreateScale(scale, scale)))
                 using (dc.PushPostTransform(Matrix.CreateTranslation(offsetX, offsetY)))
                 using (dc.PushTransformContainer())
-                    Render(dc);
+                    base.Render(dc, ctx);
             }
 
             // Draw view box border.
-            if (showDiagnosis)
+            if (ctx.ShowDiagnosis)
             {
                 dc.DrawRectangle(new Pen(Brushes.Green, 1, new DashStyle(new double[] { 5, 5 }, 0)), new Rect(ViewBox.Origin.X, ViewBox.Origin.Y, ViewBox.Width, ViewBox.Height));
             }
@@ -181,6 +175,4 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
         offsetX = (parentSize.Width - childSize.Width * scale) / 2;
         offsetY = (parentSize.Height - childSize.Height * scale) / 2;
     }
-
-    #endregion
 }

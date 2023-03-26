@@ -38,7 +38,8 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
     /// Render the <see cref="ISvgRenderable"/>. In <see cref="SvgRenderable"/>, it renders nothing.
     /// </summary>
     /// <param name="dc"></param>
-    public virtual void Render(DrawingContext dc)
+    /// <param name="ctx"></param>
+    public virtual void Render(DrawingContext dc, ISvgContext ctx)
     {
         
     }

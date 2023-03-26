@@ -73,7 +73,7 @@ public class SvgUse : SvgRenderable, ISvgRenderable,
         }
     }
 
-    public override void Render(DrawingContext dc)
+    public override void Render(DrawingContext dc, ISvgContext ctx)
     {
         if (ReferencedElement == null || Width == 0 || Height == 0 || _matrix == null)
         {
@@ -84,7 +84,7 @@ public class SvgUse : SvgRenderable, ISvgRenderable,
         {
             using (dc.PushTransformContainer())
             {
-                ReferencedElement.Render(dc);
+                ReferencedElement.Render(dc, ctx);
             }
         }
     }

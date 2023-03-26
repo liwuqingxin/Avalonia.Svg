@@ -1,6 +1,5 @@
 ﻿using Avalonia;
 using Avalonia.Media;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,6 +23,10 @@ namespace Nlnet.Avalonia.Svg
         private readonly Dictionary<string, ISvgTag>    _idTags      = new();
         private readonly List<ISvgRenderable>           _renderables = new();
 
+        public bool ShowDiagnosis { get; private set; }
+
+        public Size ContainerSize { get; private set; }
+        
         IReadOnlyList<ISvgStyle> ISvgContext.Styles => this._styles;
 
         IReadOnlyDictionary<string, LightBrush> ISvgContext.Brushes => this._brushes;
@@ -103,7 +106,10 @@ namespace Nlnet.Avalonia.Svg
 
         void ISvg.Render(DrawingContext dc, Size availableSize, bool showDiagnosis)
         {
-            _svgTag.Render(dc, availableSize, showDiagnosis);
+            this.ContainerSize = availableSize;
+            this.ShowDiagnosis = showDiagnosis;
+
+            _svgTag.Render(dc, this);
         }
 
         Size ISvg.GetDesiredSize(Size availableSize)

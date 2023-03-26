@@ -133,7 +133,7 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        public override void Render(DrawingContext dc)
+        public override void Render(DrawingContext dc, ISvgContext ctx)
         {
             if (this.Children == null || this is SvgDefs)
             {
@@ -142,7 +142,7 @@ namespace Nlnet.Avalonia.Svg
 
             foreach (var child in Children.OfType<ISvgRenderable>())
             {
-                child.Render(dc);
+                child.Render(dc, ctx);
             }
         }
     }

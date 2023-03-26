@@ -95,7 +95,8 @@ namespace Nlnet.Avalonia.Svg
         /// Render the <see cref="ISvgShape"/>. In <see cref="SvgShape"/>, it renders the <see cref="RenderGeometry"/>.
         /// </summary>
         /// <param name="dc"></param>
-        public override void Render(DrawingContext dc)
+        /// <param name="ctx"></param>
+        public override void Render(DrawingContext dc, ISvgContext ctx)
         {
             if (RenderGeometry == null)
             {

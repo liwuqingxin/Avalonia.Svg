@@ -35,6 +35,7 @@ namespace Nlnet.Avalonia.Svg
         /// Render the <see cref="ISvgRenderable"/>.
         /// </summary>
         /// <param name="dc"></param>
-        public void Render(DrawingContext dc);
+        /// <param name="ctx"></param>
+        public void Render(DrawingContext dc, ISvgContext ctx);
     }
 }
