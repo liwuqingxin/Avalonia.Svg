@@ -95,7 +95,6 @@ namespace Nlnet.Avalonia.Svg
             this.BuildContext();
 
             _svgTag.ApplyContext(this);
-            _svgTag.ApplyTransforms(new Stack<Matrix>());
         }
 
         #endregion

@@ -27,11 +27,6 @@ namespace Nlnet.Avalonia.Svg
         public Rect RenderBounds { get; }
 
         /// <summary>
-        /// Apply transforms.
-        /// </summary>
-        public void ApplyTransforms(Stack<Matrix> transformsContext);
-
-        /// <summary>
         /// Render the <see cref="ISvgRenderable"/>.
         /// </summary>
         /// <param name="dc"></param>

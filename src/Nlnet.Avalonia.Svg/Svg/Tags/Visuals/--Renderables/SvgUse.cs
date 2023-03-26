@@ -48,39 +48,25 @@ public class SvgUse : SvgRenderable, ISvgRenderable,
 
     public ISvgRenderable? ReferencedElement { get; set; }
 
-    private Matrix? _matrix;
-
     public SvgUse()
     {
         this.TryAddApplier(UseReferencedElementApplier.Instance);
     }
 
-    public override void ApplyTransforms(Stack<Matrix> transformsContext)
+    public override void Render(DrawingContext dc, ISvgContext ctx)
     {
         if (ReferencedElement == null || Width == 0 || Height == 0)
         {
             return;
         }
 
-        _matrix = Matrix.CreateTranslation(X ?? 0, Y ?? 0);
+        var matrix = Matrix.CreateTranslation(X ?? 0, Y ?? 0);
         if (Transform != null)
         {
-            _matrix = _matrix * Transform.Value;
-        }
-        if (transformsContext.TryPeek(out var containerMatrix))
-        {
-            _matrix = _matrix * containerMatrix;
-        }
-    }
-
-    public override void Render(DrawingContext dc, ISvgContext ctx)
-    {
-        if (ReferencedElement == null || Width == 0 || Height == 0 || _matrix == null)
-        {
-            return;
+            matrix = Transform.Value * matrix;
         }
 
-        using (dc.PushPostTransform(_matrix.Value))
+        using (dc.PushPostTransform(matrix))
         {
             using (dc.PushTransformContainer())
             {

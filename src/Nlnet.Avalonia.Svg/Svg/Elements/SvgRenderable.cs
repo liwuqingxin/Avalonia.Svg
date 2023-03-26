@@ -27,14 +27,6 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
     public virtual Rect RenderBounds => Rect.Empty;
 
     /// <summary>
-    /// Apply transforms. In <see cref="SvgRenderable"/>, it renders nothing.
-    /// </summary>
-    public virtual void ApplyTransforms(Stack<Matrix> transformsContext)
-    {
-
-    }
-
-    /// <summary>
     /// Render the <see cref="ISvgRenderable"/>. In <see cref="SvgRenderable"/>, it renders nothing.
     /// </summary>
     /// <param name="dc"></param>

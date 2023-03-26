@@ -91,12 +91,13 @@ namespace Nlnet.Avalonia.Svg
             return new Rect(l, t, r - l, b - t);
         }
 
-        public override void ApplyTransforms(Stack<Matrix> transformsContext)
+        public override void Render(DrawingContext dc, ISvgContext ctx)
         {
-            if (this.Children == null)
+            if (this.Children == null || this is SvgDefs)
             {
                 return;
             }
+
 
             var matrix = Matrix.Identity;
 
@@ -112,37 +113,12 @@ namespace Nlnet.Avalonia.Svg
                 matrix *= Matrix.CreateTranslation(xSetter.X ?? 0, ySetter.Y ?? 0);
             }
 
-            // Container
-            if (transformsContext.Count > 0)
+            using (dc.PushPostTransform(matrix))
             {
-                matrix *= transformsContext.Peek();
-            }
-
-            try
-            {
-                transformsContext.Push(matrix);
-
-                foreach (var svgRenderable in this.Children.OfType<ISvgRenderable>())
+                foreach (var child in Children.OfType<ISvgRenderable>())
                 {
-                    svgRenderable.ApplyTransforms(transformsContext);
+                    child.Render(dc, ctx);
                 }
-            }
-            finally
-            {
-                transformsContext.Pop();
-            }
-        }
-
-        public override void Render(DrawingContext dc, ISvgContext ctx)
-        {
-            if (this.Children == null || this is SvgDefs)
-            {
-                return;
-            }
-
-            foreach (var child in Children.OfType<ISvgRenderable>())
-            {
-                child.Render(dc, ctx);
             }
         }
     }
