@@ -102,7 +102,7 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
                 var ratio = PreserveAspectRatio ?? new PreserveAspectRatio(PreserveAspectRatioAlign.xMidYMid, PreserveAspectRatioMeetOrSlice.meet);
                 if (ratio.Align == PreserveAspectRatioAlign.none)
                 {
-                    GetFillFactors(availableSize, viewBoxSize, out var scaleX, out var scaleY);
+                    SvgHelper.GetFillFactors(availableSize, viewBoxSize, out var scaleX, out var scaleY);
                     using (dc.PushPostTransform(Matrix.CreateTranslation(-ViewBox.Origin.X, -ViewBox.Origin.Y)))
                     using (dc.PushPostTransform(Matrix.CreateScale(scaleX, scaleY)))
                     using (dc.PushPostTransform(Matrix.CreateTranslation(X ?? 0, Y ?? 0)))
@@ -112,7 +112,7 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
                 else
                 {
                     var isSlice = ratio.MeetOrSlice == PreserveAspectRatioMeetOrSlice.slice;
-                    GetUniformFactors(availableSize, viewBoxSize, isSlice, out var scale, out var offsetX, out var offsetY);
+                    SvgHelper.GetUniformFactors(availableSize, viewBoxSize, isSlice, out var scale, out var offsetX, out var offsetY);
                     switch (ratio.Align)
                     {
                         case PreserveAspectRatioAlign.xMinYMin:
@@ -192,20 +192,5 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
                 }
             }
         }
-    }
-
-    private static void GetFillFactors(Size parentSize, Size childSize, out double scaleX, out double scaleY)
-    {
-        scaleX = parentSize.Width / childSize.Width;
-        scaleY = parentSize.Height / childSize.Height;
-    }
-
-    private static void GetUniformFactors(Size parentSize, Size childSize, bool fit, out double scale, out double offsetX, out double offsetY)
-    {
-        var scaleX = parentSize.Width / childSize.Width;
-        var scaleY = parentSize.Height / childSize.Height;
-        scale = fit ? Math.Max(scaleX, scaleY) : Math.Min(scaleX, scaleY);
-        offsetX = (parentSize.Width - childSize.Width * scale) / 2;
-        offsetY = (parentSize.Height - childSize.Height * scale) / 2;
     }
 }

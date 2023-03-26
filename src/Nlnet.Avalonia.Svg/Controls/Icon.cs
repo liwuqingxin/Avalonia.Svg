@@ -576,7 +576,7 @@ namespace Nlnet.Avalonia.Svg.Controls
             // Svg
             if (_svg != null)
             {
-                _svg.Render(drawingContext, this.Bounds.Size, Icon.GetShowDiagnosis(this));
+                _svg.Render(drawingContext, this.Bounds.Size, GetIconStretch(this), Icon.GetShowDiagnosis(this));
             }
         }
 

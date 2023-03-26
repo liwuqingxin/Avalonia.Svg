@@ -28,6 +28,7 @@
                    ZIndex="100">
                 <Border Background="black" Opacity="{Binding #BackGroundOpacity.Value}" />
                 <controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
+                               IconStretch="Uniform"
                                IconSvgData="{Binding Path=EditableSvgData}"
                                IsHitTestVisible="False"
                                ShowDiagnosis="{Binding #ShowDiagnosis.IsChecked}" />

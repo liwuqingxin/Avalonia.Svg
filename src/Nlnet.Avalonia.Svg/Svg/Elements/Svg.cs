@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Media;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,12 +104,54 @@ namespace Nlnet.Avalonia.Svg
 
         #region ISvg
 
-        void ISvg.Render(DrawingContext dc, Size availableSize, bool showDiagnosis)
+        void ISvg.Render(DrawingContext dc, Size availableSize, Stretch stretch, bool showDiagnosis)
         {
             this.ContainerSize = availableSize;
             this.ShowDiagnosis = showDiagnosis;
 
-            _svgTag.Render(dc, this);
+            var width  = _svgTag.Width  ?? _svgTag.ViewBox?.Width  ?? 0d;
+            var height = _svgTag.Height ?? _svgTag.ViewBox?.Height ?? 0d;
+
+            if (width != 0 && height != 0 && stretch != Stretch.None)
+            {
+                var childSize = new Size(width, height);
+                var scaleX    = 0d;
+                var scaleY    = 0d;
+                var offsetX   = 0d;
+                var offsetY   = 0d;
+
+                switch (stretch)
+                {
+                    case Stretch.Fill:
+                        SvgHelper.GetFillFactors(availableSize, new Size(width, height), out scaleX, out scaleY);
+                        break;
+                    case Stretch.Uniform:
+                    {
+                        SvgHelper.GetUniformFactors(availableSize, new Size(width, height), false, out var scale, out offsetX, out offsetY);
+                        scaleX = scale;
+                        scaleY = scale;
+                        break;
+                    }
+                    case Stretch.UniformToFill:
+                    {
+                        SvgHelper.GetUniformFactors(availableSize, new Size(width, height), true, out var scale, out offsetX, out offsetY);
+                        scaleX = scale;
+                        scaleY = scale;
+                        break;
+                    }
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(stretch), stretch, null);
+                }
+
+                using (dc.PushPostTransform(Matrix.CreateScale(scaleX, scaleY)))
+                using (dc.PushPostTransform(Matrix.CreateTranslation(offsetX, offsetY)))
+                using (dc.PushTransformContainer())
+                    _svgTag.Render(dc, this);
+            }
+            else
+            {
+                _svgTag.Render(dc, this);
+            }
         }
 
         Size ISvg.GetDesiredSize(Size availableSize)
