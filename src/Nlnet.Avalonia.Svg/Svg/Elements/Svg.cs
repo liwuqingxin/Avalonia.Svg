@@ -113,30 +113,16 @@ namespace Nlnet.Avalonia.Svg
 
         Size ISvg.GetDesiredSize(Size availableSize)
         {
-            var width  = _svgTag.Width  ?? double.NaN;
-            var height = _svgTag.Height ?? double.NaN;
+            var width  = _svgTag.Width  ?? availableSize.Width;
+            var height = _svgTag.Height ?? availableSize.Height;
 
             if (double.IsNaN(width) || double.IsInfinity(width))
             {
-                if (double.IsInfinity(availableSize.Width))
-                {
-                    return Size.Empty;
-                }
-                else
-                {
-                    width = availableSize.Width;
-                }
+                return Size.Empty;
             }
             if (double.IsNaN(height) || double.IsInfinity(height))
             {
-                if (double.IsInfinity(height))
-                {
-                    return Size.Empty;
-                }
-                else
-                {
-                    height = availableSize.Height;
-                }
+                return Size.Empty;
             }
 
             return new Size(width, height);
