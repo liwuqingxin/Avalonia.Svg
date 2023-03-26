@@ -30,7 +30,7 @@
                        ZIndex="100">
                     <Border Background="black" Opacity="{Binding #BackGroundOpacity.Value}" />
                     <controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
-                                   IconStretch="Uniform"
+                                   IconStretch="{Binding #Stretch.SelectedItem}"
                                    IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/NLNet.svg"
                                    IconSvgData="{Binding Path=EditableSvgData}"
                                    IsHitTestVisible="False"
@@ -59,6 +59,11 @@
             <StackPanel Margin="12"
                         Orientation="Vertical"
                         Spacing="5">
+                <TextBlock Text="Svg Stretch:" />
+                <ComboBox x:Name="Stretch"
+                          HorizontalAlignment="Stretch"
+                          Items="{sample:Enum Stretch}"
+                          SelectedIndex="2" />
                 <CheckBox Content="Window Topmost" IsChecked="{Binding $parent[Window].Topmost}" />
                 <CheckBox Name="ShowDiagnosis" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}" />
                 <CheckBox Name="ClipToBounds"
