@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Platform;
 using Nlnet.Avalonia.Svg.Utils;
 
 namespace Nlnet.Avalonia.Svg.Controls
@@ -104,6 +104,17 @@ namespace Nlnet.Avalonia.Svg.Controls
         public static readonly AttachedProperty<string?> IconSvgDataProperty = AvaloniaProperty
             .RegisterAttached<Icon, Visual, string?>("IconSvgData");
 
+        public static Uri? GetIconSvg(Visual host)
+        {
+            return host.GetValue(IconSvgProperty);
+        }
+        public static void SetIconSvg(Visual host, Uri? value)
+        {
+            host.SetValue(IconSvgProperty, value);
+        }
+        public static readonly AttachedProperty<Uri?> IconSvgProperty = AvaloniaProperty
+            .RegisterAttached<Icon, Visual, Uri?>("IconSvg");
+
         public static string? GetCheckedIcon(Visual host)
         {
             return host.GetValue(CheckedIconProperty);
@@ -179,69 +190,89 @@ namespace Nlnet.Avalonia.Svg.Controls
                 IconDataProperty, 
                 IconImageProperty, 
                 IconSvgDataProperty,
-                CheckedIconProperty, 
-                CheckedIconDataProperty, 
-                CheckedIconImageProperty);
+                IconSvgProperty,
+                CheckedIconProperty,
+                CheckedIconDataProperty,
+                CheckedIconImageProperty,
+                ShowDiagnosisProperty);
             AffectsMeasure<Icon>(
                 IconProperty,
                 IconFamilyProperty,
                 IconSizeProperty,
                 IconStretchProperty,
+                IconDataProperty,
+                IconImageProperty,
                 IconSvgDataProperty,
-                CheckedIconProperty);
+                IconSvgProperty,
+                CheckedIconProperty,
+                CheckedIconDataProperty,
+                CheckedIconImageProperty);
             AffectsArrange<Icon>(
                 IconProperty,
                 IconFamilyProperty,
                 IconSizeProperty,
                 IconStretchProperty,
+                IconDataProperty,
+                IconImageProperty,
                 IconSvgDataProperty,
-                CheckedIconProperty);
+                IconSvgProperty,
+                CheckedIconProperty,
+                CheckedIconDataProperty,
+                CheckedIconImageProperty);
 
-            IconProperty.Changed.AddClassHandler<Icon>((sender, e) =>
+            IconProperty.Changed.AddClassHandler<Icon>((icon, e) =>
             {
-                sender.EnsureRenderedFormattedText();
-                sender.UpdateVisibility();
+                icon.EnsureRenderedFormattedText();
             });
-            IconFamilyProperty.Changed.AddClassHandler<Icon>((sender, e) =>
+            IconFamilyProperty.Changed.AddClassHandler<Icon>((icon, e) =>
             {
-                if (sender._formattedText != null && e.NewValue is FontFamily fontFamily)
+                if (icon._formattedText != null && e.NewValue is FontFamily fontFamily)
                 {
-                    sender._formattedText.SetFontFamily(fontFamily);
+                    icon._formattedText.SetFontFamily(fontFamily);
                 }
             });
-            IconSizeProperty.Changed.AddClassHandler<Icon>((sender, e) =>
+            IconSizeProperty.Changed.AddClassHandler<Icon>((icon, e) =>
             {
-                if (sender._formattedText != null && e.NewValue is double iconSize)
+                if (icon._formattedText != null && e.NewValue is double iconSize)
                 {
-                    sender._formattedText.SetFontSize(iconSize);
+                    icon._formattedText.SetFontSize(iconSize);
                 }
             });
-            IconBrushProperty.Changed.AddClassHandler<Icon>((sender, e) =>
+            IconBrushProperty.Changed.AddClassHandler<Icon>((icon, e) =>
             {
-                if (sender._formattedText != null && e.NewValue is IBrush brush)
+                if (icon._formattedText != null && e.NewValue is IBrush brush)
                 {
-                    sender._formattedText.SetForegroundBrush(brush);
+                    icon._formattedText.SetForegroundBrush(brush);
                 }
             });
-            IconDataProperty.Changed.AddClassHandler<Icon>((sender, e) =>
+            IconDataProperty.Changed.AddClassHandler<Icon>((icon, e) =>
             {
-                sender.EnsureRenderedGeometry(true);
-                sender.UpdateVisibility();
+                icon.EnsureRenderedGeometry(true);
             });
-            IconImageProperty.Changed.AddClassHandler<Icon>((sender, e) =>
-            {
-                sender.UpdateVisibility();
-            });
-            ShowDiagnosisProperty.Changed.AddClassHandler<Icon>((icon, args) =>
-            {
-                icon.InvalidateVisual();
-            });
+
             IconSvgDataProperty.Changed.AddClassHandler<Icon>((icon, args) =>
             {
                 var data = Icon.GetIconSvgData(icon);
                 icon._svg = string.IsNullOrWhiteSpace(data) ? null : SvgLoader.LoadSvg(data);
+                icon.InvalidateVisual();
+            });
+            IconSvgProperty.Changed.AddClassHandler<Icon>((icon, args) =>
+            {
+                var uri = Icon.GetIconSvg(icon);
+                if (uri == null)
+                {
+                    return;
+                }
+                var assetLoader = AvaloniaLocator.Current.GetService<IAssetLoader>();
+                using var stream = assetLoader?.Open(uri);
+                if (stream == null)
+                {
+                    return;
+                }
+                var reader = new StreamReader(stream);
+                var data = reader.ReadToEnd();
 
-                icon.UpdateVisibility();
+                icon._svg = string.IsNullOrWhiteSpace(data) ? null : SvgLoader.LoadSvg(data);
                 icon.InvalidateVisual();
             });
         }
@@ -255,23 +286,12 @@ namespace Nlnet.Avalonia.Svg.Controls
                 return;
             }
 
-            var size       = GetIconSize(this);
-            var brush      = GetIconBrush(this) ?? Brushes.Black;
+            var size = GetIconSize(this);
+            var brush = GetIconBrush(this) ?? Brushes.Black;
             var iconFamily = GetIconFamily(this) ?? FontFamily.Default;
-            var typeface   = new Typeface(iconFamily);
+            var typeface = new Typeface(iconFamily);
 
             _formattedText = new FormattedText(icon, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, typeface, size, brush);
-        }
-
-        private void UpdateVisibility()
-        {
-            IsVisible = Icon.GetIcon(this) != null || Icon.GetIconData(this) != null || Icon.GetIconImage(this) != null || Icon.GetIconSvgData(this) != null;
-        }
-
-        public Icon()
-        {
-            IsVisible = false;
-            VerticalAlignment = VerticalAlignment.Center;
         }
 
         #endregion
@@ -287,27 +307,8 @@ namespace Nlnet.Avalonia.Svg.Controls
             public BoxedMatrix(Matrix value) => Value = value;
         }
 
-        // TODO To use map saving memory, see https://stackoverflow.com/questions/18153065/the-use-of-uncommonfieldt-in-wpf/18280136#18280136
         private BoxedMatrix? _boxedMatrix;
         private Geometry? _renderedGeometry = null;
-
-        public Geometry? RenderedGeometry
-        {
-            get
-            {
-                EnsureRenderedGeometry(false);
-                return _renderedGeometry;
-            }
-        }
-
-        public Transform GeometryTransform
-        {
-            get
-            {
-                var boxedMatrix = _boxedMatrix;
-                return boxedMatrix == null ? new TranslateTransform() : new MatrixTransform(boxedMatrix.Value);
-            }
-        }
 
         private void EnsureRenderedGeometry(bool repaint)
         {
@@ -328,7 +329,7 @@ namespace Nlnet.Avalonia.Svg.Controls
             _renderedGeometry = _renderedGeometry.Clone();
 
             var transform = _renderedGeometry.Transform;
-            var matrix    = _boxedMatrix?.Value ?? Matrix.Identity;
+            var matrix = _boxedMatrix?.Value ?? Matrix.Identity;
 
             if (transform == null || transform.Value.IsIdentity)
             {
@@ -351,8 +352,8 @@ namespace Nlnet.Avalonia.Svg.Controls
             GetStretchMetrics(mode, strokeThickness, availableSize, geometryBounds, out var xScale, out var yScale, out var dX, out var dY, out var stretchedSize);
 
             var identity = Matrix.Identity;
-            var x        = geometryBounds.X;
-            var y        = geometryBounds.Y;
+            var x = geometryBounds.X;
+            var y = geometryBounds.Y;
 
             identity.ScaleAt(xScale, yScale, x, y);
             identity.Translate(dX, dY);
@@ -460,8 +461,8 @@ namespace Nlnet.Avalonia.Svg.Controls
         private Size GetImageStretchedSize()
         {
             var stretch = GetIconStretch(this);
-            var image   = GetIconImage(this);
-            var size    = GetIconSize(this);
+            var image = GetIconImage(this);
+            var size = GetIconSize(this);
             if (image == null)
             {
                 return Size.Empty;
@@ -474,19 +475,19 @@ namespace Nlnet.Avalonia.Svg.Controls
                 case Stretch.Fill:
                     return new Size(size, size);
                 case Stretch.Uniform:
-                {
-                    var xr = image.Size.Width  / size;
-                    var yr = image.Size.Height / size;
-                    var r  = Math.Max(xr, yr);
-                    return new Size(image.Size.Width / r, image.Size.Height / r);
-                }
+                    {
+                        var xr = image.Size.Width / size;
+                        var yr = image.Size.Height / size;
+                        var r = Math.Max(xr, yr);
+                        return new Size(image.Size.Width / r, image.Size.Height / r);
+                    }
                 case Stretch.UniformToFill:
-                {
-                    var xr = image.Size.Width  / size;
-                    var yr = image.Size.Height / size;
-                    var r  = Math.Min(xr, yr);
-                    return new Size(image.Size.Width / r, image.Size.Height / r);
-                }
+                    {
+                        var xr = image.Size.Width / size;
+                        var yr = image.Size.Height / size;
+                        var r = Math.Min(xr, yr);
+                        return new Size(image.Size.Width / r, image.Size.Height / r);
+                    }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -510,6 +511,11 @@ namespace Nlnet.Avalonia.Svg.Controls
         {
             base.Render(drawingContext);
 
+            if (this.IsVisible == false)
+            {
+                return;
+            }
+
             var brush = GetIconBrush(this);
 
             // Border
@@ -520,15 +526,15 @@ namespace Nlnet.Avalonia.Svg.Controls
                     CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     new Typeface(FontFamily.Default),
-                    12,
+                    8,
                     Brushes.Red);
-                drawingContext.DrawText(formattedText, new Point(0, 0));
+                drawingContext.DrawText(formattedText, new Point(0, -12));
 
-                var pen = new Pen(Brushes.Red, 1)
+                var pen = new Pen(Brushes.Red, 0.5)
                 {
                     DashStyle = new DashStyle(new double[] { 5, 5 }, 0)
                 };
-                drawingContext.DrawRectangle(null, pen, new Rect(-1, -1, this.Bounds.Width + 2, this.Bounds.Height + 2));
+                drawingContext.DrawRectangle(null, pen, new Rect(new Size(this.Bounds.Width, this.Bounds.Height)));
             }
 
             // Image
@@ -558,9 +564,16 @@ namespace Nlnet.Avalonia.Svg.Controls
             // Iconfont
             if (_formattedText != null)
             {
+                // 
+                // Issue I2
+                //
                 // The height of FormattedText for icon font has min value of about 22 which should be a bug.
                 // So we just set the size as width * width.
                 // And, we must offset it along y-axis because the icon stays at bottom in it's bounds.
+                //
+                // By Nlb at 2023.2.3.
+                //
+
                 var dValue = ((_formattedText.Baseline - _formattedText.Width) + (_formattedText.Extent - _formattedText.Width)) / 2;
                 if (dValue > 0)
                 {
@@ -576,14 +589,14 @@ namespace Nlnet.Avalonia.Svg.Controls
             // Svg
             if (_svg != null)
             {
-                _svg.Render(drawingContext, this.Bounds.Size, Icon.GetShowDiagnosis(this));
+                                _svg.Render(drawingContext, this.Bounds.Size, GetIconStretch(this), Icon.GetShowDiagnosis(this));
             }
         }
 
         private bool GetIsTrulyEnabled()
         {
             // In avalonia 11.0.0-preview4, the IsEnabled property is not inherited from ancestors even the control is truly disabled.
-            
+
             IControl? selfOrAncestor = this;
             while (true)
             {
@@ -633,6 +646,9 @@ namespace Nlnet.Avalonia.Svg.Controls
                 return new Size(0d, 0d);
             }
 
+            // 
+            // Issue I2
+            //
             // The height of FormattedText for icon font has min value of about 22 which should be a bug.
             // So we just set the size as width * width.
             return new Size(_formattedText.Width, _formattedText.Width);
@@ -640,7 +656,7 @@ namespace Nlnet.Avalonia.Svg.Controls
 
         private Size MeasureGeometry(Size availableSize)
         {
-            var stretch  = GetIconStretch(this);
+            var stretch = GetIconStretch(this);
             var iconSize = GetIconSize(this);
             var size = stretch != Stretch.None
                 ? GetStretchedRenderSize(stretch, 0, new Size(iconSize, iconSize), GetDefiningGeometryBounds())
@@ -661,7 +677,6 @@ namespace Nlnet.Avalonia.Svg.Controls
             {
                 return Size.Empty;
             }
-
             return _svg.GetDesiredSize(availableSize);
         }
 
@@ -699,6 +714,9 @@ namespace Nlnet.Avalonia.Svg.Controls
                 return new Size(0d, 0d);
             }
 
+            // 
+            // Issue I2
+            //
             // The height of FormattedText for icon font has min value of about 22 which should be a bug.
             // So we just set the size as width * width.
             return new Size(_formattedText.Width, _formattedText.Width);
@@ -711,8 +729,8 @@ namespace Nlnet.Avalonia.Svg.Controls
                 return new Size(0d, 0d);
             }
 
-            var  stretch  = GetIconStretch(this);
-            var  iconSize = GetIconSize(this);
+            var stretch = GetIconStretch(this);
+            var iconSize = GetIconSize(this);
             Size size;
             if (stretch == Stretch.None)
             {
@@ -740,7 +758,6 @@ namespace Nlnet.Avalonia.Svg.Controls
             {
                 return Size.Empty;
             }
-
             return _svg.GetDesiredSize(finalSize);
         }
 

@@ -31,6 +31,8 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 
     public List<ISvgTag>? Children { get; set; }
 
+    public bool IsDef { get; set; }
+
     string ISvgTag.GetTagName()
     {
         if (_tagName != null)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Avalonia;
 using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg
@@ -83,25 +84,6 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
-        /// Render children.
-        /// </summary>
-        /// <param name="children"></param>
-        /// <param name="dc"></param>
-        public static void RenderRecursively(this List<ISvgTag>? children, DrawingContext dc)
-        {
-            children?.ForEach(c => c.VisitSvgTagTree(tag =>
-            {
-                if (tag is not ISvgRenderable renderable)
-                {
-                    return true;
-                }
-
-                renderable.Render(dc);
-                return !renderable.RenderBySelf;
-            }));
-        }
-
-        /// <summary>
         /// Try to parse a url definition and get the url.
         /// </summary>
         /// <param name="original"></param>
@@ -123,7 +105,7 @@ namespace Nlnet.Avalonia.Svg
                 return true;
             }
 
-            url    = string.Empty;
+            url = string.Empty;
             token = null;
             return false;
         }
@@ -150,6 +132,37 @@ namespace Nlnet.Avalonia.Svg
 
             id = string.Empty;
             return false;
+        }
+
+        /// <summary>
+        /// Get the scale factors for fill mode.
+        /// </summary>
+        /// <param name="parentSize"></param>
+        /// <param name="childSize"></param>
+        /// <param name="scaleX"></param>
+        /// <param name="scaleY"></param>
+        internal static void GetFillFactors(Size parentSize, Size childSize, out double scaleX, out double scaleY)
+        {
+            scaleX = parentSize.Width  / childSize.Width;
+            scaleY = parentSize.Height / childSize.Height;
+        }
+
+        /// <summary>
+        /// Get the scale factors for uniform stretch mode.
+        /// </summary>
+        /// <param name="parentSize"></param>
+        /// <param name="childSize"></param>
+        /// <param name="fill"></param>
+        /// <param name="scale"></param>
+        /// <param name="offsetX"></param>
+        /// <param name="offsetY"></param>
+        internal static void GetUniformFactors(Size parentSize, Size childSize, bool fill, out double scale, out double offsetX, out double offsetY)
+        {
+            var scaleX = parentSize.Width  / childSize.Width;
+            var scaleY = parentSize.Height / childSize.Height;
+            scale   = fill ? Math.Max(scaleX, scaleY) : Math.Min(scaleX, scaleY);
+            offsetX = (parentSize.Width  - childSize.Width  * scale) / 2;
+            offsetY = (parentSize.Height - childSize.Height * scale) / 2;
         }
     }
 }

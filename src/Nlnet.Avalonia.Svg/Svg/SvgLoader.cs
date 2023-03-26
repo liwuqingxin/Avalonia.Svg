@@ -66,12 +66,10 @@ public static class SvgLoader
         }
         
         var svgTag = CreateTagFrom(node);
-        if (svgTag is IInitializable initializable)
-        {
-            initializable?.Initialize();
-        }
-
-        return (ISvg)svgTag;
+        var svg    = new Svg((SvgSvg) svgTag);
+        svg.Initialize();
+        
+        return svg;
     }
 
     private static ISvgTag CreateTagFrom(XmlNode node)
@@ -84,7 +82,7 @@ public static class SvgLoader
             }
             else
             {
-                return Svg.Empty;
+                return SvgSvg.Empty;
             }
         }
 
@@ -96,11 +94,16 @@ public static class SvgLoader
             }
             else
             {
-                return Svg.Empty;
+                return SvgSvg.Empty;
             }
         }
 
         var tag = factory.CreateTag(node);
+
+        if (tag is SvgDefs)
+        {
+            tag.IsDef = true;
+        }
 
         if (!node.HasChildNodes)
         {
@@ -111,11 +114,15 @@ public static class SvgLoader
             .OfType<XmlNode>()
             .Where(n => n.NodeType == XmlNodeType.Element)
             .Select(CreateTagFrom)
-            .Where(t => t != Svg.Empty)
+            .Where(t => t != SvgSvg.Empty)
             .ToList();
 
         tag.Children = childTags;
-        childTags.ForEach(t => t.Parent = tag);
+        childTags.ForEach(t =>
+        {
+            t.Parent = tag;
+            t.IsDef  = tag.IsDef;
+        });
 
         return tag;
     }

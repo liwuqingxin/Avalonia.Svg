@@ -7,6 +7,8 @@ namespace Nlnet.Avalonia.Svg;
 /// </summary>
 public class PaintServerTemplateApplier : ISvgContextApplier
 {
+    public static PaintServerTemplateApplier Instance { get; } = new();
+
     public void Apply(ISvgTag tag, ISvgContext context)
     {
         if (tag is not SvgPaintServer paintServer)

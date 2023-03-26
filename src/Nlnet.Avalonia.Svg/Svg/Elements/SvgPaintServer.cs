@@ -51,6 +51,6 @@ public abstract class SvgPaintServer : SvgTagBase, ISvgPaintServer
 
     protected SvgPaintServer()
     {
-        this.TryAddApplier(new PaintServerTemplateApplier());
+        this.TryAddApplier(PaintServerTemplateApplier.Instance);
     }
 }

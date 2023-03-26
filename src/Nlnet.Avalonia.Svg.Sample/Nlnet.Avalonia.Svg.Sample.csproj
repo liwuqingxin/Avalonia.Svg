@@ -7,13 +7,10 @@
 		<TrimMode>copyused</TrimMode>
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 		<BaseOutputPath>..\..\bin\</BaseOutputPath>
-		<ApplicationIcon>svg.ico</ApplicationIcon>
+		<ApplicationIcon>Assets\svg.ico</ApplicationIcon>
 	</PropertyGroup>
 	<ItemGroup>
-		<None Remove=".gitignore" />
-	</ItemGroup>
-	<ItemGroup>
-	  <AvaloniaResource Include="svg.ico" />
+	  <AvaloniaResource Include="Assets/**" />
 	</ItemGroup>
 	<ItemGroup>
 		<!--This helps with theme dll-s trimming.

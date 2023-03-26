@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 namespace Nlnet.Avalonia.Svg
 {
-    // TODO 属性值优先级问题：Presentation Property Setting vs CSS Style Setting；
     public abstract class SvgShape : SvgRenderable, ISvgShape
     {
         /// <summary>
@@ -56,12 +55,6 @@ namespace Nlnet.Avalonia.Svg
 
 
 
-        protected SvgShape()
-        {
-            this.TryAddApplier(new StyleApplier());
-            this.TryAddApplier(new DeferredPropertiesApplier());
-        }
-
         public sealed override void OnPropertiesFetched()
         {
             OriginalGeometry = OnCreateOriginalGeometry();
@@ -73,40 +66,27 @@ namespace Nlnet.Avalonia.Svg
         /// <returns></returns>
         protected abstract Geometry? OnCreateOriginalGeometry();
 
-        public override void ApplyTransforms(Stack<Matrix> transformsContext)
+        /// <summary>
+        /// Render the <see cref="ISvgShape"/>. In <see cref="SvgShape"/>, it renders the <see cref="RenderGeometry"/>.
+        /// </summary>
+        /// <param name="dc"></param>
+        /// <param name="ctx"></param>
+        public override void Render(DrawingContext dc, ISvgContext ctx)
         {
             if (OriginalGeometry == null)
             {
                 return;
             }
 
-            RenderGeometry = new GeometryGroup();
-            RenderGeometry.Children.Add(OriginalGeometry);
-            var group = new TransformGroup();
-
-            // Transforms of container will affect children. So we add child's transform first.
-            if (Transform != null)
-            {
-                group.Children.Add(Transform);
-            }
-            var ifContainerTransformed = transformsContext.TryPeek(out var containerMatrix);
-            if (ifContainerTransformed)
-            {
-                group.Children.Add(new MatrixTransform(containerMatrix));
-            }
-
-            RenderGeometry.Transform = group;
-        }
-
-        /// <summary>
-        /// Render the <see cref="ISvgShape"/>. In <see cref="SvgShape"/>, it renders the <see cref="RenderGeometry"/>.
-        /// </summary>
-        /// <param name="dc"></param>
-        public override void Render(DrawingContext dc)
-        {
             if (RenderGeometry == null)
             {
-                return;
+                RenderGeometry = new GeometryGroup();
+                RenderGeometry.Children.Add(OriginalGeometry);
+            }
+
+            if (Transform != null)
+            {
+                RenderGeometry.Transform = Transform;
             }
 
             var fill        = this.GetPropertyValue<IFillSetter, LightBrush>()?.Clone();

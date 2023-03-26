@@ -5,6 +5,8 @@
 /// </summary>
 public class DeferredPropertiesApplier : ISvgContextApplier
 {
+    public static DeferredPropertiesApplier Instance { get; } = new();
+
     public void Apply(ISvgTag tag, ISvgContext context)
     {
         if (tag.DeferredProperties == null)

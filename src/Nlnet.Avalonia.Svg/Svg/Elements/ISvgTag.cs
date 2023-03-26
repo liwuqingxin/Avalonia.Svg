@@ -26,6 +26,11 @@ public interface ISvgTag :
     public List<ISvgTag>? Children { get; set; }
 
     /// <summary>
+    /// Check if the tag is a definition.
+    /// </summary>
+    public bool IsDef { get; set; }
+
+    /// <summary>
     /// Get the standard tag name. It is defined by svg format.
     /// </summary>
     /// <returns></returns>

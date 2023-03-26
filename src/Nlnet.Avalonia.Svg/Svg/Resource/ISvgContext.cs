@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Avalonia.Media;
+using Avalonia;
 
 namespace Nlnet.Avalonia.Svg;
 
@@ -8,6 +8,16 @@ namespace Nlnet.Avalonia.Svg;
 /// </summary>
 public interface ISvgContext
 {
+    /// <summary>
+    /// Gets the value that indicates if should show diagnosis visuals.
+    /// </summary>
+    public bool ShowDiagnosis { get; }
+
+    /// <summary>
+    /// The size of container.
+    /// </summary>
+    public Size ContainerSize { get; }
+
     /// <summary>
     /// All styles.
     /// </summary>

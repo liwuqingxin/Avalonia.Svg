@@ -5,11 +5,12 @@
 /// </summary>
 public class StyleApplier : ISvgContextApplier
 {
+    public static StyleApplier Instance { get; } = new();
+
     public void Apply(ISvgTag tag, ISvgContext context)
     {
         foreach (var style in context.Styles)
         {
-            // TODO Do not consider priority here. Should be repaired.
             if (style.Match(tag))
             {
                 style.ApplyTo(tag);
