@@ -41,6 +41,30 @@ This library is distributed under the AGPL 3.0 license. See the [LICENSE](http:/
 
 :heart: Any suggestions and comments are **appreciated**. If you find a bug or would like to contribute to this library, please open an issue or submit a pull request on GitHub. 
 
+# Using
+
+- About nuget: Not available now.
+
+- Using Icon control and it's IconSvg Property.
+
+```Xaml
+<controls:Icon Width="24"
+               Height="24"
+               IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/bug-fill.svg" />
+```
+
+- Using Icon control and it's IconSvgData Property.
+
+```Xaml
+<controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
+               IconStretch="Uniform"
+               IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/NLNet.svg"
+               IconSvgData="{Binding Path=EditableSvgData}"
+               IsHitTestVisible="False"
+               Opacity="{Binding #SvgGroundOpacity.Value}"
+               ShowDiagnosis="{Binding #ShowDiagnosis.IsChecked}" />
+```
+
 # SVG Viewer using it.
 
 ![image-20230324012006442](doc/imghost/tmp210F.png)
