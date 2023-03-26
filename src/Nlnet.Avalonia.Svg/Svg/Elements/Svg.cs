@@ -109,8 +109,8 @@ namespace Nlnet.Avalonia.Svg
             this.ContainerSize = availableSize;
             this.ShowDiagnosis = showDiagnosis;
 
-            var width  = _svgTag.Width  ?? _svgTag.ViewBox?.Width  ?? 0d;
-            var height = _svgTag.Height ?? _svgTag.ViewBox?.Height ?? 0d;
+            var width  = _svgTag.Width  ?? _svgTag.RenderBounds.Width;
+            var height = _svgTag.Height ?? _svgTag.RenderBounds.Height;
 
             if (width != 0 && height != 0 && stretch != Stretch.None)
             {
