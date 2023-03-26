@@ -228,7 +228,7 @@ namespace Nlnet.Avalonia.Svg
         public static Transform ToTransform(this string valueString)
         {
             //TODO 支持空格间隔
-            var regex = new Regex("(translate\\(.*?\\s*?,\\s*?.*?\\))|(scale\\(.*?\\s*?,\\s*?.*?\\))|(rotate\\(.*?\\))");
+            var regex = new Regex("(translate\\(.*?\\s*?[,\\s]\\s*?.*?\\))|(scale\\(.*?\\s*?[,\\s]\\s*?.*?\\))|(rotate\\(.*?\\))");
             var matches = regex.Matches(valueString);
 
             var transform = new TransformGroup();
@@ -236,7 +236,7 @@ namespace Nlnet.Avalonia.Svg
             {
                 if (match.Value.StartsWith("translate"))
                 {
-                    var translateStrings = match.Value[10..^1].Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    var translateStrings = match.Value[10..^1].Split(new char[]{ ',' , ' '}, StringSplitOptions.RemoveEmptyEntries);
                     if (translateStrings.Length != 2)
                     {
                         continue;
@@ -274,7 +274,7 @@ namespace Nlnet.Avalonia.Svg
                 }
                 else if (match.Value.StartsWith("scale"))
                 {
-                    var scaleStrings = match.Value[6..^1].Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    var scaleStrings = match.Value[6..^1].Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (scaleStrings.Length != 2)
                     {
                         continue;

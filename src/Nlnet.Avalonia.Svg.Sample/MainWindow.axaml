@@ -9,7 +9,7 @@
         d:DesignHeight="450"
         d:DesignWidth="800"
         DragDrop.AllowDrop="True"
-        Icon="avares://Nlnet.Avalonia.Svg.Sample/svg.ico"
+        Icon="avares://Nlnet.Avalonia.Svg.Sample/Assets/svg.ico"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <Design.DataContext>
@@ -30,6 +30,7 @@
                 <controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
                                IconStretch="Uniform"
                                IconSvgData="{Binding Path=EditableSvgData}"
+                               IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/NLNet.svg"
                                IsHitTestVisible="False"
                                ShowDiagnosis="{Binding #ShowDiagnosis.IsChecked}" />
             </Panel>
