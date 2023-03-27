@@ -19,9 +19,11 @@ public class SvgCircle : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 
     protected override Geometry? OnCreateOriginalGeometry()
     {
-        if (CX != null && CY != null && R != null)
+        if (R != null)
         {
-            return new EllipseGeometry(new Rect(CX.Value - R.Value, CY.Value - R.Value, R.Value * 2, R.Value * 2));
+            var cx = CX ?? 0;
+            var cy = CY ?? 0;
+            return new EllipseGeometry(new Rect(cx - R.Value, cy - R.Value, R.Value * 2, R.Value * 2));
         }
 
         return null;
