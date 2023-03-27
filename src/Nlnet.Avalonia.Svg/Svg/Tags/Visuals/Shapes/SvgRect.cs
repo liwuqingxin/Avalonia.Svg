@@ -24,12 +24,15 @@ public class SvgRect : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 
     protected override Geometry? OnCreateOriginalGeometry()
     {
-        if (X == null || Y == null || Width == null || Height == null)
+        if (Width == null || Height == null)
         {
             return null;
         }
 
-        return new RectangleGeometry(new Rect(X.Value, Y.Value, Width.Value, Height.Value));
+        var x = X ?? 0;
+        var y = Y ?? 0;
+
+        return new RectangleGeometry(new Rect(x, y, Width.Value, Height.Value));
     }
 
     //protected override ImmutableTransform? GetBrushTransform()
