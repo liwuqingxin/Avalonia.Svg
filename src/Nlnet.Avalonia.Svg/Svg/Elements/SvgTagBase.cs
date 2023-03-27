@@ -77,6 +77,28 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
 
 
 
+    #region ICloneable
+
+    public virtual object Clone()
+    {
+        var clone = (SvgTagBase) Activator.CreateInstance(this.GetType())!;
+        clone.Parent              = this.Parent;
+        clone.Children            = this.Children;
+        clone.IsDef               = this.IsDef;
+        clone.Style               = this.Style;
+        clone._contextAppliers    = this._contextAppliers;
+        clone._deferredProperties = this._deferredProperties;
+        clone._tagName            = this._tagName;
+
+        SvgInternalServices.PropertyFetcher.Fetch(clone, this);
+
+        return clone;
+    }
+
+    #endregion
+
+
+
     #region Deferred Property
 
     private Dictionary<string, string>? _deferredProperties;

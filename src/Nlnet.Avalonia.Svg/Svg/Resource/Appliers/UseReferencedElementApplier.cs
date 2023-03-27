@@ -26,7 +26,7 @@ public class UseReferencedElementApplier : ISvgContextApplier
 
             if (context.IdTags.TryGetValue(id, out var element))
             {
-                use.ReferencedElement = element as ISvgRenderable;
+                use.ReferencedElement = element.Clone() as ISvgRenderable;
 
                 if (tag.Style != null && use.ReferencedElement != null)
                 {

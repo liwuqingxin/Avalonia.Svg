@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Nlnet.Avalonia.Svg
 {
-    public interface ISvgPaintServer
+    public interface ISvgPaintServer : ISvgTag
     {
     }
 }

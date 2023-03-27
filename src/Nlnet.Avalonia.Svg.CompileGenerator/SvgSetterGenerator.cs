@@ -189,9 +189,14 @@ namespace {namespaceName}
 
         bool ISvgProperty<I{classSymbol.Name}>.CanInherit => true;
 
-        public void I{classSymbol.Name}(XmlAttributeCollection attrs)
+        public void FetchByI{classSymbol.Name}(XmlAttributeCollection attrs)
         {{
             this.ParseOrDefer<I{classSymbol.Name}, {nullablePropertyType}>(attrs, SvgProperties.{property}, Parsers.TryTo{parserMethodName}, (setter, value) => setter.{property} = value);
+        }}
+
+        public void CloneFromI{classSymbol.Name}(I{classSymbol.Name} source)
+        {{
+            this.{property} = source.{property};
         }}
     }}
 }}");

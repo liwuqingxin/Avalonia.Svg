@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Nlnet.Avalonia.Svg;
 
 /// <summary>
 /// Standard svg tag definition.
 /// </summary>
-public interface ISvgTag : 
+public interface ISvgTag : ICloneable,
     IClassSetter, 
     IIdSetter,
     IStyleSetter

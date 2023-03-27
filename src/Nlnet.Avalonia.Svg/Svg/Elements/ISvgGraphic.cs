@@ -6,7 +6,7 @@
 /// ‘line’, ‘path’, ‘polygon’, ‘polyline’, ‘rect’, ‘text’, ‘textPath’, ‘tspan’ and ‘video’.
 /// </summary>
 /// https://www.w3.org/TR/SVG2/struct.html#TermGraphicsElement
-public interface ISvgGraphic
+public interface ISvgGraphic : ISvgTag
 {
 
 }

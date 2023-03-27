@@ -10,11 +10,14 @@ namespace Nlnet.Avalonia.Svg;
 public interface IPropertyFetcher
 {
     public void Fetch(ISvgTag target, XmlAttributeCollection? attrs);
+
+    public void Fetch(ISvgTag target, ISvgTag source);
 }
 
 public class DefaultPropertyFetcher : IPropertyFetcher
 {
-    private readonly ConcurrentDictionary<Type, List<MethodInfo>> _setterCaches = new();
+    private readonly ConcurrentDictionary<Type, List<MethodInfo>> _fetchByCaches = new();
+    private readonly ConcurrentDictionary<Type, List<MethodInfo>> _cloneFromCaches = new();
 
     public void Fetch(ISvgTag target, XmlAttributeCollection? attrs)
     {
@@ -25,21 +28,41 @@ public class DefaultPropertyFetcher : IPropertyFetcher
             return;
         }
 
-        if (!_setterCaches.TryGetValue(target.GetType(), out var list))
+        if (!_fetchByCaches.TryGetValue(target.GetType(), out var list))
         {
             list = target
                 .GetType()
                 .GetInterfaces()
                 .Where(it => it.IsAssignableTo(typeof(IDeferredAdder)))
-                .Select(type => type.GetMethod(type.Name))
+                .Select(type => type.GetMethod($"FetchBy{type.Name}"))
                 .Where(m => m != null)
                 .ToList()!;
-            _setterCaches.TryAdd(target.GetType(), list);
+            _fetchByCaches.TryAdd(target.GetType(), list);
         }
 
         foreach (var parser in list)
         {
             parser.Invoke(target, new object?[] { attrs });
+        }
+    }
+
+    public void Fetch(ISvgTag target, ISvgTag source)
+    {
+        if (!_cloneFromCaches.TryGetValue(target.GetType(), out var list))
+        {
+            list = target
+                .GetType()
+                .GetInterfaces()
+                .Where(it => it.IsAssignableTo(typeof(IDeferredAdder)))
+                .Select(type => type.GetMethod($"CloneFrom{type.Name}"))
+                .Where(m => m != null)
+                .ToList()!;
+            _cloneFromCaches.TryAdd(target.GetType(), list);
+        }
+
+        foreach (var parser in list)
+        {
+            parser.Invoke(target, new object?[] { source });
         }
     }
 }

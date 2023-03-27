@@ -6,7 +6,7 @@
 /// and ‘unknown’.
 /// </summary>
 /// https://www.w3.org/TR/SVG2/struct.html#Groups
-public interface ISvgContainer :
+public interface ISvgContainer : ISvgTag,
     IFillSetter,
     IFillRuleSetter,
     IFillOpacitySetter,

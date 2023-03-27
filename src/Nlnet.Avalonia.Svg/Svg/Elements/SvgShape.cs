@@ -103,6 +103,20 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
+        public override object Clone()
+        {
+            var clone = base.Clone();
+
+            if (clone is SvgShape shape)
+            {
+                shape.OriginalGeometry = this.OriginalGeometry;
+                shape.RenderGeometry = this.RenderGeometry;
+                shape._pen = this._pen;
+            }
+
+            return clone;
+        }
+
 
         private IPen? _pen;
 
