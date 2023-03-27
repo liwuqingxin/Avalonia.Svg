@@ -64,9 +64,11 @@ public static class SvgLoader
         {
             throw new InvalidDataException("Can not find the svg tag in the svg document");
         }
-        
-        var svgTag = CreateTagFrom(node);
-        var svg    = new Svg((SvgSvg) svgTag);
+
+        var svgTag = (SvgSvg)CreateTagFrom(node);
+        svgTag.IsRoot = true;
+
+        var svg = new Svg(svgTag);
         svg.Initialize();
         
         return svg;

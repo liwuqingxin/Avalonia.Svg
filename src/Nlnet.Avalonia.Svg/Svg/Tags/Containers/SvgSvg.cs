@@ -60,6 +60,12 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
         set;
     }
 
+    public bool IsRoot
+    {
+        get;
+        set;
+    }
+
 
 
     public override void ApplyContext(ISvgContext context)
@@ -90,79 +96,91 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
             availableSize = availableSize.WithHeight(this.Height.Value);
         }
 
-        using (dc.PushClip(new Rect(X ?? 0, Y ?? 0, availableSize.Width, availableSize.Height)))
+        if (IsRoot)
         {
-            if (this.ViewBox == null)
+            RenderCore(dc, ctx, availableSize);
+        }
+        else
+        {
+            using (dc.PushClip(new Rect(X ?? 0, Y ?? 0, availableSize.Width, availableSize.Height)))
             {
-                RenderChildren(dc, ctx);
+                RenderCore(dc, ctx, availableSize);
+            }
+        }
+    }
+
+    private void RenderCore(DrawingContext dc, ISvgContext ctx, Size availableSize)
+    {
+        if (this.ViewBox == null)
+        {
+            RenderChildren(dc, ctx);
+        }
+        else
+        {
+            var viewBoxSize = new Size(ViewBox.Width, ViewBox.Height);
+            var ratio = PreserveAspectRatio ?? new PreserveAspectRatio(PreserveAspectRatioAlign.xMidYMid, PreserveAspectRatioMeetOrSlice.meet);
+            if (ratio.Align == PreserveAspectRatioAlign.none)
+            {
+                SvgHelper.GetFillFactors(availableSize, viewBoxSize, out var scaleX, out var scaleY);
+                using (dc.PushPostTransform(Matrix.CreateTranslation(-ViewBox.Origin.X, -ViewBox.Origin.Y)))
+                using (dc.PushPostTransform(Matrix.CreateScale(scaleX, scaleY)))
+                using (dc.PushPostTransform(Matrix.CreateTranslation(X ?? 0, Y ?? 0)))
+                using (dc.PushTransformContainer())
+                    RenderChildren(dc, ctx);
             }
             else
             {
-                var viewBoxSize = new Size(ViewBox.Width, ViewBox.Height);
-                var ratio = PreserveAspectRatio ?? new PreserveAspectRatio(PreserveAspectRatioAlign.xMidYMid, PreserveAspectRatioMeetOrSlice.meet);
-                if (ratio.Align == PreserveAspectRatioAlign.none)
+                var isSlice = ratio.MeetOrSlice == PreserveAspectRatioMeetOrSlice.slice;
+                SvgHelper.GetUniformFactors(availableSize, viewBoxSize, isSlice, out var scale, out var offsetX, out var offsetY);
+                switch (ratio.Align)
                 {
-                    SvgHelper.GetFillFactors(availableSize, viewBoxSize, out var scaleX, out var scaleY);
-                    using (dc.PushPostTransform(Matrix.CreateTranslation(-ViewBox.Origin.X, -ViewBox.Origin.Y)))
-                    using (dc.PushPostTransform(Matrix.CreateScale(scaleX, scaleY)))
-                    using (dc.PushPostTransform(Matrix.CreateTranslation(X ?? 0, Y ?? 0)))
-                    using (dc.PushTransformContainer())
-                        RenderChildren(dc, ctx);
-                }
-                else
-                {
-                    var isSlice = ratio.MeetOrSlice == PreserveAspectRatioMeetOrSlice.slice;
-                    SvgHelper.GetUniformFactors(availableSize, viewBoxSize, isSlice, out var scale, out var offsetX, out var offsetY);
-                    switch (ratio.Align)
-                    {
-                        case PreserveAspectRatioAlign.xMinYMin:
-                            offsetX = 0;
-                            offsetY = 0;
-                            break;
-                        case PreserveAspectRatioAlign.xMidYMin:
-                            offsetY = 0;
-                            break;
-                        case PreserveAspectRatioAlign.xMaxYMin:
-                            offsetX *= 2;
-                            offsetY = 0;
-                            break;
-                        case PreserveAspectRatioAlign.xMinYMid:
-                            offsetX = 0;
-                            break;
-                        case PreserveAspectRatioAlign.xMidYMid:
-                            break;
-                        case PreserveAspectRatioAlign.xMaxYMid:
-                            offsetX *= 2;
-                            break;
-                        case PreserveAspectRatioAlign.xMinYMax:
-                            offsetX = 0;
-                            offsetY *= 2;
-                            break;
-                        case PreserveAspectRatioAlign.xMidYMax:
-                            offsetY *= 2;
-                            break;
-                        case PreserveAspectRatioAlign.xMaxYMax:
-                            offsetX *= 2;
-                            offsetY *= 2;
-                            break;
-                        case PreserveAspectRatioAlign.none:
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-
-                    using (dc.PushPostTransform(Matrix.CreateTranslation(-ViewBox.Origin.X, -ViewBox.Origin.Y)))
-                    using (dc.PushPostTransform(Matrix.CreateScale(scale, scale)))
-                    using (dc.PushPostTransform(Matrix.CreateTranslation(offsetX, offsetY)))
-                    using (dc.PushPostTransform(Matrix.CreateTranslation(X ?? 0, Y ?? 0)))
-                    using (dc.PushTransformContainer())
-                        RenderChildren(dc, ctx);
+                    case PreserveAspectRatioAlign.xMinYMin:
+                        offsetX = 0;
+                        offsetY = 0;
+                        break;
+                    case PreserveAspectRatioAlign.xMidYMin:
+                        offsetY = 0;
+                        break;
+                    case PreserveAspectRatioAlign.xMaxYMin:
+                        offsetX *= 2;
+                        offsetY = 0;
+                        break;
+                    case PreserveAspectRatioAlign.xMinYMid:
+                        offsetX = 0;
+                        break;
+                    case PreserveAspectRatioAlign.xMidYMid:
+                        break;
+                    case PreserveAspectRatioAlign.xMaxYMid:
+                        offsetX *= 2;
+                        break;
+                    case PreserveAspectRatioAlign.xMinYMax:
+                        offsetX = 0;
+                        offsetY *= 2;
+                        break;
+                    case PreserveAspectRatioAlign.xMidYMax:
+                        offsetY *= 2;
+                        break;
+                    case PreserveAspectRatioAlign.xMaxYMax:
+                        offsetX *= 2;
+                        offsetY *= 2;
+                        break;
+                    case PreserveAspectRatioAlign.none:
+                    default:
+                        throw new ArgumentOutOfRangeException();
                 }
 
-                // Draw view box border.
-                if (ctx.ShowDiagnosis)
-                {
-                    dc.DrawRectangle(new Pen(Brushes.Green, 1, new DashStyle(new double[] { 5, 5 }, 0)), new Rect(ViewBox.Origin.X, ViewBox.Origin.Y, ViewBox.Width, ViewBox.Height));
-                }
+                using (dc.PushPostTransform(Matrix.CreateTranslation(-ViewBox.Origin.X, -ViewBox.Origin.Y)))
+                using (dc.PushPostTransform(Matrix.CreateScale(scale, scale)))
+                using (dc.PushPostTransform(Matrix.CreateTranslation(offsetX, offsetY)))
+                using (dc.PushPostTransform(Matrix.CreateTranslation(X ?? 0, Y ?? 0)))
+                using (dc.PushTransformContainer())
+                    RenderChildren(dc, ctx);
+            }
+
+            // Draw view box border.
+            if (ctx.ShowDiagnosis)
+            {
+                dc.DrawRectangle(new Pen(Brushes.Green, 1, new DashStyle(new double[] { 5, 5 }, 0)), new Rect(ViewBox.Origin.X, ViewBox.Origin.Y, ViewBox.Width, ViewBox.Height));
             }
         }
     }
