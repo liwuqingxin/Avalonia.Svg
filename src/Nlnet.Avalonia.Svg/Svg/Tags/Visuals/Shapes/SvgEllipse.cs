@@ -1,6 +1,5 @@
 ﻿using Avalonia.Media;
 using Avalonia;
-using Avalonia.Media.Immutable;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
@@ -22,9 +21,9 @@ public class SvgEllipse : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 
     protected override Geometry? OnCreateOriginalGeometry()
     {
-        if (CX != null && CY != null && RX != null && RY != null)
+        if (RX != null && RY != null)
         {
-            return new EllipseGeometry(new Rect(CX.Value - RX.Value, CY.Value - RY.Value, RX.Value * 2, RY.Value * 2));
+            return new EllipseGeometry(new Rect(CX ?? 0 - RX.Value, CY ?? 0 - RY.Value, RX.Value * 2, RY.Value * 2));
         }
 
         return null;
