@@ -8,6 +8,7 @@ using Nlnet.Avalonia.Svg.Utils;
 
 namespace Nlnet.Avalonia.Svg
 {
+    // TODO 拆分成类。
     /// <summary>
     /// Base value converters.
     /// </summary>

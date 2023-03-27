@@ -6,13 +6,24 @@ using System.Linq;
 
 namespace Nlnet.Avalonia.Svg
 {
-    public class Svg : ISvg, IInitializable, ISvgContext
+    public class Svg : ISvg, ISvgContext
     {
         private readonly SvgSvg _svgTag;
 
         public Svg(SvgSvg svgTag)
         {
             _svgTag = svgTag;
+
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            // Collect, build and apply svg context, and apply transforms.
+            this.PrepareContext();
+            this.BuildContext();
+
+            _svgTag.ApplyContext(this);
         }
 
 
@@ -81,21 +92,6 @@ namespace Nlnet.Avalonia.Svg
             {
                 setter.ApplyDeferredValueString(this);
             }
-        }
-
-        #endregion
-
-
-
-        #region IInitializable
-
-        public void Initialize()
-        {
-            // Collect, build and apply svg context, and apply transforms.
-            this.PrepareContext();
-            this.BuildContext();
-
-            _svgTag.ApplyContext(this);
         }
 
         #endregion

@@ -66,11 +66,7 @@ public static class SvgLoader
         }
 
         var svgTag = (SvgSvg)CreateTagFrom(node);
-        svgTag.IsRoot = true;
-
-        var svg = new Svg(svgTag);
-        svg.Initialize();
-        
+        var svg    = new Svg(svgTag);
         return svg;
     }
 

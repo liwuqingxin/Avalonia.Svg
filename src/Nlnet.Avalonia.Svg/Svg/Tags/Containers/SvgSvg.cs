@@ -60,11 +60,7 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
         set;
     }
 
-    public bool IsRoot
-    {
-        get;
-        set;
-    }
+    public bool IsRoot => Parent == null;
 
 
 

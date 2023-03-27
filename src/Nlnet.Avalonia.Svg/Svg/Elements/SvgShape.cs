@@ -1,7 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
-using System.Collections.Generic;
 
 namespace Nlnet.Avalonia.Svg
 {
