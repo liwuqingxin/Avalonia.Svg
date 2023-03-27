@@ -229,7 +229,7 @@ namespace Nlnet.Avalonia.Svg
         public static Transform ToTransform(this string valueString)
         {
             //TODO 支持空格间隔
-            var regex = new Regex("(translate\\(.*?\\s*?[,\\s]\\s*?.*?\\))|(scale\\(.*?\\s*?[,\\s]\\s*?.*?\\))|(rotate\\(.*?\\))");
+            var regex = new Regex("(translate\\(.*?\\s*?[,\\s]\\s*?.*?\\))|(scale\\(.*?\\s*?[,\\s]\\s*?.*?\\))|(rotate\\(.*?\\))|(matrix\\(.*?\\))");
             var matches = regex.Matches(valueString);
 
             var transform = new TransformGroup();
@@ -293,6 +293,23 @@ namespace Nlnet.Avalonia.Svg
                     }
                     // Restore the translate transform.
                     transform.Children.Add(new TranslateTransform(centerX, centerY));
+                }
+                else if (match.Value.StartsWith("matrix"))
+                {
+                    var matrixStrings = match.Value[7..^1].Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (matrixStrings.Length != 6)
+                    {
+                        continue;
+                    }
+
+                    var a = double.Parse(matrixStrings[0]);
+                    var b = double.Parse(matrixStrings[1]);
+                    var c = double.Parse(matrixStrings[2]);
+                    var d = double.Parse(matrixStrings[3]);
+                    var e = double.Parse(matrixStrings[4]);
+                    var f = double.Parse(matrixStrings[5]);
+
+                    transform.Children.Add(new MatrixTransform(new Matrix(a, b, c, d, e, f)));
                 }
             }
 
