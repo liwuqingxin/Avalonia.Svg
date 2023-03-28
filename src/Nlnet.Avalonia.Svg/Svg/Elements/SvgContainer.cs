@@ -93,7 +93,7 @@ namespace Nlnet.Avalonia.Svg
 
         public override void Render(DrawingContext dc, ISvgContext ctx)
         {
-            if (this.Children == null || this is SvgDefs)
+            if (this.Children == null || this is IDef)
             {
                 return;
             }

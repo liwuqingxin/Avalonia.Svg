@@ -100,7 +100,7 @@ public static class SvgLoader
 
         var tag = factory.CreateTag(node);
 
-        if (tag is SvgDefs)
+        if (tag is IDef)
         {
             tag.IsDef = true;
         }
