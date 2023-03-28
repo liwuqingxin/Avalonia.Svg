@@ -1,0 +1,16 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <clipPath id="cut-off-bottom" transform="translate(20,0)">
+
+      <rect x="0" y="0" width="200" height="100" />
+      <rect x="0" y="120" width="200" height="30" />
+      <circle cx="100" cy="100" r="60" clip-path="url(#cut-off-bottom)" transform="scale(1,2)" />
+
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#cut-off-bottom)" >
+    <circle cx="100" cy="100" r="100"/>
+    <circle cx="200" cy="100" r="100"/>
+  </g>
+</svg>

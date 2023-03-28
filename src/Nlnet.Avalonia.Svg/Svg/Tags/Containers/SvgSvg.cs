@@ -79,7 +79,7 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
         });
     }
 
-    public override void Render(DrawingContext dc, ISvgContext ctx)
+    protected override void RenderCore(DrawingContext dc, ISvgContext ctx)
     {
         var availableSize = ctx.ContainerSize;
 

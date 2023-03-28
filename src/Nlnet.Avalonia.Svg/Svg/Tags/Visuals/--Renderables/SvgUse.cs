@@ -53,7 +53,7 @@ public class SvgUse : SvgRenderable, ISvgRenderable,
         this.TryAddApplier(UseReferencedElementApplier.Instance);
     }
 
-    public override void Render(DrawingContext dc, ISvgContext ctx)
+    protected override void RenderCore(DrawingContext dc, ISvgContext ctx)
     {
         if (ReferencedElement == null || Width == 0 || Height == 0)
         {

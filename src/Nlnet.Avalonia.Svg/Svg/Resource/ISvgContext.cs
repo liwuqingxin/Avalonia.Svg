@@ -29,6 +29,11 @@ public interface ISvgContext
     public IReadOnlyDictionary<string, LightBrush> Brushes { get; }
 
     /// <summary>
+    /// All clip paths.
+    /// </summary>
+    public IReadOnlyDictionary<string, SvgClipPath> ClipPaths { get; }
+
+    /// <summary>
     /// All tags that have a id.
     /// </summary>
     public IReadOnlyDictionary<string, ISvgTag> IdTags { get; }

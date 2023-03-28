@@ -30,10 +30,11 @@ namespace Nlnet.Avalonia.Svg
 
         #region ISvgContext
 
-        private readonly List<ISvgStyle>                _styles      = new();
-        private readonly Dictionary<string, LightBrush> _brushes     = new();
-        private readonly Dictionary<string, ISvgTag>    _idTags      = new();
-        private readonly List<ISvgRenderable>           _renderables = new();
+        private readonly List<ISvgStyle>                 _styles      = new();
+        private readonly Dictionary<string, LightBrush>  _brushes     = new();
+        private readonly Dictionary<string, SvgClipPath> _clipPaths   = new();
+        private readonly Dictionary<string, ISvgTag>     _idTags      = new();
+        private readonly List<ISvgRenderable>            _renderables = new();
 
         public bool ShowDiagnosis { get; private set; }
 
@@ -42,6 +43,8 @@ namespace Nlnet.Avalonia.Svg
         IReadOnlyList<ISvgStyle> ISvgContext.Styles => this._styles;
 
         IReadOnlyDictionary<string, LightBrush> ISvgContext.Brushes => this._brushes;
+
+        IReadOnlyDictionary<string, SvgClipPath> ISvgContext.ClipPaths => this._clipPaths;
 
         IReadOnlyDictionary<string, ISvgTag> ISvgContext.IdTags => this._idTags;
 
@@ -71,17 +74,19 @@ namespace Nlnet.Avalonia.Svg
                     }
                 }
 
-                if (tag is ISvgBrushProvider brushProvider)
+                if (tag is ISvgBrushProvider brushProvider && brushProvider.Id != null)
                 {
-                    if (brushProvider.Id != null)
-                    {
-                        this._brushes.Add(brushProvider.Id, brushProvider.GetBrush(this));
-                    }
+                    this._brushes.Add(brushProvider.Id, brushProvider.GetBrush(this));
                 }
 
                 if (tag is ISvgRenderable renderable && tag.IsDef == false)
                 {
                     this._renderables.Add(renderable);
+                }
+
+                if (tag is SvgClipPath clipPath && clipPath.Id != null)
+                {
+                    this._clipPaths.Add(clipPath.Id, clipPath);
                 }
             });
         }
@@ -105,8 +110,8 @@ namespace Nlnet.Avalonia.Svg
             this.ContainerSize = availableSize;
             this.ShowDiagnosis = showDiagnosis;
 
-            var width  = _svgTag.Width  ?? _svgTag.RenderBounds.Width;
-            var height = _svgTag.Height ?? _svgTag.RenderBounds.Height;
+            var width  = _svgTag.Width  ?? 0;
+            var height = _svgTag.Height ?? 0;
 
             if (width != 0 && height != 0 && stretch != Stretch.None)
             {

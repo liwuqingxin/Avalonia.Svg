@@ -1,4 +1,6 @@
-﻿namespace Nlnet.Avalonia.Svg;
+﻿using Avalonia.Media;
+
+namespace Nlnet.Avalonia.Svg;
 
 /// <summary>
 /// A graphics element that is defined by some combination of straight lines and curves.
@@ -18,5 +20,13 @@ public interface ISvgShape : ISvgTag,
     IStrokeDashArraySetter,
     IStrokeDashOffsetSetter
 {
+    /// <summary>
+    /// The original geometry that the svg describes.
+    /// </summary>
+    public Geometry? OriginalGeometry { get; }
 
+    /// <summary>
+    /// The geometry to render, which applied some transforms.
+    /// </summary>
+    public GeometryGroup? RenderGeometry { get; }
 }

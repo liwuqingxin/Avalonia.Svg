@@ -91,7 +91,7 @@ namespace Nlnet.Avalonia.Svg
             return new Rect(l, t, r - l, b - t);
         }
 
-        public override void Render(DrawingContext dc, ISvgContext ctx)
+        protected override void RenderCore(DrawingContext dc, ISvgContext ctx)
         {
             if (this.Children == null || this is IDef)
             {

@@ -14,7 +14,10 @@ namespace Nlnet.Avalonia.Svg
     /// the instance root of a use-element shadow tree.
     /// </summary>
     /// https://www.w3.org/TR/SVG2/render.html#TermRenderableElement
-    public interface ISvgRenderable : ISvgTag
+    public interface ISvgRenderable : ISvgTag,
+        IOpacitySetter,
+        ITransformSetter,
+        IClipPathSetter
     {
         /// <summary>
         /// Original bounds of the <see cref="ISvgRenderable"/>.

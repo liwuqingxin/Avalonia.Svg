@@ -6,15 +6,40 @@ namespace Nlnet.Avalonia.Svg
 {
     public abstract class SvgShape : SvgRenderable, ISvgShape
     {
-        /// <summary>
-        /// The original geometry that the svg describes.
-        /// </summary>
-        protected Geometry? OriginalGeometry;
+        #region ISvgShape
 
-        /// <summary>
-        /// The geometry to render, which applied some transforms.
-        /// </summary>
-        protected GeometryGroup? RenderGeometry;
+        private GeometryGroup? _renderGeometry;
+
+        public Geometry? OriginalGeometry { get; private set; }
+
+        public GeometryGroup? RenderGeometry => EnsureRenderGeometry();
+
+        private GeometryGroup? EnsureRenderGeometry()
+        {
+            if (_renderGeometry == null)
+            {
+                if (OriginalGeometry == null)
+                {
+                    return null;
+                }
+
+                _renderGeometry = new GeometryGroup();
+                _renderGeometry.Children.Add(OriginalGeometry);
+
+                if (Transform != null)
+                {
+                    _renderGeometry.Transform = Transform;
+                }
+
+                var fillRule = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
+
+                _renderGeometry.FillRule = fillRule;
+            }
+
+            return _renderGeometry;
+        }
+
+        #endregion
 
 
 
@@ -50,8 +75,6 @@ namespace Nlnet.Avalonia.Svg
 
         public override Rect RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
 
-        //public override Rect RenderBounds => RenderGeometry?.GetRenderBounds(GetPen()) ?? Rect.Empty;
-
 
 
         public sealed override void OnPropertiesFetched()
@@ -70,32 +93,18 @@ namespace Nlnet.Avalonia.Svg
         /// </summary>
         /// <param name="dc"></param>
         /// <param name="ctx"></param>
-        public override void Render(DrawingContext dc, ISvgContext ctx)
+        protected override void RenderCore(DrawingContext dc, ISvgContext ctx)
         {
-            if (OriginalGeometry == null)
+            if (OriginalGeometry == null || RenderGeometry == null)
             {
                 return;
             }
 
-            if (RenderGeometry == null)
-            {
-                RenderGeometry = new GeometryGroup();
-                RenderGeometry.Children.Add(OriginalGeometry);
-            }
-
-            if (Transform != null)
-            {
-                RenderGeometry.Transform = Transform;
-            }
-
-            var fill        = this.GetPropertyValue<IFillSetter, LightBrush>()?.Clone();
-            var fillRule    = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
+            var fill = this.GetPropertyValue<IFillSetter, LightBrush>()?.Clone();
             var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
 
             ApplyBrushOpacity(fill, fillOpacity);
             ApplyBrushTransform(fill);
-
-            RenderGeometry.FillRule = fillRule;
 
             using (dc.PushOpacity(Opacity ?? 1d))
             {
@@ -110,7 +119,7 @@ namespace Nlnet.Avalonia.Svg
             if (clone is SvgShape shape)
             {
                 shape.OriginalGeometry = this.OriginalGeometry;
-                shape.RenderGeometry = this.RenderGeometry;
+                shape._renderGeometry = this.RenderGeometry;
                 shape._pen = this._pen;
             }
 
