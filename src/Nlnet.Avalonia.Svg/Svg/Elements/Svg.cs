@@ -33,6 +33,7 @@ namespace Nlnet.Avalonia.Svg
         private readonly List<ISvgStyle>                 _styles      = new();
         private readonly Dictionary<string, LightBrush>  _brushes     = new();
         private readonly Dictionary<string, SvgClipPath> _clipPaths   = new();
+        private readonly Dictionary<string, SvgMask>     _mask        = new();
         private readonly Dictionary<string, ISvgTag>     _idTags      = new();
         private readonly List<ISvgRenderable>            _renderables = new();
 
@@ -45,6 +46,8 @@ namespace Nlnet.Avalonia.Svg
         IReadOnlyDictionary<string, LightBrush> ISvgContext.Brushes => this._brushes;
 
         IReadOnlyDictionary<string, SvgClipPath> ISvgContext.ClipPaths => this._clipPaths;
+
+        public IReadOnlyDictionary<string, SvgMask> Masks => this._mask;
 
         IReadOnlyDictionary<string, ISvgTag> ISvgContext.IdTags => this._idTags;
 
@@ -87,6 +90,11 @@ namespace Nlnet.Avalonia.Svg
                 if (tag is SvgClipPath clipPath && clipPath.Id != null)
                 {
                     this._clipPaths.Add(clipPath.Id, clipPath);
+                }
+
+                if (tag is SvgMask mask && mask.Id != null)
+                {
+                    this._mask.Add(mask.Id, mask);
                 }
             });
         }

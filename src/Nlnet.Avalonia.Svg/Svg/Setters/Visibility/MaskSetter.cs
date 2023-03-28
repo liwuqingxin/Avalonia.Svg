@@ -3,15 +3,15 @@
 namespace Nlnet.Avalonia.Svg;
 
 [SetterGenerator(typeof(string), SvgDefaultValues.Null, true)]
-public class ClipPathSetter : AbstractStringSetter
+public class MaskSetter : AbstractStringSetter
 {
     public override void Set(ISvgTag tag)
     {
-        if (tag is not IClipPathSetter setter)
+        if (tag is not IMaskSetter setter)
         {
             return;
         }
 
-        setter.ClipPath = Value;
+        setter.Mask = Value;
     }
 }

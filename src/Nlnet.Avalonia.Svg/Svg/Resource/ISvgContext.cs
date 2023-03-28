@@ -34,6 +34,11 @@ public interface ISvgContext
     public IReadOnlyDictionary<string, SvgClipPath> ClipPaths { get; }
 
     /// <summary>
+    /// All masks.
+    /// </summary>
+    public IReadOnlyDictionary<string, SvgMask> Masks { get; }
+
+    /// <summary>
     /// All tags that have a id.
     /// </summary>
     public IReadOnlyDictionary<string, ISvgTag> IdTags { get; }

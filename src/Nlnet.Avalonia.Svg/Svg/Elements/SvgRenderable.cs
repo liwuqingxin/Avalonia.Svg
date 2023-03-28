@@ -1,8 +1,10 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Media;
 using Avalonia.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using Avalonia.Controls.Mixins;
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Nlnet.Avalonia.Svg;
@@ -13,7 +15,8 @@ namespace Nlnet.Avalonia.Svg;
 public abstract class SvgRenderable : SvgTagBase, ISvgRenderable, 
     IOpacitySetter, 
     ITransformSetter,
-    IClipPathSetter
+    IClipPathSetter,
+    IMaskSetter
 {
     protected SvgRenderable()
     {
@@ -27,6 +30,8 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
 
     public string? ClipPath { get; set; }
 
+    public string? Mask { get; set; }
+
     public virtual Rect Bounds => Rect.Empty;
 
     public virtual Rect RenderBounds => Rect.Empty;
@@ -38,11 +43,11 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
     /// <param name="ctx"></param>
     public void Render(DrawingContext dc, ISvgContext ctx)
     {
-        var useClipPath = false;
+        DrawingContext.PushedState? clipPathPushedState = null;
 
-        if (this.ClipPath != null && this.ClipPath.TryParseUrl(out var id, out var token))
+        if (this.ClipPath != null && this.ClipPath.TryParseUrl(out var clipPathId, out _))
         {
-            if (ctx.ClipPaths.TryGetValue(id, out var clipPath) && clipPath.Children != null)
+            if (ctx.ClipPaths.TryGetValue(clipPathId, out var clipPath) && clipPath.Children != null)
             {
                 var geometryGroup = new GeometryGroup();
                 foreach (var svgShape in clipPath.Children.OfType<ISvgShape>())
@@ -55,17 +60,44 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
                 geometryGroup.Transform = clipPath.Transform;
                 geometryGroup.FillRule  = FillRule.NonZero;
 
-                using (dc.PushGeometryClip(geometryGroup))
-                {
-                    RenderCore(dc, ctx);
-                }
-                useClipPath = true;
+                clipPathPushedState = dc.PushGeometryClip(geometryGroup);
             }
         }
 
-        if (!useClipPath)
+        if (this.Mask != null && this.Mask.TryParseUrl(out var maskId, out _))
+        {
+            if (ctx.Masks.TryGetValue(maskId, out var mask) && mask.Children != null)
+            {
+                foreach (var svgShape in mask.Children.OfType<ISvgShape>())
+                {
+                    if (svgShape.RenderGeometry == null)
+                    {
+                        continue;
+                    }
+
+                    var fill        = svgShape.GetPropertyValue<IFillSetter, LightBrush>()?.Clone();
+                    var fillOpacity = svgShape.GetPropertyStructValue<IFillOpacitySetter, double>();
+
+                    using (dc.PushGeometryClip(svgShape.RenderGeometry))
+                    {
+                        1
+                        // TODO fill-opacity and no mask found situation.
+                        using(dc.PushOpacityMask(fill, svgShape.RenderGeometry.Bounds))
+                        {
+                            RenderCore(dc, ctx);
+                        }
+                    }
+                }
+            }
+        }
+        else
         {
             RenderCore(dc, ctx);
+        }
+
+        if (clipPathPushedState is IDisposable disposable3)
+        {
+            disposable3.Dispose();
         }
     }
 

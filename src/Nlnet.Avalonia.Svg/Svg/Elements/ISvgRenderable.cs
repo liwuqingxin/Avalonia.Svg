@@ -17,7 +17,8 @@ namespace Nlnet.Avalonia.Svg
     public interface ISvgRenderable : ISvgTag,
         IOpacitySetter,
         ITransformSetter,
-        IClipPathSetter
+        IClipPathSetter,
+        IMaskSetter
     {
         /// <summary>
         /// Original bounds of the <see cref="ISvgRenderable"/>.

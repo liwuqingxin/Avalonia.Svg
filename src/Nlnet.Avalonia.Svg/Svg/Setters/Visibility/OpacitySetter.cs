@@ -2,16 +2,16 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(typeof(string), SvgDefaultValues.Null, true)]
-public class ClipPathSetter : AbstractStringSetter
+[SetterGenerator(typeof(double), SvgDefaultValues.Zero, false)]
+public class OpacitySetter : AbstractDoubleSetter
 {
     public override void Set(ISvgTag tag)
     {
-        if (tag is not IClipPathSetter setter)
+        if (tag is not IOpacitySetter setter)
         {
             return;
         }
 
-        setter.ClipPath = Value;
+        setter.Opacity = Value;
     }
 }

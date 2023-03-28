@@ -1,0 +1,13 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <mask id="Mask">
+      <circle cx="0" cy="0" r="100" fill="#888888"  />
+<g transform="translate(20,20)">
+      <circle cx="100" cy="100" r="100" fill="#333333"  />
+</g>
+    </mask>
+  </defs>
+
+  <rect x="0" y="0" width="200" height="200" fill="green" />
+  <rect x="0" y="0" width="200" height="200" fill="red" mask="url(#Mask)" />
+</svg>
