@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Avalonia.Threading;
 using Nlnet.Avalonia.Svg.Utils;
 
 namespace Nlnet.Avalonia.Svg.Controls
@@ -152,7 +154,7 @@ namespace Nlnet.Avalonia.Svg.Controls
 
 
 
-        #region Dependency Property
+        #region Diagnosis Properties
 
         public static bool GetShowDiagnosis(Visual host)
         {
@@ -164,6 +166,28 @@ namespace Nlnet.Avalonia.Svg.Controls
         }
         public static readonly AttachedProperty<bool> ShowDiagnosisProperty = AvaloniaProperty
             .RegisterAttached<Icon, Visual, bool>("ShowDiagnosis", false, true);
+
+        public static TimeSpan? GetLoadingCost(Visual host)
+        {
+            return host.GetValue(LoadingCostProperty);
+        }
+        private static void SetLoadingCost(Visual host, TimeSpan? value)
+        {
+            host.SetValue(LoadingCostProperty, value);
+        }
+        public static readonly AttachedProperty<TimeSpan?> LoadingCostProperty = AvaloniaProperty
+            .RegisterAttached<Icon, Visual, TimeSpan?>("LoadingCost");
+
+        public static TimeSpan GetRenderCost(Visual host)
+        {
+            return host.GetValue(RenderCostProperty);
+        }
+        private static void SetRenderCost(Visual host, TimeSpan value)
+        {
+            host.SetValue(RenderCostProperty, value);
+        }
+        public static readonly AttachedProperty<TimeSpan> RenderCostProperty = AvaloniaProperty
+            .RegisterAttached<Icon, Visual, TimeSpan>("RenderCost");
 
         #endregion
 
@@ -253,7 +277,7 @@ namespace Nlnet.Avalonia.Svg.Controls
             IconSvgDataProperty.Changed.AddClassHandler<Icon>((icon, args) =>
             {
                 var data = Icon.GetIconSvgData(icon);
-                icon._svg = string.IsNullOrWhiteSpace(data) ? null : SvgLoader.LoadSvg(data);
+                icon._svg = string.IsNullOrWhiteSpace(data) ? null : icon.LoadSvg(data);
                 icon.InvalidateVisual();
             });
             IconSvgProperty.Changed.AddClassHandler<Icon>((icon, args) =>
@@ -272,9 +296,18 @@ namespace Nlnet.Avalonia.Svg.Controls
                 var reader = new StreamReader(stream);
                 var data = reader.ReadToEnd();
 
-                icon._svg = string.IsNullOrWhiteSpace(data) ? null : SvgLoader.LoadSvg(data);
+                icon._svg = string.IsNullOrWhiteSpace(data) ? null : icon.LoadSvg(data);
                 icon.InvalidateVisual();
             });
+        }
+
+        private ISvg LoadSvg(string data)
+        {
+            var start = DateTime.Now;
+            var svg   = SvgLoader.LoadSvg(data);
+            SetLoadingCost(this, DateTime.Now - start);
+
+            return svg;
         }
 
         private void EnsureRenderedFormattedText()
@@ -589,7 +622,9 @@ namespace Nlnet.Avalonia.Svg.Controls
             // Svg
             if (_svg != null)
             {
-                                _svg.Render(drawingContext, this.Bounds.Size, GetIconStretch(this), Icon.GetShowDiagnosis(this));
+                var start = DateTime.Now;
+                _svg.Render(drawingContext, this.Bounds.Size, GetIconStretch(this), Icon.GetShowDiagnosis(this));
+                Dispatcher.UIThread.Post(() => SetRenderCost(this, DateTime.Now - start));
             }
         }
 

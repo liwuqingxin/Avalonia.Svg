@@ -20,7 +20,7 @@
         <!-- List & Display -->
         <Border Grid.Column="0"
                 Margin="12,12,0,12"
-                BorderBrush="Gray"
+                BorderBrush="LightGray"
                 BorderThickness="1">
             <Grid Margin="12" RowDefinitions="Auto,*">
                 <Panel Grid.Row="0"
@@ -29,7 +29,8 @@
                        Margin="0,0,0,12"
                        ZIndex="100">
                     <Border Background="black" Opacity="{Binding #BackGroundOpacity.Value}" />
-                    <controls:Icon ClipToBounds="{Binding #ClipToBounds.IsChecked}"
+                    <controls:Icon x:Name="Icon"
+                                   ClipToBounds="{Binding #ClipToBounds.IsChecked}"
                                    IconStretch="{Binding #Stretch.SelectedItem}"
                                    IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/NLNet.svg"
                                    IconSvgData="{Binding Path=EditableSvgData}"
@@ -59,36 +60,65 @@
         <!-- Settings -->
         <Border Grid.Column="1"
                 Margin="12,12,0,12"
-                BorderBrush="Gray"
+                BorderBrush="LightGray"
                 BorderThickness="1">
+            <Border.Styles>
+                <Style Selector="CheckBox">
+                    <Setter Property="FontSize" Value="10" />
+                </Style>
+                <Style Selector="ComboBox">
+                    <Setter Property="FontSize" Value="10" />
+                </Style>
+                <Style Selector="TextBlock.h">
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="FontSize" Value="12" />
+                </Style>
+                <Style Selector="TextBlock.content">
+                    <Setter Property="FontSize" Value="10" />
+                </Style>
+            </Border.Styles>
             <StackPanel Margin="12"
                         Orientation="Vertical"
                         Spacing="5">
-                <TextBlock Text="Svg Stretch:" />
+
+                <TextBlock Classes="h" Text="Loading Cost:" />
+                <TextBlock Classes="content" Text="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost)}" />
+                <TextBlock Classes="h" Text="Rendering Cost:" />
+                <TextBlock Classes="content" Text="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost)}" />
+
+                <TextBlock Classes="h" Text="Svg Stretch:" />
                 <ComboBox x:Name="Stretch"
                           HorizontalAlignment="Stretch"
                           Items="{sample:Enum Stretch}"
                           SelectedIndex="2" />
+
                 <CheckBox Content="Window Topmost" IsChecked="{Binding $parent[Window].Topmost}" />
                 <CheckBox Name="ShowDiagnosis" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}" />
                 <CheckBox Name="ClipToBounds"
                           Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}"
                           IsChecked="True" />
-                <TextBlock Text="Zoom In:" />
+
+                <TextBlock Classes="h" Text="Zoom In:" />
                 <Slider Name="ZoomInSlider"
+                        Height="20"
                         Maximum="10"
                         Minimum="0"
                         Value="1" />
-                <TextBlock Text="Background Opacity:" />
+
+                <TextBlock Classes="h" Text="Background Opacity:" />
                 <Slider Name="BackGroundOpacity"
+                        Height="20"
                         Maximum="1"
                         Minimum="0"
                         Value="0.1" />
-                <TextBlock Text="Svg Opacity:" />
+
+                <TextBlock Classes="h" Text="Svg Opacity:" />
                 <Slider Name="SvgGroundOpacity"
+                        Height="20"
                         Maximum="1"
                         Minimum="0"
                         Value="1" />
+
                 <ToggleSwitch Command="{Binding MonitorClipboard}"
                               Content="Switch Monitor Clipboard"
                               IsVisible="False" />
@@ -109,8 +139,10 @@
                  Grid.Column="2"
                  Margin="12"
                  AcceptsReturn="True"
-                 BorderBrush="Gray"
+                 BorderBrush="LightGray"
                  CornerRadius="0"
+                 FontFamily="Consolas"
+                 FontSize="10"
                  Opacity="0.9"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                  Text="{Binding EditableSvgData}"
@@ -120,7 +152,7 @@
         <!-- Information -->
         <Border Grid.Column="3"
                 Margin="0,12,12,12"
-                BorderBrush="Gray"
+                BorderBrush="LightGray"
                 BorderThickness="1">
             <StackPanel Margin="12"
                         Orientation="Vertical"
