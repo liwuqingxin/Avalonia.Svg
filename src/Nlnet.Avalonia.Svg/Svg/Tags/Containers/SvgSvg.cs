@@ -68,7 +68,7 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
     {
         base.ApplyContext(context);
 
-        if (Children == null)
+        if (Children == null || this.IsRoot == false)
         {
             return;
         }

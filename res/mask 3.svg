@@ -1,0 +1,26 @@
+<svg width="500" height="120"><defs>
+
+ <linearGradient id="gradient2"
+               x1="0%"   y1="0%"
+               x2="100%" y2="0%"
+               spreadMethod="pad">
+   <stop offset="0%"   stop-color="#ffffff" stop-opacity="1"/>
+   <stop offset="100%" stop-color="#000000" stop-opacity="1"/>
+ </linearGradient>
+
+
+ <pattern id="pattern2"
+        x="10" y="10" width="20" height="20"
+        patternUnits="userSpaceOnUse" >
+
+   <circle cx="10" cy="10" r="10" style="stroke: none; fill: #FF0000; " />
+
+ </pattern>
+
+ <mask id="mask6" x="0" y="0" width="200" height="100" >
+     <rect x="0" y="0"  width="200" height="100"
+         style="stroke:none; fill: url(#gradient2)"/>
+ </mask></defs><text x="10" y="55" style="stroke: none; fill: #000000;">
+  此文本在矩形下方</text><rect x="1" y="1" width="200" height="100"
+     style="stroke: none; fill: url(#pattern2); mask: url(#mask6)"/>
+ </svg>

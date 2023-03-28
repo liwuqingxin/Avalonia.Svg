@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Media;
 using System.Collections.Generic;
 using System.Linq;
+// ReSharper disable MergeIntoPattern
 
 namespace Nlnet.Avalonia.Svg
 {
@@ -19,7 +20,7 @@ namespace Nlnet.Avalonia.Svg
 
         private void Initialize()
         {
-            // Collect, build and apply svg context, and apply transforms.
+            // Collect, build and apply svg context.
             this.PrepareContext();
             this.BuildContext();
 
@@ -68,7 +69,6 @@ namespace Nlnet.Avalonia.Svg
             // Prepare styles, brushes, renderables...
             _svgTag.VisitSvgTagTree(tag =>
             {
-                // ReSharper disable once ConvertIfStatementToSwitchStatement
                 if (tag is ISvgStyleProvider styleProvider)
                 {
                     foreach (var style in styleProvider.GetStyles())

@@ -157,7 +157,9 @@
             <StackPanel Margin="12"
                         Orientation="Vertical"
                         Spacing="10">
-                <Button HorizontalAlignment="Stretch" Command="{Binding ViewGithub}">
+                <Button HorizontalAlignment="Stretch"
+                        Background="Transparent"
+                        Command="{Binding ViewGithub}">
                     <Grid ColumnDefinitions="Auto,8,*">
                         <controls:Icon Width="24"
                                        Height="24"
@@ -167,7 +169,9 @@
                                    Text="View it in Github" />
                     </Grid>
                 </Button>
-                <Button HorizontalAlignment="Stretch" Command="{Binding BugReport}">
+                <Button HorizontalAlignment="Stretch"
+                        Background="Transparent"
+                        Command="{Binding BugReport}">
                     <Grid ColumnDefinitions="Auto,8,*">
                         <controls:Icon Width="24"
                                        Height="24"
@@ -175,6 +179,18 @@
                         <TextBlock Grid.Column="2"
                                    VerticalAlignment="Center"
                                    Text="Report an issue" />
+                    </Grid>
+                </Button>
+                <Button HorizontalAlignment="Stretch"
+                        Background="Transparent"
+                        Command="{Binding ViewKnownIssues}">
+                    <Grid ColumnDefinitions="Auto,8,*">
+                        <controls:Icon Width="24"
+                                       Height="24"
+                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/issue-fill.svg" />
+                        <TextBlock Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   Text="View known issues" />
                     </Grid>
                 </Button>
             </StackPanel>

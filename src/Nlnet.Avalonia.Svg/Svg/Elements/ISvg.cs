@@ -11,10 +11,10 @@ namespace Nlnet.Avalonia.Svg
         /// <summary>
         /// Render the svg document to ui.
         /// </summary>
-        /// <param name="dc"></param>
-        /// <param name="availableSize"></param>
-        /// <param name="stretch"></param>
-        /// <param name="showDiagnosis"></param>
+        /// <param name="dc">A drawing context for rendering.</param>
+        /// <param name="availableSize">The size that can be used to render. The origin is (0,0).</param>
+        /// <param name="stretch">The stretch mode this svg will be rendered with.</param>
+        /// <param name="showDiagnosis">Indicates if show some diagnosis information.</param>
         public void Render(DrawingContext dc, Size availableSize, Stretch stretch, bool showDiagnosis);
 
         /// <summary>

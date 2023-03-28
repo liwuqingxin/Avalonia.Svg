@@ -43,7 +43,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public MainWindowViewModel()
     {
-        
+        _mainWindow = new MainWindow();
     }
 
     public MainWindowViewModel(MainWindow mainWindow)
@@ -234,6 +234,11 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public void BugReport()
     {
         OpenFile("https://github.com/liwuqingxin/Avalonia.Svg/issues/new?assignees=liwuqingxin&labels=bug&template=bug_report.md&title=%5BBUG%5D");
+    }
+
+    public void ViewKnownIssues()
+    {
+        OpenFile("https://github.com/liwuqingxin/Avalonia.Svg/wiki");
     }
 
 

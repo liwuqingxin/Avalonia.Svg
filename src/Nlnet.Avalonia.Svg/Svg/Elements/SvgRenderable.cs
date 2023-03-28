@@ -1,10 +1,9 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.Media;
-using Avalonia.Utilities;
-using System.Collections.Generic;
 using System.Linq;
-using Avalonia.Controls.Mixins;
+using Avalonia.Rendering;
+using System.Threading.Tasks;
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Nlnet.Avalonia.Svg;
@@ -45,6 +44,7 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
     {
         DrawingContext.PushedState? clipPathPushedState = null;
 
+        // ClipPath
         if (this.ClipPath != null && this.ClipPath.TryParseUrl(out var clipPathId, out _))
         {
             if (ctx.ClipPaths.TryGetValue(clipPathId, out var clipPath) && clipPath.Children != null)
@@ -64,33 +64,17 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
             }
         }
 
+        // Mask
+        var rendered = false;
         if (this.Mask != null && this.Mask.TryParseUrl(out var maskId, out _))
         {
             if (ctx.Masks.TryGetValue(maskId, out var mask) && mask.Children != null)
             {
-                foreach (var svgShape in mask.Children.OfType<ISvgShape>())
-                {
-                    if (svgShape.RenderGeometry == null)
-                    {
-                        continue;
-                    }
-
-                    var fill        = svgShape.GetPropertyValue<IFillSetter, LightBrush>()?.Clone();
-                    var fillOpacity = svgShape.GetPropertyStructValue<IFillOpacitySetter, double>();
-
-                    using (dc.PushGeometryClip(svgShape.RenderGeometry))
-                    {
-                        1
-                        // TODO fill-opacity and no mask found situation.
-                        using(dc.PushOpacityMask(fill, svgShape.RenderGeometry.Bounds))
-                        {
-                            RenderCore(dc, ctx);
-                        }
-                    }
-                }
+                rendered = RenderWithMaskElementGroup(dc, ctx, mask);
             }
         }
-        else
+        
+        if(rendered == false)
         {
             RenderCore(dc, ctx);
         }
@@ -99,6 +83,77 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
         {
             disposable3.Dispose();
         }
+    }
+
+    private bool RenderWithMaskElementGroup(DrawingContext dc, ISvgContext ctx, ISvgContainer container)
+    {
+        if (container.Children == null)
+        {
+            return false;
+        }
+
+        var rendered = false;
+
+        using (dc.PushPostTransform(container.Transform?.Value ?? Matrix.Identity))
+        {
+            using (dc.PushOpacity(container.Opacity ?? 1))
+            {
+                foreach (var renderable in container.Children.OfType<ISvgRenderable>())
+                {
+                    if (renderable is ISvgShape shape)
+                    {
+                        if (RenderWithMaskElement(dc, ctx, shape))
+                        {
+                            rendered = true;
+                        }
+                    }
+                    else if (renderable is ISvgContainer c)
+                    {
+                        if (RenderWithMaskElementGroup(dc, ctx, c))
+                        {
+                            rendered = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return rendered;
+    }
+
+    private bool RenderWithMaskElement(DrawingContext dc, ISvgContext ctx, ISvgShape svgShape)
+    {
+        if (svgShape.RenderGeometry == null)
+        {
+            return false;
+        }
+
+        var fill = svgShape.GetPropertyValue<IFillSetter, LightBrush>()?.Clone();
+        var fillOpacity = svgShape.GetPropertyStructValue<IFillOpacitySetter, double>();
+        if (fill == null)
+        {
+            return false;
+        }
+        if (fill is ISolidColorBrush solidColorBrush)
+        {
+            var rate = solidColorBrush.Color.ToHsv().V;
+            fillOpacity *= rate;
+        }
+        if (svgShape is IOpacitySetter opacitySetter)
+        {
+            fillOpacity *= opacitySetter.Opacity ?? 1;
+        }
+
+        fill.Opacity = fillOpacity;
+        using (dc.PushGeometryClip(svgShape.RenderGeometry))
+        {
+            using (dc.PushOpacityMask(fill, svgShape.RenderGeometry.Bounds))
+            {
+                RenderCore(dc, ctx);
+            }
+        }
+
+        return true;
     }
 
     /// <summary>
