@@ -8,7 +8,7 @@ using SkiaSharp;
 
 namespace Nlnet.Avalonia.Svg;
 
-public abstract class Markerable : SvgShape, IMarkerable
+public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
 {
     public string? MarkerStart { get; set; }
     public string? MarkerEnd   { get; set; }
@@ -22,12 +22,10 @@ public abstract class Markerable : SvgShape, IMarkerable
             return;
         }
 
-        var degree = GetMarkerOrientDegree(effectivePath, 0);
-        WithR(marker, ref degree);
-
+        var radians = GetMarkerOrientRadians(effectivePath, 0);
+        WithOrientMode(marker, true, ref radians);
         var point = effectivePath.GetPoint(0);
-
-        RenderMarkerOnPoint(dc, ctx, marker, point, degree);
+        RenderMarkerOnPoint(dc, ctx, marker, point, radians);
     }
 
     public void RenderMarkerEnd(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
@@ -37,12 +35,10 @@ public abstract class Markerable : SvgShape, IMarkerable
             return;
         }
 
-        var degree = GetMarkerOrientDegree(effectivePath, effectivePath.PointCount - 1);
-        WithR(marker, ref degree);
-
+        var radians = GetMarkerOrientRadians(effectivePath, effectivePath.PointCount - 1);
+        WithOrientMode(marker, false, ref radians);
         var point = effectivePath.LastPoint;
-
-        RenderMarkerOnPoint(dc, ctx, marker, point, degree);
+        RenderMarkerOnPoint(dc, ctx, marker, point, radians);
     }
 
     public void RenderMarkerMid(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
@@ -54,24 +50,26 @@ public abstract class Markerable : SvgShape, IMarkerable
 
         for (var i = 1; i < effectivePath.Points.Length - 1; i++)
         {
-            var degree = GetMarkerOrientDegree(effectivePath, i);
-            WithR(marker, ref degree);
-
+            var radians = GetMarkerOrientRadians(effectivePath, i);
+            WithOrientMode(marker, false, ref radians);
             var point = effectivePath.Points[i];
-
-            RenderMarkerOnPoint(dc, ctx, marker, point, degree);
+            RenderMarkerOnPoint(dc, ctx, marker, point, radians);
         }
     }
 
-    private void WithR(SvgMarker marker, ref double angle)
+    private void WithOrientMode(SvgMarker marker, bool isFirstPoint, ref double angle)
     {
-        if (marker.R != null)
+        if (marker.MarkerOrient?.Mode == SvgMarkerOrientMode.auto_start_reverse && isFirstPoint)
         {
-            angle = marker.R.Value;
+            angle -= Math.PI;
+        }
+        else if (marker.MarkerOrient?.Mode == SvgMarkerOrientMode.angle)
+        {
+            angle = marker.MarkerOrient.Angle;
         }
     }
 
-    private void RenderMarkerOnPoint(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPoint point, double angle)
+    private void RenderMarkerOnPoint(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPoint point, double radians)
     {
         var stack = new Stack<DrawingContext.PushedState>();
 
@@ -97,10 +95,8 @@ public abstract class Markerable : SvgShape, IMarkerable
                 }
 
                 
-                if (angle != 0)
+                if (radians != 0)
                 {
-                    //var radians = MatrixUtil.AngleToRadians(angle);
-                    var radians = angle;
                     stack.Push(dc.PushPostTransform(MatrixUtil.CreateRotationRadians(radians, markerBounds.Width / 2, markerBounds.Height / 2)));
                     stack.Push(dc.PushTransformContainer());
                 }
@@ -119,5 +115,5 @@ public abstract class Markerable : SvgShape, IMarkerable
         }
     }
 
-    public abstract double GetMarkerOrientDegree(SKPath path, int index);
+    protected abstract double GetMarkerOrientRadians(SKPath path, int index);
 }

@@ -11,7 +11,7 @@ namespace Nlnet.Avalonia.Svg
     /// <summary>
     /// Means marker is available for this element.
     /// </summary>
-    public interface IMarkerable : IMarkerStartSetter, IMarkerEndSetter, IMarkerMidSetter
+    public interface ISvgMarkerable : IMarkerStartSetter, IMarkerEndSetter, IMarkerMidSetter
     {
         public void RenderMarkerStart(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath);
         

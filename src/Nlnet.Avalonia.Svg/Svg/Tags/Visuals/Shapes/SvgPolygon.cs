@@ -8,7 +8,7 @@ using System;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.polygon))]
-public class SvgPolygon : Markerable, ISvgShape, ISvgGraphic, ISvgRenderable, IMarkerable,
+public class SvgPolygon : SvgMarkerable, ISvgShape, ISvgGraphic, ISvgRenderable, ISvgMarkerable,
     IPointsSetter
 {
     public PointList? Points { get; set; }
@@ -18,7 +18,7 @@ public class SvgPolygon : Markerable, ISvgShape, ISvgGraphic, ISvgRenderable, IM
         return Points != null ? new PolylineGeometry(Points, true) : null;
     }
 
-    public override double GetMarkerOrientDegree(SKPath path, int index)
+    protected override double GetMarkerOrientRadians(SKPath path, int index)
     {
         return 90;
     }

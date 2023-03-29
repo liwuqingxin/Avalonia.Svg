@@ -14,23 +14,12 @@ namespace Nlnet.Avalonia.Svg
     /// </summary>
     internal static class Parsers
     {
-        /// <summary>
-        /// Try to convert value string to <see cref="string"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="result"></param>
-        /// <returns></returns>
         public static bool TryToString(this string valueString, out string result)
         {
             result = valueString;
             return true;
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="double"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static double ToDouble(this string valueString)
         {
             if (Regex.IsMatch(valueString, "^[-0-9.]*%$"))
@@ -47,12 +36,6 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="double"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public static bool TryToDouble(this string valueString, out double value)
         {
             try
@@ -67,11 +50,6 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="LightBrush"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static LightBrush ToLightBrush(this string valueString)
         {
             if (valueString == "none")
@@ -82,12 +60,6 @@ namespace Nlnet.Avalonia.Svg
             return new LightSolidColorBrush(Color.Parse(valueString));
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="LightBrush"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="brush"></param>
-        /// <returns></returns>
         public static bool TryToLightBrush(this string valueString, out LightBrush? brush)
         {
             try
@@ -102,22 +74,11 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="Thickness"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static Thickness ToThickness(this string valueString)
         {
             return Thickness.Parse(valueString);
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="Thickness"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="thickness"></param>
-        /// <returns></returns>
         public static bool TryToThickness(this string valueString, out Thickness thickness)
         {
             try
@@ -132,22 +93,11 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="Geometry"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static Geometry ToGeometry(this string valueString)
         {
             return Geometry.Parse(valueString);
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="Geometry"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="geometry"></param>
-        /// <returns></returns>
         public static bool TryToGeometry(this string valueString, out Geometry? geometry)
         {
             try
@@ -162,11 +112,6 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="PointList"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static PointList ToPointList(this string valueString)
         {
             var results   = new PointList();
@@ -198,12 +143,6 @@ namespace Nlnet.Avalonia.Svg
             return results;
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="PointList"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="points"></param>
-        /// <returns></returns>
         public static bool TryToPointList(this string valueString, out PointList points)
         {
             try
@@ -218,14 +157,6 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="Transform"/>.<br/>
-        /// For example 'translate(336.000000, 336.000000)'.<br/>
-        /// For example 2 'translate(66.372939, 117.459729) rotate(16.000000) scale(-66.372939, -117.459729)'.
-        /// </summary>
-        /// <remarks>Note that the coordinate system is also affected by the transform like rotate or scale, witch is svg behavior.</remarks>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static Transform ToTransform(this string valueString)
         {
             //TODO 支持空格间隔
@@ -316,12 +247,6 @@ namespace Nlnet.Avalonia.Svg
             return transform;
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="Transform"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="transform"></param>
-        /// <returns></returns>
         public static bool TryToTransform(this string valueString, out Transform? transform)
         {
             try
@@ -336,11 +261,6 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="FillRule"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static FillRule ToFillRule(this string valueString)
         {
             if (string.Equals(valueString, FillRule.NonZero.ToString(), StringComparison.CurrentCultureIgnoreCase))
@@ -355,12 +275,6 @@ namespace Nlnet.Avalonia.Svg
             return FillRule.NonZero;
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="FillRule"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="fillRule"></param>
-        /// <returns></returns>
         public static bool TryToFillRule(this string valueString, out FillRule fillRule)
         {
             if (string.Equals(valueString, FillRule.NonZero.ToString(), StringComparison.CurrentCultureIgnoreCase))
@@ -378,11 +292,6 @@ namespace Nlnet.Avalonia.Svg
             return false;
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="PenLineCap"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static PenLineCap ToPenLineCap(this string valueString)
         {
             if (string.Equals(valueString, "butt", StringComparison.CurrentCultureIgnoreCase))
@@ -401,12 +310,6 @@ namespace Nlnet.Avalonia.Svg
             return PenLineCap.Flat;
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="PenLineCap"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="penLineCap"></param>
-        /// <returns></returns>
         public static bool TryToPenLineCap(this string valueString, out PenLineCap penLineCap)
         {
             if (string.Equals(valueString, "butt", StringComparison.CurrentCultureIgnoreCase))
@@ -429,11 +332,6 @@ namespace Nlnet.Avalonia.Svg
             return false;
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="PenLineJoin"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static PenLineJoin ToPenLineJoin(this string valueString)
         {
             if (string.Equals(valueString, PenLineJoin.Bevel.ToString(), StringComparison.CurrentCultureIgnoreCase))
@@ -456,12 +354,6 @@ namespace Nlnet.Avalonia.Svg
             return PenLineJoin.Miter;
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="PenLineJoin"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="penLineJoin"></param>
-        /// <returns></returns>
         public static bool TryToPenLineJoin(this string valueString, out PenLineJoin penLineJoin)
         {
             if (string.Equals(valueString, PenLineJoin.Bevel.ToString(), StringComparison.CurrentCultureIgnoreCase))
@@ -489,11 +381,6 @@ namespace Nlnet.Avalonia.Svg
             return false;
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="DoubleList"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static DoubleList ToDoubleList(this string valueString)
         {
             var tokenizer = new SafeStringTokenizer(valueString, StringSplitOptions.RemoveEmptyEntries, ' ', ',');
@@ -512,12 +399,6 @@ namespace Nlnet.Avalonia.Svg
             return new DoubleList(values);
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="DoubleList"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="doubleList"></param>
-        /// <returns></returns>
         public static bool TryToDoubleList(this string valueString, out DoubleList doubleList)
         {
             try
@@ -532,11 +413,6 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="GradientSpreadMethod"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static GradientSpreadMethod ToGradientSpreadMethod(this string valueString)
         {
             if (string.Equals(valueString, GradientSpreadMethod.Pad.ToString(), StringComparison.CurrentCultureIgnoreCase))
@@ -555,12 +431,6 @@ namespace Nlnet.Avalonia.Svg
             return GradientSpreadMethod.Pad;
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="GradientSpreadMethod"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="penLineJoin"></param>
-        /// <returns></returns>
         public static bool TryToGradientSpreadMethod(this string valueString, out GradientSpreadMethod penLineJoin)
         {
             if (string.Equals(valueString, GradientSpreadMethod.Pad.ToString(), StringComparison.CurrentCultureIgnoreCase))
@@ -583,133 +453,132 @@ namespace Nlnet.Avalonia.Svg
             return false;
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="SvgUnit"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static SvgUnit ToSvgUnit(this string valueString)
         {
             return Enum.Parse<SvgUnit>(valueString);
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="SvgUnit"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="gradientUnit"></param>
-        /// <returns></returns>
         public static bool TryToSvgUnit(this string valueString, out SvgUnit gradientUnit)
         {
             return Enum.TryParse<SvgUnit>(valueString, out gradientUnit);
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="SvgMarkerUnits"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static SvgMarkerUnits ToSvgMarkerUnits(this string valueString)
         {
             return Enum.Parse<SvgMarkerUnits>(valueString);
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="SvgMarkerUnits"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="gradientUnit"></param>
-        /// <returns></returns>
         public static bool TryToSvgMarkerUnits(this string valueString, out SvgMarkerUnits gradientUnit)
         {
             return Enum.TryParse<SvgMarkerUnits>(valueString, out gradientUnit);
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="SvgMarkerOrient"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static SvgMarkerOrient ToSvgMarkerOrient(this string valueString)
         {
-            return Enum.Parse<SvgMarkerOrient>(valueString.Replace("-", "_"));
+            if (valueString == SvgMarkerOrientMode.auto.ToString())
+            {
+                return SvgMarkerOrient.Default;
+            }
+            else if (valueString.Replace("-", "_") == SvgMarkerOrientMode.auto_start_reverse.ToString())
+            {
+                return new SvgMarkerOrient()
+                {
+                    Mode = SvgMarkerOrientMode.auto_start_reverse,
+                };
+            }
+            else
+            {
+                //
+                // Unit：
+                // https://www.w3.org/TR/SVG2/painting.html#OrientAttribute
+                // https://www.w3.org/TR/2012/WD-css3-values-20120308/#angles
+                //
+                var match = new Regex("^(.*?)(deg|grad|rad|turn|)$").Match(valueString);
+                if (match.Success)
+                {
+                    var value = match.Groups[1].Value;
+                    if (double.TryParse(value, out var angle))
+                    {
+                        if (match.Groups.Count > 2)
+                        {
+                            var unit = match.Groups[2].Value;
+                            switch (unit)
+                            {
+                                case "deg":
+                                    angle = angle / 180 * Math.PI;
+                                    break;
+                                case "grad":
+                                    angle = angle / 400 * 2 * Math.PI ;
+                                    break;
+                                case "turn":
+                                    angle = angle * 2 * Math.PI;
+                                    break;
+                                case "rad":
+                                    break;
+                                case "":
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        return new SvgMarkerOrient()
+                        {
+                            Mode  = SvgMarkerOrientMode.angle,
+                            Angle = angle,
+                        };
+                    }
+                }
+
+                return SvgMarkerOrient.Default;
+            }
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="SvgMarkerOrient"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="gradientUnit"></param>
-        /// <returns></returns>
-        public static bool TryToSvgMarkerOrient(this string valueString, out SvgMarkerOrient gradientUnit)
+        public static bool TryToSvgMarkerOrient(this string valueString, out SvgMarkerOrient orient)
         {
-            return Enum.TryParse<SvgMarkerOrient>(valueString.Replace("-", "_"), out gradientUnit);
+            try
+            {
+                orient = ToSvgMarkerOrient(valueString);
+                return true;
+            }
+            catch
+            {
+                orient = SvgMarkerOrient.Default;
+                return false;
+            }
+       
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="RefX"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static RefX ToRefX(this string valueString)
         {
             return Enum.Parse<RefX>(valueString.Replace("-", "_"));
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="RefX"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="gradientUnit"></param>
-        /// <returns></returns>
         public static bool TryToRefX(this string valueString, out RefX gradientUnit)
         {
             return Enum.TryParse<RefX>(valueString.Replace("-", "_"), out gradientUnit);
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="RefY"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static RefY ToRefY(this string valueString)
         {
             return Enum.Parse<RefY>(valueString.Replace("-", "_"));
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="RefY"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="gradientUnit"></param>
-        /// <returns></returns>
         public static bool TryToRefY(this string valueString, out RefY gradientUnit)
         {
             return Enum.TryParse<RefY>(valueString.Replace("-", "_"), out gradientUnit);
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="ViewBox"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static ViewBox? ToViewBox(this string valueString)
         {
             if (valueString == "none")
             {
                 // TODO none 的场景
-                //return new LightSolidColorBrush(Colors.Transparent);
             }
 
             return ViewBox.Parse(valueString);
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="ViewBox"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="viewBox"></param>
-        /// <returns></returns>
         public static bool TryToViewBox(this string valueString, out ViewBox? viewBox)
         {
             try
@@ -724,22 +593,11 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="PreserveAspectRatio"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static PreserveAspectRatio? ToPreserveAspectRatio(this string valueString)
         {
             return PreserveAspectRatio.Parse(valueString);
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="PreserveAspectRatio"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="preserveAspectRatio"></param>
-        /// <returns></returns>
         public static bool TryToPreserveAspectRatio(this string valueString, out PreserveAspectRatio? preserveAspectRatio)
         {
             try
@@ -754,22 +612,11 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        /// <summary>
-        /// Convert value string to <see cref="ISvgStyle"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <returns></returns>
         public static ISvgStyle? ToISvgStyle(this string valueString)
         {
             return SvgStyleImpl.Parse(null, valueString);
         }
 
-        /// <summary>
-        /// Try to convert value string to <see cref="ISvgStyle"/>.
-        /// </summary>
-        /// <param name="valueString"></param>
-        /// <param name="svgStyle"></param>
-        /// <returns></returns>
         public static bool TryToISvgStyle(this string valueString, out ISvgStyle? svgStyle)
         {
             try

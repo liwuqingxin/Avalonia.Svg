@@ -2,9 +2,11 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(typeof(SvgMarkerOrient), SvgDefaultValues.SvgMarkerOrientAuto, false)]
-public class MarkerOrientSetter : AbstractEnumSetter<SvgMarkerOrient>
+[SetterGenerator(typeof(SvgMarkerOrient), SvgDefaultValues.SvgMarkerOrientAuto, true)]
+public class MarkerOrientSetter : AbstractDeferredSetter
 {
+    private SvgMarkerOrient? _value;
+
     public override void Set(ISvgTag tag)
     {
         if (tag is not IMarkerOrientSetter setter)
@@ -12,11 +14,11 @@ public class MarkerOrientSetter : AbstractEnumSetter<SvgMarkerOrient>
             return;
         }
 
-        setter.MarkerOrient = Value;
+        setter.MarkerOrient = _value;
     }
 
     public override void InitializeValue(string setterValue)
     {
-        Value = setterValue.ToSvgMarkerOrient();
+        _value = setterValue.ToSvgMarkerOrient();
     }
 }

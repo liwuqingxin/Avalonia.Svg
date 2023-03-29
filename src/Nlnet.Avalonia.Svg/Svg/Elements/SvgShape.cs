@@ -113,21 +113,21 @@ namespace Nlnet.Avalonia.Svg
                 dc.DrawGeometry(fill, GetPen(), RenderGeometry);
 
                 // Render Markers
-                if (this is IMarkerable markerable && TryGetRenderedGeometryEffectivePath(out var path) && path != null)
+                if (this is ISvgMarkerable markerable && TryGetRenderedGeometryEffectivePath(out var path) && path != null)
                 {
-                    if (markerable.MarkerStart != null && markerable.MarkerStart.TryParseUrl(out var id1, out _) && ctx.Markers.TryGetValue(id1, out var marker1))
+                    if (TryGetMarker(markerable.MarkerStart, ctx, out var marker1))
                     {
-                        markerable.RenderMarkerStart(dc, ctx, marker1, path);
+                        markerable.RenderMarkerStart(dc, ctx, marker1!, path);
                     }
 
-                    if (markerable.MarkerMid != null && markerable.MarkerMid.TryParseUrl(out var id2, out _) && ctx.Markers.TryGetValue(id2, out var marker2))
+                    if (TryGetMarker(markerable.MarkerMid, ctx, out var marker2))
                     {
-                        markerable.RenderMarkerMid(dc, ctx, marker2, path);
+                        markerable.RenderMarkerMid(dc, ctx, marker2!, path);
                     }
 
-                    if (markerable.MarkerEnd != null && markerable.MarkerEnd.TryParseUrl(out var id3, out _) && ctx.Markers.TryGetValue(id3, out var marker3))
+                    if (TryGetMarker(markerable.MarkerEnd, ctx, out var marker3))
                     {
-                        markerable.RenderMarkerEnd(dc, ctx, marker3, path);
+                        markerable.RenderMarkerEnd(dc, ctx, marker3!, path);
                     }
                 }
             }
@@ -144,6 +144,12 @@ namespace Nlnet.Avalonia.Svg
 
             path = propEffectivePath.GetValue(RenderGeometry!.PlatformImpl) as SKPath;
             return true;
+        }
+
+        private bool TryGetMarker(string? href, ISvgContext ctx, out SvgMarker? marker)
+        {
+            marker = null;
+            return href != null && href.TryParseUrl(out var id, out _) && ctx.Markers.TryGetValue(id, out marker);
         }
 
         public override object Clone()

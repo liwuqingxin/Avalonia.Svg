@@ -21,7 +21,7 @@ public static class SvgDefaultValues
     public const string GradientSpreadMethodPad   = "global::Avalonia.Media.GradientSpreadMethod.Pad";
     public const string SvgUnitObjectBoundingBox  = "global::Nlnet.Avalonia.Svg.SvgUnit.objectBoundingBox";
     public const string SvgMarkerUnitsStrokeWidth = "global::Nlnet.Avalonia.Svg.SvgMarkerUnits.strokeWidth";
-    public const string SvgMarkerOrientAuto       = "global::Nlnet.Avalonia.Svg.SvgMarkerOrient.auto";
+    public const string SvgMarkerOrientAuto       = "global::Nlnet.Avalonia.Svg.SvgMarkerOrient.Default";
 }
 
 /// <summary>

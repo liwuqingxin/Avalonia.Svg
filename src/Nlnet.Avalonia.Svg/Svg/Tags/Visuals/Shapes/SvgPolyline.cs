@@ -9,7 +9,7 @@ using SkiaSharp;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.polyline))]
-public class SvgPolyline : Markerable, ISvgShape, ISvgGraphic, ISvgRenderable, IMarkerable,
+public class SvgPolyline : SvgMarkerable, ISvgShape, ISvgGraphic, ISvgRenderable, ISvgMarkerable,
     IPointsSetter
 {
     public PointList? Points { get; set; }
@@ -19,7 +19,7 @@ public class SvgPolyline : Markerable, ISvgShape, ISvgGraphic, ISvgRenderable, I
         return Points != null ? new PolylineGeometry(Points, false) : null;
     }
 
-    public override double GetMarkerOrientDegree(SKPath path, int index)
+    protected override double GetMarkerOrientRadians(SKPath path, int index)
     {
         if (path.PointCount is 0 or 1)
         {

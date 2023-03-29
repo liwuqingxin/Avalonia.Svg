@@ -8,7 +8,7 @@ using System;
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.line))]
-public class SvgLine : Markerable, ISvgShape, ISvgGraphic, ISvgRenderable, IMarkerable,
+public class SvgLine : SvgMarkerable, ISvgShape, ISvgGraphic, ISvgRenderable, ISvgMarkerable,
     IX1Setter,
     IX2Setter,
     IY1Setter,
@@ -30,7 +30,7 @@ public class SvgLine : Markerable, ISvgShape, ISvgGraphic, ISvgRenderable, IMark
         return new LineGeometry(new Point(X1.Value, Y1.Value), new Point(X2.Value, Y2.Value));
     }
 
-    public override double GetMarkerOrientDegree(SKPath path, int index)
+    protected override double GetMarkerOrientRadians(SKPath path, int index)
     {
         return 90;
     }
