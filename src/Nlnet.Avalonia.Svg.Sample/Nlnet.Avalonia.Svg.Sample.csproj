@@ -7,7 +7,7 @@
 		<TrimMode>copyused</TrimMode>
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 		<BaseOutputPath>..\..\bin\</BaseOutputPath>
-		<ApplicationIcon>Assets\svg.ico</ApplicationIcon>
+		<ApplicationIcon>Assets\logo.ico</ApplicationIcon>
 	</PropertyGroup>
 	<ItemGroup>
 	  <AvaloniaResource Include="Assets/**" />

@@ -40,6 +40,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private Thread? _thClipboardMonitor;
     private volatile bool _stopMonitorClipboard = true;
     private string? _lastCopy;
+    private string? _saveInitDirectory;
 
     public MainWindowViewModel()
     {
@@ -141,16 +142,20 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             {
                 return;
             }
+            const string applicationCache = "./tmp/.saveFile.startLocation.cfg";
+            if (_saveInitDirectory == null && File.Exists(applicationCache))
+            {
+                _saveInitDirectory = await File.ReadAllTextAsync(applicationCache);
+            }
 
             var svg = EditableSvgData;
-
             var storage = await _mainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
             {
                 Title                  = "Áí´æÎª",
                 DefaultExtension       = "svg",
                 ShowOverwritePrompt    = true,
                 SuggestedFileName      = SelectedSvg?.SvgFileName ?? "untitled",
-                SuggestedStartLocation = new BclStorageFolder("./"),
+                SuggestedStartLocation = new BclStorageFolder(_saveInitDirectory ?? "./"),
             });
 
             if (storage != null)
@@ -158,6 +163,13 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
                 await using var stream = await storage.OpenWriteAsync();
                 stream.Write(Encoding.UTF8.GetBytes(svg));
                 await stream.FlushAsync();
+
+                if (storage.TryGetUri(out var uri))
+                {
+                    _saveInitDirectory = Path.GetDirectoryName(uri.AbsolutePath);
+                    Directory.CreateDirectory("./tmp");
+                    await File.WriteAllTextAsync(applicationCache, _saveInitDirectory);
+                }
             }
         }
         catch (Exception e)

@@ -9,7 +9,7 @@
         d:DesignHeight="450"
         d:DesignWidth="800"
         DragDrop.AllowDrop="True"
-        Icon="avares://Nlnet.Avalonia.Svg.Sample/Assets/svg.ico"
+        Icon="avares://Nlnet.Avalonia.Svg.Sample/Assets/logo.ico"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <Design.DataContext>
@@ -28,11 +28,14 @@
                        Height="200"
                        Margin="0,0,0,12"
                        ZIndex="100">
-                    <Border Background="black" Opacity="{Binding #BackGroundOpacity.Value}" />
+                    <sample:Mesh Background="black"
+                                 BlockOpacity="1"
+                                 Opacity="{Binding #BackGroundOpacity.Value}"
+                                 UseMesh="{Binding #UseMeshBackground.IsChecked}" />
                     <controls:Icon x:Name="Icon"
                                    ClipToBounds="{Binding #ClipToBounds.IsChecked}"
                                    IconStretch="{Binding #Stretch.SelectedItem}"
-                                   IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/NLNet.svg"
+                                   IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/logo.svg"
                                    IconSvgData="{Binding Path=EditableSvgData}"
                                    IsHitTestVisible="False"
                                    Opacity="{Binding #SvgGroundOpacity.Value}"
@@ -93,6 +96,9 @@
                           SelectedIndex="2" />
 
                 <CheckBox Content="Window Topmost" IsChecked="{Binding $parent[Window].Topmost}" />
+                <CheckBox Name="UseMeshBackground"
+                          Content="Use Mesh Background"
+                          IsChecked="True" />
                 <CheckBox Name="ShowDiagnosis" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}" />
                 <CheckBox Name="ClipToBounds"
                           Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}"
@@ -110,7 +116,7 @@
                         Height="20"
                         Maximum="1"
                         Minimum="0"
-                        Value="0.1" />
+                        Value="0.5" />
 
                 <TextBlock Classes="h" Text="Svg Opacity:" />
                 <Slider Name="SvgGroundOpacity"

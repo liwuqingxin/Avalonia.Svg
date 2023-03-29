@@ -23,6 +23,8 @@
 </div>
 
 
+<img src="doc/imghost/logo.svg" width="200" height="200"/>
+
 # License
 
 This library is distributed under the AGPL 3.0 license. See the [LICENSE](http://www.gnu.org/licenses/agpl-3.0.en.html) for more information.

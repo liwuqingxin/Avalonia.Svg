@@ -36,7 +36,7 @@
   <polyline
     points="15,80 29,50 43,60 57,30 71,40 85,15"
     fill="none"
-    stroke="grey"
+    stroke="green"
     marker-start="url(#dot)"
     marker-mid="url(#dot)"
     marker-end="url(#dot)" />
