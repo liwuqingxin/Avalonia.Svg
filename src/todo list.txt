@@ -1,3 +1,9 @@
 1. viewbox. https://www.w3.org/TR/SVG2/coords.html
 2. marker. https://www.w3.org/TR/SVG2/painting.html#PaintingVectorEffects
 3. unit：in.
+4. marker：当path存在z时，最后点选取不正确；
+5. marker：Path时，orient计算不正确；
+6. Gradient计算不正确；
+7. Mask透明度计算不正确（参考Mask 2）；
+8. 边框透明度计算不正确；
+9. marker：Path时，中间点选取不正确；

@@ -153,6 +153,11 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
 
     private static double GetAngle(SKPoint p1, SKPoint p2)
     {
-        return Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
+        var angle = Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
+        if (p2.X < p1.X)
+        {
+            angle += Math.PI;
+        }
+        return angle;
     }
 }

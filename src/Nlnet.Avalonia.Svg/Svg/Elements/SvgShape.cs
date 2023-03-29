@@ -3,6 +3,7 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using SkiaSharp;
 using System.Reflection;
+using Avalonia.Controls.Shapes;
 
 namespace Nlnet.Avalonia.Svg
 {

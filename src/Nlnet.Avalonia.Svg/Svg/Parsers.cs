@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Avalonia;
+using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Nlnet.Avalonia.Svg.Utils;
@@ -95,7 +96,7 @@ namespace Nlnet.Avalonia.Svg
 
         public static Geometry ToGeometry(this string valueString)
         {
-            return Geometry.Parse(valueString);
+            return PathGeometry.Parse(valueString);
         }
 
         public static bool TryToGeometry(this string valueString, out Geometry? geometry)

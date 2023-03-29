@@ -14,9 +14,4 @@ public class SvgPath : SvgMarkerable, ISvgShape, ISvgGraphic, ISvgRenderable, IS
     {
         return Data;
     }
-
-    protected override double GetMarkerOrientRadians(SKPath path, int index)
-    {
-        return 90;
-    }
 }
