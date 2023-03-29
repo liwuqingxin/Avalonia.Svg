@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using System.Reflection;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Avalonia;
 using Avalonia.Media;
-using Avalonia.Media.Immutable;
-using Avalonia.Platform;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 using SkiaSharp;
 
@@ -42,12 +42,9 @@ public class SvgPolyline : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable, IMa
             return;
         }
 
-        var point        = effectivePath.GetPoint(0);
-        var markerBounds = marker.RenderBounds;
-        var x            = point.X - markerBounds.Width  / 2;
-        var y            = point.Y - markerBounds.Height / 2;
+        var point = effectivePath.GetPoint(0);
 
-        RenderMarkerOnPoint(dc, ctx, marker, new Point(x, y));
+        RenderMarkerOnPoint(dc, ctx, marker, point);
     }
 
     public void RenderMarkerEnd(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
@@ -57,12 +54,9 @@ public class SvgPolyline : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable, IMa
             return;
         }
 
-        var point        = effectivePath.LastPoint;
-        var markerBounds = marker.RenderBounds;
-        var x            = point.X - markerBounds.Width  / 2;
-        var y            = point.Y - markerBounds.Height / 2;
+        var point = effectivePath.LastPoint;
 
-        RenderMarkerOnPoint(dc, ctx, marker, new Point(x, y));
+        RenderMarkerOnPoint(dc, ctx, marker, point);
     }
 
     public void RenderMarkerMid(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
@@ -74,24 +68,42 @@ public class SvgPolyline : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable, IMa
 
         for (var i = 1; i < effectivePath.Points.Length - 1; i++)
         {
-            var point        = effectivePath.Points[i];
-            var markerBounds = marker.RenderBounds;
-            var x            = point.X - markerBounds.Width  / 2;
-            var y            = point.Y - markerBounds.Height / 2;
+            var point = effectivePath.Points[i];
 
-            RenderMarkerOnPoint(dc, ctx, marker, new Point(x, y));
+            RenderMarkerOnPoint(dc, ctx, marker, point);
         }
     }
 
-    private static void RenderMarkerOnPoint(DrawingContext dc, ISvgContext ctx, SvgMarker marker, Point point)
+    private static void RenderMarkerOnPoint(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPoint point)
     {
-        using (dc.PushPostTransform(Matrix.CreateTranslation(point.X, point.Y)))
+        var stack = new Stack<DrawingContext.PushedState>();
+
+        var markerBounds = marker.RenderBounds;
+        var x = point.X;
+        var y = point.Y;
+
+        using (dc.PushPostTransform(Matrix.CreateTranslation(x, y)))
         {
             using (dc.PushTransformContainer())
             {
+                if (marker.MarkerWidth != null && marker.MarkerHeight != null)
+                {
+                    SvgHelper.GetUniformFactors(new Size(marker.MarkerWidth.Value, marker.MarkerHeight.Value), marker.RenderBounds.Size, false, out var scale, out var offsetX, out var offsetY);
+
+                    stack.Push(dc.PushPostTransform(Matrix.CreateScale(scale, scale)));
+                    stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(-markerBounds.Width * scale / 2, -markerBounds.Height * scale / 2)));
+                    stack.Push(dc.PushTransformContainer());
+                }
+
                 foreach (var child in marker.Children!.OfType<ISvgRenderable>())
                 {
                     child.Render(dc, ctx);
+                }
+
+                while (stack.Count > 0)
+                {
+                    var v = stack.Pop() as IDisposable;
+                    v.Dispose();
                 }
             }
         }
