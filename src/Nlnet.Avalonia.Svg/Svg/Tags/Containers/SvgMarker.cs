@@ -11,7 +11,7 @@ namespace Nlnet.Avalonia.Svg;
 public class SvgMarker : SvgContainer, ISvgContainer, IDef,
     IMarkerWidthSetter,
     IMarkerHeightSetter,
-    IGradientUnitsSetter,
+    IMarkerUnitsSetter,
     IMarkerOrientSetter,
     IViewBoxSetter,
     IPreserveAspectRatioSetter,
@@ -28,7 +28,7 @@ public class SvgMarker : SvgContainer, ISvgContainer, IDef,
         get;
         set;
     }
-    public SvgUnit? GradientUnits
+    public SvgMarkerUnits? MarkerUnits
     {
         get;
         set;

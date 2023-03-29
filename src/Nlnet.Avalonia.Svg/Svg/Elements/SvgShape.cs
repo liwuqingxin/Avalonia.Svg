@@ -115,17 +115,20 @@ namespace Nlnet.Avalonia.Svg
                 // Render Markers
                 if (this is ISvgMarkerable markerable && TryGetRenderedGeometryEffectivePath(out var path) && path != null)
                 {
-                    if (TryGetMarker(markerable.MarkerStart, ctx, out var marker1))
+                    var markerStart = this.GetPropertyValue<IMarkerStartSetter, string>();
+                    if (TryGetMarker(markerStart, ctx, out var marker1))
                     {
                         markerable.RenderMarkerStart(dc, ctx, marker1!, path);
                     }
 
-                    if (TryGetMarker(markerable.MarkerMid, ctx, out var marker2))
+                    var markerMid = this.GetPropertyValue<IMarkerMidSetter, string>();
+                    if (TryGetMarker(markerMid, ctx, out var marker2))
                     {
                         markerable.RenderMarkerMid(dc, ctx, marker2!, path);
                     }
 
-                    if (TryGetMarker(markerable.MarkerEnd, ctx, out var marker3))
+                    var markerEnd = this.GetPropertyValue<IMarkerEndSetter, string>();
+                    if (TryGetMarker(markerEnd, ctx, out var marker3))
                     {
                         markerable.RenderMarkerEnd(dc, ctx, marker3!, path);
                     }

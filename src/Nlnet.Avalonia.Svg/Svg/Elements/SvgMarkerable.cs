@@ -57,7 +57,7 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
         }
     }
 
-    private void WithOrientMode(SvgMarker marker, bool isFirstPoint, ref double angle)
+    private static void WithOrientMode(SvgMarker marker, bool isFirstPoint, ref double angle)
     {
         if (marker.MarkerOrient?.Mode == SvgMarkerOrientMode.auto_start_reverse && isFirstPoint)
         {
@@ -83,9 +83,17 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
             {
                 var halfW = markerBounds.Width  / 2;
                 var halfH = markerBounds.Height / 2;
-                if (marker.MarkerWidth != null && marker.MarkerHeight != null)
+                var mw    = marker.MarkerWidth;
+                var mh    = marker.MarkerHeight;
+                if (mw != null && mh != null)
                 {
-                    SvgHelper.GetUniformFactors(new Size(marker.MarkerWidth.Value, marker.MarkerHeight.Value), marker.RenderBounds.Size, false, out var scale, out var offsetX, out var offsetY);
+                    if (marker.MarkerUnits == SvgMarkerUnits.strokeWidth)
+                    {
+                        var strokeWidth = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
+                        mw *= strokeWidth;
+                        mh *= strokeWidth;
+                    }
+                    SvgHelper.GetUniformFactors(new Size(mw.Value, mh.Value), marker.RenderBounds.Size, false, out var scale, out var offsetX, out var offsetY);
 
                     halfW *= scale;
                     halfH *= scale;
@@ -115,5 +123,36 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
         }
     }
 
-    protected abstract double GetMarkerOrientRadians(SKPath path, int index);
+    protected virtual double GetMarkerOrientRadians(SKPath path, int index)
+    {
+        if (path.PointCount is 0 or 1)
+        {
+            return 0;
+        }
+
+        if (index == 0)
+        {
+            var point1 = path.Points[0];
+            var point2 = path.Points[1];
+            return GetAngle(point1, point2);
+        }
+        else if (index == path.PointCount - 1)
+        {
+            var point1 = path.Points[index - 1];
+            var point2 = path.Points[index];
+            return GetAngle(point1, point2);
+        }
+        else
+        {
+            var point1 = path.Points[index - 1];
+            var point2 = path.Points[index];
+            var point3 = path.Points[index + 1];
+            return (GetAngle(point1, point2) + GetAngle(point2, point3)) / 2;
+        }
+    }
+
+    private static double GetAngle(SKPoint p1, SKPoint p2)
+    {
+        return Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
+    }
 }

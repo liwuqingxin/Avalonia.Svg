@@ -1,8 +1,6 @@
 ﻿using Avalonia.Media;
-using Avalonia.Media.Immutable;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 using SkiaSharp;
-using System;
 
 namespace Nlnet.Avalonia.Svg;
 
