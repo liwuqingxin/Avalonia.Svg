@@ -48,11 +48,23 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
             return;
         }
 
+        这里不管用，应该计算Figures
+        var originPath = (SKPath?) null;
+        if (OriginalGeometry is PathGeometry pathGeometry)
+        {
+            TryGetRenderedGeometryEffectivePath(pathGeometry, out originPath);
+        }
+
         for (var i = 1; i < effectivePath.Points.Length - 1; i++)
         {
+            var point = effectivePath.Points[i];
+            if (originPath != null && originPath.Points.Contains(point) == false)
+            {
+                continue;
+            }
+
             var radians = GetMarkerOrientRadians(effectivePath, i);
             WithOrientMode(marker, false, ref radians);
-            var point = effectivePath.Points[i];
             RenderMarkerOnPoint(dc, ctx, marker, point, radians);
         }
     }

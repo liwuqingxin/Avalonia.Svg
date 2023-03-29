@@ -114,7 +114,7 @@ namespace Nlnet.Avalonia.Svg
                 dc.DrawGeometry(fill, GetPen(), RenderGeometry);
 
                 // Render Markers
-                if (this is ISvgMarkerable markerable && TryGetRenderedGeometryEffectivePath(out var path) && path != null)
+                if (this is ISvgMarkerable markerable && TryGetRenderedGeometryEffectivePath(RenderGeometry, out var path) && path != null)
                 {
                     var markerStart = this.GetPropertyValue<IMarkerStartSetter, string>();
                     if (TryGetMarker(markerStart, ctx, out var marker1))
@@ -137,16 +137,16 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        private bool TryGetRenderedGeometryEffectivePath(out SKPath? path)
+        protected bool TryGetRenderedGeometryEffectivePath(Geometry geometry, out SKPath? path)
         {
-            var propEffectivePath = RenderGeometry?.PlatformImpl?.GetType().GetProperty("EffectivePath", BindingFlags.Instance | BindingFlags.Public);
+            var propEffectivePath = geometry.PlatformImpl?.GetType().GetProperty("EffectivePath", BindingFlags.Instance | BindingFlags.Public);
             if (propEffectivePath == null)
             {
                 path = null;
                 return false;
             }
 
-            path = propEffectivePath.GetValue(RenderGeometry!.PlatformImpl) as SKPath;
+            path = propEffectivePath.GetValue(geometry!.PlatformImpl) as SKPath;
             return true;
         }
 
