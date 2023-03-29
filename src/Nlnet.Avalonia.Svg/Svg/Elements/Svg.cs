@@ -34,7 +34,8 @@ namespace Nlnet.Avalonia.Svg
         private readonly List<ISvgStyle>                 _styles      = new();
         private readonly Dictionary<string, LightBrush>  _brushes     = new();
         private readonly Dictionary<string, SvgClipPath> _clipPaths   = new();
-        private readonly Dictionary<string, SvgMask>     _mask        = new();
+        private readonly Dictionary<string, SvgMask>     _masks       = new();
+        private readonly Dictionary<string, SvgMarker>   _markers     = new();
         private readonly Dictionary<string, ISvgTag>     _idTags      = new();
         private readonly List<ISvgRenderable>            _renderables = new();
 
@@ -48,7 +49,9 @@ namespace Nlnet.Avalonia.Svg
 
         IReadOnlyDictionary<string, SvgClipPath> ISvgContext.ClipPaths => this._clipPaths;
 
-        public IReadOnlyDictionary<string, SvgMask> Masks => this._mask;
+        public IReadOnlyDictionary<string, SvgMask> Masks => this._masks;
+
+        public IReadOnlyDictionary<string, SvgMarker> Markers => this._markers;
 
         IReadOnlyDictionary<string, ISvgTag> ISvgContext.IdTags => this._idTags;
 
@@ -87,14 +90,19 @@ namespace Nlnet.Avalonia.Svg
                     this._renderables.Add(renderable);
                 }
 
-                if (tag is SvgClipPath clipPath && clipPath.Id != null)
+                if (tag is SvgClipPath clipPath && tag.Id != null)
                 {
-                    this._clipPaths.Add(clipPath.Id, clipPath);
+                    this._clipPaths.Add(tag.Id, clipPath);
                 }
 
-                if (tag is SvgMask mask && mask.Id != null)
+                if (tag is SvgMask mask && tag.Id != null)
                 {
-                    this._mask.Add(mask.Id, mask);
+                    this._masks.Add(tag.Id, mask);
+                }
+
+                if (tag is SvgMarker marker && tag.Id != null)
+                {
+                    this._markers.Add(tag.Id, marker);
                 }
             });
         }

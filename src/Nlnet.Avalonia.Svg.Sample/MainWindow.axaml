@@ -116,7 +116,7 @@
                         Height="20"
                         Maximum="1"
                         Minimum="0"
-                        Value="0.5" />
+                        Value="0.2" />
 
                 <TextBlock Classes="h" Text="Svg Opacity:" />
                 <Slider Name="SvgGroundOpacity"

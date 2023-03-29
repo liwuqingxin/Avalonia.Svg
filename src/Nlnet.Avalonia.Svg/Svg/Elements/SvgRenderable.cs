@@ -57,10 +57,13 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
                         geometryGroup.Children.Add(svgShape.RenderGeometry);
                     }
                 }
-                geometryGroup.Transform = clipPath.Transform;
-                geometryGroup.FillRule  = FillRule.NonZero;
-
-                clipPathPushedState = dc.PushGeometryClip(geometryGroup);
+                
+                if (geometryGroup.Children.Count > 0)
+                {
+                    geometryGroup.Transform = clipPath.Transform;
+                    geometryGroup.FillRule  = FillRule.NonZero;
+                    clipPathPushedState     = dc.PushGeometryClip(geometryGroup);
+                }
             }
         }
 

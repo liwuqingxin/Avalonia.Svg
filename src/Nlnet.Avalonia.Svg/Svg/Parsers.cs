@@ -605,6 +605,90 @@ namespace Nlnet.Avalonia.Svg
         }
 
         /// <summary>
+        /// Convert value string to <see cref="SvgMarkerUnits"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static SvgMarkerUnits ToSvgMarkerUnits(this string valueString)
+        {
+            return Enum.Parse<SvgMarkerUnits>(valueString);
+        }
+
+        /// <summary>
+        /// Try to convert value string to <see cref="SvgMarkerUnits"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="gradientUnit"></param>
+        /// <returns></returns>
+        public static bool TryToSvgMarkerUnits(this string valueString, out SvgMarkerUnits gradientUnit)
+        {
+            return Enum.TryParse<SvgMarkerUnits>(valueString, out gradientUnit);
+        }
+
+        /// <summary>
+        /// Convert value string to <see cref="SvgMarkerOrient"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static SvgMarkerOrient ToSvgMarkerOrient(this string valueString)
+        {
+            return Enum.Parse<SvgMarkerOrient>(valueString.Replace("-", "_"));
+        }
+
+        /// <summary>
+        /// Try to convert value string to <see cref="SvgMarkerOrient"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="gradientUnit"></param>
+        /// <returns></returns>
+        public static bool TryToSvgMarkerOrient(this string valueString, out SvgMarkerOrient gradientUnit)
+        {
+            return Enum.TryParse<SvgMarkerOrient>(valueString.Replace("-", "_"), out gradientUnit);
+        }
+
+        /// <summary>
+        /// Convert value string to <see cref="RefX"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static RefX ToRefX(this string valueString)
+        {
+            return Enum.Parse<RefX>(valueString.Replace("-", "_"));
+        }
+
+        /// <summary>
+        /// Try to convert value string to <see cref="RefX"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="gradientUnit"></param>
+        /// <returns></returns>
+        public static bool TryToRefX(this string valueString, out RefX gradientUnit)
+        {
+            return Enum.TryParse<RefX>(valueString.Replace("-", "_"), out gradientUnit);
+        }
+
+        /// <summary>
+        /// Convert value string to <see cref="RefY"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <returns></returns>
+        public static RefY ToRefY(this string valueString)
+        {
+            return Enum.Parse<RefY>(valueString.Replace("-", "_"));
+        }
+
+        /// <summary>
+        /// Try to convert value string to <see cref="RefY"/>.
+        /// </summary>
+        /// <param name="valueString"></param>
+        /// <param name="gradientUnit"></param>
+        /// <returns></returns>
+        public static bool TryToRefY(this string valueString, out RefY gradientUnit)
+        {
+            return Enum.TryParse<RefY>(valueString.Replace("-", "_"), out gradientUnit);
+        }
+
+        /// <summary>
         /// Convert value string to <see cref="ViewBox"/>.
         /// </summary>
         /// <param name="valueString"></param>

@@ -23,7 +23,13 @@
 </div>
 
 
-<img src="doc/imghost/logo.svg" width="200" height="200"/>
+<br/>
+
+<br/>
+
+<div style="text-align:center;">
+  <img src="doc/imghost/logo.svg" width="80" height="80" align="middle"/>
+</div>
 
 # License
 

@@ -1,6 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
+using SkiaSharp;
+using System.Reflection;
 
 namespace Nlnet.Avalonia.Svg
 {
@@ -109,7 +111,39 @@ namespace Nlnet.Avalonia.Svg
             using (dc.PushOpacity(Opacity ?? 1d))
             {
                 dc.DrawGeometry(fill, GetPen(), RenderGeometry);
+
+                // Render Markers
+                if (this is IMarkerable markerable && TryGetRenderedGeometryEffectivePath(out var path) && path != null)
+                {
+                    if (markerable.MarkerStart != null && markerable.MarkerStart.TryParseUrl(out var id1, out _) && ctx.Markers.TryGetValue(id1, out var marker1))
+                    {
+                        markerable.RenderMarkerStart(dc, ctx, marker1, path);
+                    }
+
+                    if (markerable.MarkerMid != null && markerable.MarkerMid.TryParseUrl(out var id2, out _) && ctx.Markers.TryGetValue(id2, out var marker2))
+                    {
+                        markerable.RenderMarkerMid(dc, ctx, marker2, path);
+                    }
+
+                    if (markerable.MarkerStart != null && markerable.MarkerStart.TryParseUrl(out var id3, out _) && ctx.Markers.TryGetValue(id3, out var marker3))
+                    {
+                        markerable.RenderMarkerEnd(dc, ctx, marker3, path);
+                    }
+                }
             }
+        }
+
+        private bool TryGetRenderedGeometryEffectivePath(out SKPath? path)
+        {
+            var propEffectivePath = RenderGeometry?.PlatformImpl?.GetType().GetProperty("EffectivePath", BindingFlags.Instance | BindingFlags.Public);
+            if (propEffectivePath == null)
+            {
+                path = null;
+                return false;
+            }
+
+            path = propEffectivePath.GetValue(RenderGeometry!.PlatformImpl) as SKPath;
+            return true;
         }
 
         public override object Clone()

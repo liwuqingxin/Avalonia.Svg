@@ -7,18 +7,21 @@
 /// </summary>
 public static class SvgDefaultValues
 {
-    public const string Null                         = "null";
-    public const string Zero                         = "0d";
-    public const string Half                         = "0.5d";
-    public const string One                          = "1d";
-    public const string Four                         = "4d";
-    public const string BrushBlack                   = "new LightSolidColorBrush(Colors.Black)";
-    public const string BrushTransparent             = "Brushes.Transparent";
-    public const string FillRuleNonZero              = "global::Avalonia.Media.FillRule.NonZero";
-    public const string PenLineCapNonZero            = "global::Avalonia.Media.PenLineCap.Flat";
-    public const string PenLineJoinNonZero           = "global::Avalonia.Media.PenLineJoin.Miter";
-    public const string GradientSpreadMethodPad      = "global::Avalonia.Media.GradientSpreadMethod.Pad";
-    public const string SvgUnitObjectBoundingBox     = "global::Nlnet.Avalonia.Svg.SvgUnit.objectBoundingBox";
+    public const string Null                      = "null";
+    public const string Zero                      = "0d";
+    public const string Half                      = "0.5d";
+    public const string One                       = "1d";
+    public const string Three                     = "3d";
+    public const string Four                      = "4d";
+    public const string BrushBlack                = "new LightSolidColorBrush(Colors.Black)";
+    public const string BrushTransparent          = "Brushes.Transparent";
+    public const string FillRuleNonZero           = "global::Avalonia.Media.FillRule.NonZero";
+    public const string PenLineCapNonZero         = "global::Avalonia.Media.PenLineCap.Flat";
+    public const string PenLineJoinNonZero        = "global::Avalonia.Media.PenLineJoin.Miter";
+    public const string GradientSpreadMethodPad   = "global::Avalonia.Media.GradientSpreadMethod.Pad";
+    public const string SvgUnitObjectBoundingBox  = "global::Nlnet.Avalonia.Svg.SvgUnit.objectBoundingBox";
+    public const string SvgMarkerUnitsStrokeWidth = "global::Nlnet.Avalonia.Svg.SvgMarkerUnits.strokeWidth";
+    public const string SvgMarkerOrientAuto       = "global::Nlnet.Avalonia.Svg.SvgMarkerOrient.auto";
 }
 
 /// <summary>
@@ -77,6 +80,15 @@ public static class SvgProperties
     public const string PreserveAspectRatio  = "preserveAspectRatio";
     public const string ClipPath             = "clip-path";
     public const string Mask                 = "mask";
+    public const string MarkerStart          = "marker-start";
+    public const string MarkerEnd            = "marker-end";
+    public const string MarkerMid            = "marker-mid";
+    public const string MarkerHeight         = "markerHeight";
+    public const string MarkerWidth          = "markerWidth";
+    public const string MarkerUnits          = "markerUnits";
+    public const string MarkerOrient         = "orient";
+    public const string RefX                 = "refX";
+    public const string RefY                 = "refY";
 }
 
 /// <summary>

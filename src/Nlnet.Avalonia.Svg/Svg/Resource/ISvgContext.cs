@@ -39,6 +39,11 @@ public interface ISvgContext
     public IReadOnlyDictionary<string, SvgMask> Masks { get; }
 
     /// <summary>
+    /// ALl Markers.
+    /// </summary>
+    public IReadOnlyDictionary<string, SvgMarker> Markers { get; }
+
+    /// <summary>
     /// All tags that have a id.
     /// </summary>
     public IReadOnlyDictionary<string, ISvgTag> IdTags { get; }
