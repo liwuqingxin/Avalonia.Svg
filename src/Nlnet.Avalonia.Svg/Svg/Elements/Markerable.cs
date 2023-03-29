@@ -22,9 +22,12 @@ public abstract class Markerable : SvgShape, IMarkerable
             return;
         }
 
+        var degree = GetMarkerOrientDegree(effectivePath, 0);
+        WithR(marker, ref degree);
+
         var point = effectivePath.GetPoint(0);
 
-        RenderMarkerOnPoint(dc, ctx, marker, point);
+        RenderMarkerOnPoint(dc, ctx, marker, point, degree);
     }
 
     public void RenderMarkerEnd(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
@@ -34,9 +37,12 @@ public abstract class Markerable : SvgShape, IMarkerable
             return;
         }
 
+        var degree = GetMarkerOrientDegree(effectivePath, effectivePath.PointCount - 1);
+        WithR(marker, ref degree);
+
         var point = effectivePath.LastPoint;
 
-        RenderMarkerOnPoint(dc, ctx, marker, point);
+        RenderMarkerOnPoint(dc, ctx, marker, point, degree);
     }
 
     public void RenderMarkerMid(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
@@ -48,13 +54,24 @@ public abstract class Markerable : SvgShape, IMarkerable
 
         for (var i = 1; i < effectivePath.Points.Length - 1; i++)
         {
+            var degree = GetMarkerOrientDegree(effectivePath, i);
+            WithR(marker, ref degree);
+
             var point = effectivePath.Points[i];
 
-            RenderMarkerOnPoint(dc, ctx, marker, point);
+            RenderMarkerOnPoint(dc, ctx, marker, point, degree);
         }
     }
 
-    private void RenderMarkerOnPoint(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPoint point)
+    private void WithR(SvgMarker marker, ref double angle)
+    {
+        if (marker.R != null)
+        {
+            angle = marker.R.Value;
+        }
+    }
+
+    private void RenderMarkerOnPoint(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPoint point, double angle)
     {
         var stack = new Stack<DrawingContext.PushedState>();
 
@@ -79,14 +96,11 @@ public abstract class Markerable : SvgShape, IMarkerable
                     stack.Push(dc.PushTransformContainer());
                 }
 
-                var degree = GetMarkerOrientDegree();
-                if (marker.R != null)
+                
+                if (angle != 0)
                 {
-                    degree = marker.R.Value;
-                }
-                if (degree != 0)
-                {
-                    var radians = MatrixUtil.AngleToRadians(degree);
+                    //var radians = MatrixUtil.AngleToRadians(angle);
+                    var radians = angle;
                     stack.Push(dc.PushPostTransform(MatrixUtil.CreateRotationRadians(radians, markerBounds.Width / 2, markerBounds.Height / 2)));
                     stack.Push(dc.PushTransformContainer());
                 }
@@ -105,5 +119,5 @@ public abstract class Markerable : SvgShape, IMarkerable
         }
     }
 
-    public abstract double GetMarkerOrientDegree();
+    public abstract double GetMarkerOrientDegree(SKPath path, int index);
 }

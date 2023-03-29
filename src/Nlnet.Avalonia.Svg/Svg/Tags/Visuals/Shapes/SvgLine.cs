@@ -30,7 +30,7 @@ public class SvgLine : Markerable, ISvgShape, ISvgGraphic, ISvgRenderable, IMark
         return new LineGeometry(new Point(X1.Value, Y1.Value), new Point(X2.Value, Y2.Value));
     }
 
-    public override double GetMarkerOrientDegree()
+    public override double GetMarkerOrientDegree(SKPath path, int index)
     {
         return 90;
     }

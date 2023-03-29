@@ -1,6 +1,7 @@
 ﻿using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Nlnet.Avalonia.Svg.CompileGenerator;
+using SkiaSharp;
 using System;
 
 namespace Nlnet.Avalonia.Svg;
@@ -16,7 +17,7 @@ public class SvgPath : Markerable, ISvgShape, ISvgGraphic, ISvgRenderable, IMark
         return Data;
     }
 
-    public override double GetMarkerOrientDegree()
+    public override double GetMarkerOrientDegree(SKPath path, int index)
     {
         return 90;
     }

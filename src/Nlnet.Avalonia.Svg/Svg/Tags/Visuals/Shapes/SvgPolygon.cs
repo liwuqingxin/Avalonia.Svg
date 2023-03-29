@@ -18,7 +18,7 @@ public class SvgPolygon : Markerable, ISvgShape, ISvgGraphic, ISvgRenderable, IM
         return Points != null ? new PolylineGeometry(Points, true) : null;
     }
 
-    public override double GetMarkerOrientDegree()
+    public override double GetMarkerOrientDegree(SKPath path, int index)
     {
         return 90;
     }
