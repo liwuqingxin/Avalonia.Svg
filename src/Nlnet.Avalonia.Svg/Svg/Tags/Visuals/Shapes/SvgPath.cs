@@ -1,49 +1,23 @@
-﻿using Avalonia;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Nlnet.Avalonia.Svg.CompileGenerator;
-using SkiaSharp;
+using System;
 
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.path))]
-public class SvgPath : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable, IMarkerable,
+public class SvgPath : Markerable, ISvgShape, ISvgGraphic, ISvgRenderable, IMarkerable,
     IDataSetter
 {
     public Geometry? Data { get; set; }
-    public string? MarkerStart
-    {
-        get;
-        set;
-    }
-    public string? MarkerEnd
-    {
-        get;
-        set;
-    }
-    public string? MarkerMid
-    {
-        get;
-        set;
-    }
 
     protected override Geometry? OnCreateOriginalGeometry()
     {
         return Data;
     }
 
-    public void RenderMarkerStart(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
+    public override double GetMarkerOrientDegree()
     {
-
-    }
-
-    public void RenderMarkerEnd(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
-    {
-
-    }
-
-    public void RenderMarkerMid(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
-    {
-
+        return 90;
     }
 }

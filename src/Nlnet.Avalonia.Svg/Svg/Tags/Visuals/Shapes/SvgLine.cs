@@ -3,11 +3,12 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using Nlnet.Avalonia.Svg.CompileGenerator;
 using SkiaSharp;
+using System;
 
 namespace Nlnet.Avalonia.Svg;
 
 [TagFactoryGenerator(nameof(SvgTags.line))]
-public class SvgLine : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable, IMarkerable,
+public class SvgLine : Markerable, ISvgShape, ISvgGraphic, ISvgRenderable, IMarkerable,
     IX1Setter,
     IX2Setter,
     IY1Setter,
@@ -17,21 +18,7 @@ public class SvgLine : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable, IMarker
     public double? X2    { get; set; }
     public double? Y1    { get; set; }
     public double? Y2    { get; set; }
-    public string? MarkerStart
-    {
-        get;
-        set;
-    }
-    public string? MarkerEnd
-    {
-        get;
-        set;
-    }
-    public string? MarkerMid
-    {
-        get;
-        set;
-    }
+    
 
     protected override Geometry? OnCreateOriginalGeometry()
     {
@@ -43,18 +30,8 @@ public class SvgLine : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable, IMarker
         return new LineGeometry(new Point(X1.Value, Y1.Value), new Point(X2.Value, Y2.Value));
     }
 
-    public void RenderMarkerStart(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
+    public override double GetMarkerOrientDegree()
     {
-        
-    }
-
-    public void RenderMarkerEnd(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
-    {
-        
-    }
-
-    public void RenderMarkerMid(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
-    {
-        
+        return 90;
     }
 }

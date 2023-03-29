@@ -14,7 +14,10 @@ public class SvgMarker : SvgContainer, ISvgContainer, IDef,
     IGradientUnitsSetter,
     IMarkerOrientSetter,
     IViewBoxSetter,
-    IPreserveAspectRatioSetter
+    IPreserveAspectRatioSetter,
+    IRefXSetter,
+    IRefYSetter,
+    IRSetter // The 'r' is not valid property for svg marker. It's just for debug and test.
 {
     public double? MarkerWidth
     {
@@ -42,6 +45,21 @@ public class SvgMarker : SvgContainer, ISvgContainer, IDef,
         set;
     }
     public PreserveAspectRatio? PreserveAspectRatio
+    {
+        get;
+        set;
+    }
+    public RefX? RefX
+    {
+        get;
+        set;
+    }
+    public RefY? RefY
+    {
+        get;
+        set;
+    }
+    public double? R
     {
         get;
         set;

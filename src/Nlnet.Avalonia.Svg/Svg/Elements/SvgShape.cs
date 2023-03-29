@@ -125,7 +125,7 @@ namespace Nlnet.Avalonia.Svg
                         markerable.RenderMarkerMid(dc, ctx, marker2, path);
                     }
 
-                    if (markerable.MarkerStart != null && markerable.MarkerStart.TryParseUrl(out var id3, out _) && ctx.Markers.TryGetValue(id3, out var marker3))
+                    if (markerable.MarkerEnd != null && markerable.MarkerEnd.TryParseUrl(out var id3, out _) && ctx.Markers.TryGetValue(id3, out var marker3))
                     {
                         markerable.RenderMarkerEnd(dc, ctx, marker3, path);
                     }
