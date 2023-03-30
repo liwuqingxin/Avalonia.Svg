@@ -137,7 +137,7 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        protected bool TryGetRenderedGeometryEffectivePath(Geometry geometry, out SKPath? path)
+        protected static bool TryGetRenderedGeometryEffectivePath(Geometry geometry, out SKPath? path)
         {
             var propEffectivePath = geometry.PlatformImpl?.GetType().GetProperty("EffectivePath", BindingFlags.Instance | BindingFlags.Public);
             if (propEffectivePath == null)

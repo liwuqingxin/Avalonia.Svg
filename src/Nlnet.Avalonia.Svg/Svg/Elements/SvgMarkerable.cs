@@ -48,25 +48,83 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
             return;
         }
 
-        这里不管用，应该计算Figures
-        var originPath = (SKPath?) null;
+        List<int>? effectivePoints = null;
         if (OriginalGeometry is PathGeometry pathGeometry)
         {
-            TryGetRenderedGeometryEffectivePath(pathGeometry, out originPath);
+            effectivePoints = GetEffectivePointsIndexFromOriginGeometry(pathGeometry);
         }
 
-        for (var i = 1; i < effectivePath.Points.Length - 1; i++)
+        // TODO Not well here.
+
+        if (effectivePoints != null)
         {
-            var point = effectivePath.Points[i];
-            if (originPath != null && originPath.Points.Contains(point) == false)
+            for (var i = 1; i < effectivePoints.Count - 1; i++)
+            {
+                var point   = effectivePath.Points[effectivePoints[i]];
+                var radians = GetMarkerOrientRadians(effectivePath, i);
+                WithOrientMode(marker, false, ref radians);
+                RenderMarkerOnPoint(dc, ctx, marker, point, radians);
+            }
+        }
+        else
+        {
+            for (var i = 1; i < effectivePath.Points.Length - 1; i++)
+            {
+                var point = effectivePath.Points[i]; 
+                var radians = GetMarkerOrientRadians(effectivePath, i);
+                WithOrientMode(marker, false, ref radians);
+                RenderMarkerOnPoint(dc, ctx, marker, point, radians);
+            }
+        }
+    }
+
+    private static List<int> GetEffectivePointsIndexFromOriginGeometry(PathGeometry pathGeometry)
+    {
+        var list = new List<int>();
+        if (pathGeometry.Figures == null)
+        {
+            return list;
+        }
+        var index = 0;
+        list.Add(index);
+        foreach (var figure in pathGeometry.Figures)
+        {
+            if (figure.Segments == null)
             {
                 continue;
             }
-
-            var radians = GetMarkerOrientRadians(effectivePath, i);
-            WithOrientMode(marker, false, ref radians);
-            RenderMarkerOnPoint(dc, ctx, marker, point, radians);
+            foreach (var segment in figure.Segments)
+            {
+                switch (segment)
+                {
+                    case LineSegment line:
+                        index++;
+                        list.Add(index);
+                        break;
+                    case PolyLineSegment polyLine:
+                        for (var i = 0; i < polyLine.Points.Count; i++)
+                        {
+                            index++;
+                            list.Add(index);
+                        }
+                        break;
+                    case ArcSegment arc:
+                        index++;
+                        list.Add(index);
+                        break;
+                    case BezierSegment bezier:
+                        index += 3;
+                        list.Add(index);
+                        break;
+                    case QuadraticBezierSegment quadraticBezier:
+                        index += 2;
+                        list.Add(index);
+                        break;
+                }
+            }
         }
+
+        return list;
     }
 
     private static void WithOrientMode(SvgMarker marker, bool isFirstPoint, ref double angle)
