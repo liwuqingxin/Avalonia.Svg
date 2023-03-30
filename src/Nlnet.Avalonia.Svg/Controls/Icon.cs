@@ -167,16 +167,16 @@ namespace Nlnet.Avalonia.Svg.Controls
         public static readonly AttachedProperty<bool> ShowDiagnosisProperty = AvaloniaProperty
             .RegisterAttached<Icon, Visual, bool>("ShowDiagnosis", false, true);
 
-        public static TimeSpan? GetLoadingCost(Visual host)
+        public static TimeSpan GetLoadingCost(Visual host)
         {
             return host.GetValue(LoadingCostProperty);
         }
-        private static void SetLoadingCost(Visual host, TimeSpan? value)
+        private static void SetLoadingCost(Visual host, TimeSpan value)
         {
             host.SetValue(LoadingCostProperty, value);
         }
-        public static readonly AttachedProperty<TimeSpan?> LoadingCostProperty = AvaloniaProperty
-            .RegisterAttached<Icon, Visual, TimeSpan?>("LoadingCost");
+        public static readonly AttachedProperty<TimeSpan> LoadingCostProperty = AvaloniaProperty
+            .RegisterAttached<Icon, Visual, TimeSpan>("LoadingCost");
 
         public static TimeSpan GetRenderCost(Visual host)
         {

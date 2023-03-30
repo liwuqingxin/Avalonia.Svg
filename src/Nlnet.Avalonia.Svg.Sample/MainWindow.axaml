@@ -101,14 +101,22 @@
                             Orientation="Vertical"
                             Spacing="5">
 
-                    <TextBlock Classes="h" Text="Loading Cost:" />
-                    <TextBlock Classes="content"
-                               Foreground="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost), Converter={x:Static sample:CostToBrushCvt.Cvt}}"
-                               Text="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost)}" />
-                    <TextBlock Classes="h" Text="Rendering Cost:" />
-                    <TextBlock Classes="content"
-                               Foreground="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost), Converter={x:Static sample:CostToBrushCvt.Cvt}}"
-                               Text="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost)}" />
+                    <Grid Grid.ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="h" Text="Loading Cost:" />
+                        <TextBlock Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   Classes="content"
+                                   Foreground="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost), Converter={x:Static sample:CostToBrushCvt.Cvt}}"
+                                   Text="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost).TotalMilliseconds, StringFormat={}{0:F2}}" />
+                    </Grid>
+                    <Grid Grid.ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="h" Text="Rendering Cost:" />
+                        <TextBlock Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   Classes="content"
+                                   Foreground="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost), Converter={x:Static sample:CostToBrushCvt.Cvt}}"
+                                   Text="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost).TotalMilliseconds, StringFormat={}{0:F2}}" />
+                    </Grid>
 
                     <Button HorizontalAlignment="Stretch"
                             HorizontalContentAlignment="Center"
