@@ -8,7 +8,8 @@ namespace Nlnet.Avalonia.Svg;
 public class SvgGroup : SvgContainer, ISvgRenderable, 
     IMarkerStartSetter,
     IMarkerEndSetter,
-    IMarkerMidSetter
+    IMarkerMidSetter,
+    IMarkerSetter
 {
     public string? MarkerStart
     {
@@ -21,6 +22,11 @@ public class SvgGroup : SvgContainer, ISvgRenderable,
         set;
     }
     public string? MarkerMid
+    {
+        get;
+        set;
+    }
+    public string? Marker
     {
         get;
         set;

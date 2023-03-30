@@ -83,6 +83,7 @@ public static class SvgProperties
     public const string MarkerStart          = "marker-start";
     public const string MarkerEnd            = "marker-end";
     public const string MarkerMid            = "marker-mid";
+    public const string Marker               = "marker";
     public const string MarkerHeight         = "markerHeight";
     public const string MarkerWidth          = "markerWidth";
     public const string MarkerUnits          = "markerUnits";

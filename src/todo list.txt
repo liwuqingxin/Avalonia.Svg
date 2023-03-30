@@ -9,3 +9,4 @@
 9. marker：Path时，中间点选取不正确；
 10. 抽象Svg工程；
 11. Gradient不正确；
+12. 将marker3的marker内元素复制到Marker6中，报错；

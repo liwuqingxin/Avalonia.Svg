@@ -13,6 +13,7 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
     public string? MarkerStart { get; set; }
     public string? MarkerEnd   { get; set; }
     public string? MarkerMid   { get; set; }
+    public string? Marker      { get; set; }
 
 
     public void RenderMarkerStart(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath)
