@@ -83,6 +83,7 @@
                 <Style Selector="Button">
                     <Setter Property="FontSize" Value="12" />
                     <Setter Property="FontFamily" Value="微软雅黑" />
+                    <Setter Property="Margin" Value="0,8,0,0" />
                 </Style>
                 <Style Selector="TextBlock.h">
                     <Setter Property="FontSize" Value="14" />
@@ -95,73 +96,79 @@
                     <Setter Property="FontFamily" Value="微软雅黑" />
                 </Style>
             </Border.Styles>
-            <StackPanel Margin="12"
-                        Orientation="Vertical"
-                        Spacing="5">
+            <ScrollViewer>
+                <StackPanel Margin="12"
+                            Orientation="Vertical"
+                            Spacing="5">
 
-                <TextBlock Classes="h" Text="Loading Cost:" />
-                <TextBlock Classes="content"
-                           Foreground="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost), Converter={x:Static sample:CostToBrushCvt.Cvt}}"
-                           Text="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost)}" />
-                <TextBlock Classes="h" Text="Rendering Cost:" />
-                <TextBlock Classes="content"
-                           Foreground="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost), Converter={x:Static sample:CostToBrushCvt.Cvt}}"
-                           Text="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost)}" />
+                    <TextBlock Classes="h" Text="Loading Cost:" />
+                    <TextBlock Classes="content"
+                               Foreground="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost), Converter={x:Static sample:CostToBrushCvt.Cvt}}"
+                               Text="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost)}" />
+                    <TextBlock Classes="h" Text="Rendering Cost:" />
+                    <TextBlock Classes="content"
+                               Foreground="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost), Converter={x:Static sample:CostToBrushCvt.Cvt}}"
+                               Text="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost)}" />
 
-                <TextBlock Classes="h" Text="Svg Stretch:" />
-                <ComboBox x:Name="Stretch"
-                          HorizontalAlignment="Stretch"
-                          Items="{sample:Enum Stretch}"
-                          SelectedIndex="2" />
+                    <Button HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Command="{Binding Format}"
+                            Content="Format Code" />
+                    <Button HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Command="{Binding Import}"
+                            Content="Import Svg" />
+                    <Button HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Command="{Binding OpenInBrowser}"
+                            Content="Open in Browser" />
+                    <Button HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            Command="{Binding Save}"
+                            Content="Save" />
 
-                <CheckBox Content="Window Topmost" IsChecked="{Binding $parent[Window].Topmost}" />
-                <CheckBox Name="UseMeshBackground"
-                          Content="Use Mesh Background"
-                          IsChecked="True" />
-                <CheckBox Name="ShowDiagnosis" Content="Show Diagnosis" />
-                <CheckBox Name="ClipToBounds"
-                          Content="Clip To Bounds"
-                          IsChecked="True" />
-                <CheckBox Name="EditorVisible"
-                          Click="EditorVisible_OnClick"
-                          Content="Show Editor"
-                          IsChecked="True" />
+                    <TextBlock Classes="h" Text="Svg Stretch:" />
+                    <ComboBox x:Name="Stretch"
+                              HorizontalAlignment="Stretch"
+                              Items="{sample:Enum Stretch}"
+                              SelectedIndex="2" />
 
-                <TextBlock Classes="h" Text="Zoom In:" />
-                <Slider Name="ZoomInSlider"
-                        Maximum="10"
-                        Minimum="0"
-                        Value="1" />
+                    <CheckBox Content="Window Topmost" IsChecked="{Binding $parent[Window].Topmost}" />
+                    <CheckBox Name="UseMeshBackground"
+                              Content="Use Mesh Background"
+                              IsChecked="True" />
+                    <CheckBox Name="ShowDiagnosis" Content="Show Diagnosis" />
+                    <CheckBox Name="ClipToBounds"
+                              Content="Clip To Bounds"
+                              IsChecked="True" />
+                    <CheckBox Name="EditorVisible"
+                              Click="EditorVisible_OnClick"
+                              Content="Show Editor"
+                              IsChecked="True" />
 
-                <TextBlock Classes="h" Text="Background Opacity:" />
-                <Slider Name="BackGroundOpacity"
-                        Maximum="1"
-                        Minimum="0"
-                        Value="0.2" />
+                    <TextBlock Classes="h" Text="Zoom In:" />
+                    <Slider Name="ZoomInSlider"
+                            Maximum="10"
+                            Minimum="0"
+                            Value="1" />
 
-                <TextBlock Classes="h" Text="Svg Opacity:" />
-                <Slider Name="SvgGroundOpacity"
-                        Maximum="1"
-                        Minimum="0"
-                        Value="1" />
+                    <TextBlock Classes="h" Text="Background Opacity:" />
+                    <Slider Name="BackGroundOpacity"
+                            Maximum="1"
+                            Minimum="0"
+                            Value="0.2" />
 
-                <ToggleSwitch Command="{Binding MonitorClipboard}"
-                              Content="Switch Monitor Clipboard"
-                              IsVisible="False" />
-                <Button HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Command="{Binding Import}"
-                        Content="Import Svg" />
-                <Button Margin="0,8"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Command="{Binding OpenInBrowser}"
-                        Content="Open in Browser" />
-                <Button HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Command="{Binding Save}"
-                        Content="Save" />
-            </StackPanel>
+                    <TextBlock Classes="h" Text="Svg Opacity:" />
+                    <Slider Name="SvgGroundOpacity"
+                            Maximum="1"
+                            Minimum="0"
+                            Value="1" />
+
+                    <ToggleSwitch Command="{Binding MonitorClipboard}"
+                                  Content="Switch Monitor Clipboard"
+                                  IsVisible="False" />
+                </StackPanel>
+            </ScrollViewer>
         </Border>
 
 

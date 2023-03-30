@@ -1,15 +1,18 @@
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input.Platform;
@@ -93,6 +96,74 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             _editableSvgData = value;
             OnPropertyChanged();
         }
+    }
+
+    public void Format()
+    {
+        try
+        {
+            var code = EditableSvgData;
+            if (code == null)
+            {
+                return;
+            }
+
+
+            var xDocument  = LoadWithoutNamespace(code);
+
+            var       builder = new StringBuilder();
+            using var writer  = GetXmlWriter(builder);
+            xDocument.WriteTo(writer);
+            writer.Flush();
+
+            EditableSvgData = builder.ToString();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    private static XmlWriter GetXmlWriter(StringBuilder builder)
+    {
+        var writer = XmlWriter.Create(builder, new XmlWriterSettings()
+        {
+            DoNotEscapeUriAttributes = true,
+            NewLineOnAttributes      = true,
+            OmitXmlDeclaration       = true,
+            Indent                   = true,
+            IndentChars              = "    ",
+            NamespaceHandling        = NamespaceHandling.OmitDuplicates,
+            NewLineHandling          = NewLineHandling.Replace,
+
+            // Token StartElement in state EndRootElement would result in an invalid XML document.
+            // Make sure that the ConformanceLevel setting is set to ConformanceLevel.Fragment or
+            // ConformanceLevel.Auto if you want to write an XML fragment.
+            ConformanceLevel = ConformanceLevel.Auto,
+        });
+
+        return writer;
+    }
+
+    private static XDocument LoadWithoutNamespace(string xaml)
+    {
+        var xDocument = XDocument.Load(new StringReader(xaml));
+
+        return xDocument;
+
+        foreach (var xe in xDocument.Elements().DescendantsAndSelf())
+        {
+            // Stripping the namespace by setting the name of the element to it's local name only
+            xe.Name = xe.Name.LocalName;
+            // replacing all attributes with attributes that are not namespaces and their names are set to only the local name
+            xe.ReplaceAttributes(
+                xe.Attributes()
+                    .Where(xa => !xa.IsNamespaceDeclaration)
+                    .Select(xa => new XAttribute(xa.Name.LocalName, xa.Value))
+            );
+        }
+
+        return xDocument;
     }
 
     public async Task Import()
