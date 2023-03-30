@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -42,22 +43,48 @@ namespace Nlnet.Avalonia.Svg.Sample
 
         private void OnLoaded(object? sender, RoutedEventArgs e)
         {
-            var svgDir = Path.Combine(Directory.GetCurrentDirectory(), "resources/svg");
-            var files = Directory.GetFiles(svgDir);
             var viewModel = new MainWindowViewModel(this);
-            
-            foreach (var file in files)
+
+            var svgDir = Path.Combine(Directory.GetCurrentDirectory(), "resources/svg");
+            foreach (var fileItem in LoadFilesInFolder(svgDir))
             {
-                var svgData = File.ReadAllText(file);
-                viewModel.SvgList.Add(new SvgFileItem(Path.GetFileName(file), svgData));
+                viewModel.SvgList.Add(fileItem);
+            }
+            var svgDir2 = Path.Combine(Directory.GetCurrentDirectory(), "resources/import");
+            foreach (var fileItem in LoadFilesInFolder(svgDir2))
+            {
+                viewModel.SvgList.Add(fileItem);
             }
 
             this.DataContext = viewModel;
         }
 
-        protected override void OnPointerMoved(PointerEventArgs e)
+        private static IEnumerable<SvgFileItem> LoadFilesInFolder(string folder)
         {
-            base.OnPointerMoved(e);
+            var files = Directory.GetFiles(folder);
+
+            foreach (var file in files)
+            {
+                var svgData = File.ReadAllText(file);
+                yield return new SvgFileItem(Path.GetFileName(file), svgData);
+            }
+        }
+
+        private void EditorVisible_OnClick(object? sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkBox)
+            {
+                if (checkBox.IsChecked == true)
+                {
+                    IconPanel2.Children.Remove(IconComponent);
+                    IconPanel1.Children.Add(IconComponent);
+                }
+                else
+                {
+                    IconPanel1.Children.Remove(IconComponent);
+                    IconPanel2.Children.Add(IconComponent);
+                }
+            }
         }
     }
 }

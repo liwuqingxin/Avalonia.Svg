@@ -23,29 +23,34 @@
                 BorderBrush="LightGray"
                 BorderThickness="1">
             <Grid Margin="12" RowDefinitions="Auto,*">
-                <Panel Grid.Row="0"
+                <Panel x:Name="IconPanel1"
+                       Grid.Row="0"
                        Width="200"
                        Height="200"
                        Margin="0,0,0,12"
+                       IsVisible="{Binding #EditorVisible.IsChecked}"
                        ZIndex="100">
-                    <sample:Mesh Background="black"
-                                 BlockOpacity="1"
-                                 Opacity="{Binding #BackGroundOpacity.Value}"
-                                 UseMesh="{Binding #UseMeshBackground.IsChecked}" />
-                    <controls:Icon x:Name="Icon"
-                                   ClipToBounds="{Binding #ClipToBounds.IsChecked}"
-                                   IconStretch="{Binding #Stretch.SelectedItem}"
-                                   IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/logo.svg"
-                                   IconSvgData="{Binding Path=EditableSvgData}"
-                                   IsHitTestVisible="False"
-                                   Opacity="{Binding #SvgGroundOpacity.Value}"
-                                   RenderTransformOrigin="0%,0%"
-                                   ShowDiagnosis="{Binding #ShowDiagnosis.IsChecked}">
-                        <controls:Icon.RenderTransform>
-                            <ScaleTransform ScaleX="{Binding ElementName=ZoomInSlider, Path=Value}" ScaleY="{Binding ElementName=ZoomInSlider, Path=Value}" />
-                        </controls:Icon.RenderTransform>
-                    </controls:Icon>
+                    <Panel x:Name="IconComponent">
+                        <sample:Mesh Background="black"
+                                     BlockOpacity="1"
+                                     Opacity="{Binding #BackGroundOpacity.Value}"
+                                     UseMesh="{Binding #UseMeshBackground.IsChecked}" />
+                        <controls:Icon x:Name="Icon"
+                                       ClipToBounds="{Binding #ClipToBounds.IsChecked}"
+                                       IconStretch="{Binding #Stretch.SelectedItem}"
+                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/logo.svg"
+                                       IconSvgData="{Binding Path=EditableSvgData}"
+                                       IsHitTestVisible="False"
+                                       Opacity="{Binding #SvgGroundOpacity.Value}"
+                                       RenderTransformOrigin="0%,0%"
+                                       ShowDiagnosis="{Binding #ShowDiagnosis.IsChecked}">
+                            <controls:Icon.RenderTransform>
+                                <ScaleTransform ScaleX="{Binding ElementName=ZoomInSlider, Path=Value}" ScaleY="{Binding ElementName=ZoomInSlider, Path=Value}" />
+                            </controls:Icon.RenderTransform>
+                        </controls:Icon>
+                    </Panel>
                 </Panel>
+
                 <ListBox Grid.Row="1"
                          Width="200"
                          Items="{Binding Path=SvgList}"
@@ -64,20 +69,30 @@
         <Border Grid.Column="1"
                 Margin="12,12,0,12"
                 BorderBrush="LightGray"
-                BorderThickness="1">
+                BorderThickness="1"
+                TextElement.FontFamily="微软雅黑">
             <Border.Styles>
                 <Style Selector="CheckBox">
-                    <Setter Property="FontSize" Value="10" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="FontFamily" Value="微软雅黑" />
                 </Style>
                 <Style Selector="ComboBox">
-                    <Setter Property="FontSize" Value="10" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="FontFamily" Value="微软雅黑" />
+                </Style>
+                <Style Selector="Button">
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="FontFamily" Value="微软雅黑" />
                 </Style>
                 <Style Selector="TextBlock.h">
-                    <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="FontSize" Value="14" />
+                    <Setter Property="Foreground" Value="DarkGray" />
+                    <Setter Property="FontFamily" Value="微软雅黑" />
                 </Style>
                 <Style Selector="TextBlock.content">
-                    <Setter Property="FontSize" Value="10" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="FontFamily" Value="微软雅黑" />
                 </Style>
             </Border.Styles>
             <StackPanel Margin="12"
@@ -85,9 +100,13 @@
                         Spacing="5">
 
                 <TextBlock Classes="h" Text="Loading Cost:" />
-                <TextBlock Classes="content" Text="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost)}" />
+                <TextBlock Classes="content"
+                           Foreground="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost), Converter={x:Static sample:CostToBrushCvt.Cvt}}"
+                           Text="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost)}" />
                 <TextBlock Classes="h" Text="Rendering Cost:" />
-                <TextBlock Classes="content" Text="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost)}" />
+                <TextBlock Classes="content"
+                           Foreground="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost), Converter={x:Static sample:CostToBrushCvt.Cvt}}"
+                           Text="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost)}" />
 
                 <TextBlock Classes="h" Text="Svg Stretch:" />
                 <ComboBox x:Name="Stretch"
@@ -99,28 +118,29 @@
                 <CheckBox Name="UseMeshBackground"
                           Content="Use Mesh Background"
                           IsChecked="True" />
-                <CheckBox Name="ShowDiagnosis" Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}" />
+                <CheckBox Name="ShowDiagnosis" Content="Show Diagnosis" />
                 <CheckBox Name="ClipToBounds"
-                          Content="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Name}"
+                          Content="Clip To Bounds"
+                          IsChecked="True" />
+                <CheckBox Name="EditorVisible"
+                          Click="EditorVisible_OnClick"
+                          Content="Show Editor"
                           IsChecked="True" />
 
                 <TextBlock Classes="h" Text="Zoom In:" />
                 <Slider Name="ZoomInSlider"
-                        Height="20"
                         Maximum="10"
                         Minimum="0"
                         Value="1" />
 
                 <TextBlock Classes="h" Text="Background Opacity:" />
                 <Slider Name="BackGroundOpacity"
-                        Height="20"
                         Maximum="1"
                         Minimum="0"
                         Value="0.2" />
 
                 <TextBlock Classes="h" Text="Svg Opacity:" />
                 <Slider Name="SvgGroundOpacity"
-                        Height="20"
                         Maximum="1"
                         Minimum="0"
                         Value="1" />
@@ -129,6 +149,11 @@
                               Content="Switch Monitor Clipboard"
                               IsVisible="False" />
                 <Button HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Command="{Binding Import}"
+                        Content="Import Svg" />
+                <Button Margin="0,8"
+                        HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
                         Command="{Binding OpenInBrowser}"
                         Content="Open in Browser" />
@@ -148,11 +173,18 @@
                  BorderBrush="LightGray"
                  CornerRadius="0"
                  FontFamily="Consolas"
-                 FontSize="10"
+                 FontSize="12"
+                 IsVisible="{Binding #EditorVisible.IsChecked}"
                  Opacity="0.9"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                  Text="{Binding EditableSvgData}"
                  Watermark="Input your svg code here or drag a svg file into this window to show a svg..." />
+
+
+        <!-- Display Panel -->
+        <Panel x:Name="IconPanel2"
+               Grid.Column="2"
+               Margin="12" />
 
 
         <!-- Information -->

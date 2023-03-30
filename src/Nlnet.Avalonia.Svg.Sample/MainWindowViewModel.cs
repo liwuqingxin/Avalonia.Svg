@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -34,13 +35,14 @@ public class SvgFileItem
 public sealed class MainWindowViewModel : INotifyPropertyChanged
 {
     private readonly MainWindow _mainWindow;
-    private List<SvgFileItem> _svgList = new();
+    private ObservableCollection<SvgFileItem> _svgList = new();
     private SvgFileItem? _selectedSvg;
     private string? _editableSvgData;
     private Thread? _thClipboardMonitor;
     private volatile bool _stopMonitorClipboard = true;
     private string? _lastCopy;
     private string? _saveInitDirectory;
+    private string? _importInitDirectory;
 
     public MainWindowViewModel()
     {
@@ -52,7 +54,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         _mainWindow = mainWindow;
     }
 
-    public List<SvgFileItem> SvgList
+    public ObservableCollection<SvgFileItem> SvgList
     {
         get => _svgList;
         set
@@ -90,6 +92,51 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
                 return;
             _editableSvgData = value;
             OnPropertyChanged();
+        }
+    }
+
+    public async Task Import()
+    {
+        const string applicationCache = "./tmp/.importFile.startLocation.cfg";
+        if (_importInitDirectory == null && File.Exists(applicationCache))
+        {
+            _importInitDirectory = await File.ReadAllTextAsync(applicationCache);
+        }
+
+        var storage = await _mainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
+        {
+            Title = "Import files",
+            AllowMultiple = true,
+            FileTypeFilter =new FilePickerFileType[]
+            {
+                new FilePickerFileType("Svg File")
+                {
+                    Patterns = (IReadOnlyList<string>) new string[]
+                    {
+                        "*.svg",
+                    },
+                }
+            },
+            SuggestedStartLocation = new BclStorageFolder(_importInitDirectory ?? "./"),
+        });
+
+        var dir = $"./resources/import";
+        Directory.CreateDirectory(dir);
+
+        foreach (var file in storage)
+        {
+            if (file.TryGetUri(out var uri))
+            {
+                _importInitDirectory = Path.GetDirectoryName(uri.AbsolutePath);
+            }
+
+            await using var stream = await file.OpenReadAsync();
+            var reader = new StreamReader(stream);
+            var text = await reader.ReadToEndAsync();
+            var path = $"{dir}/{file.Name}";
+            await File.WriteAllTextAsync(path, text);
+
+            SvgList.Add(new SvgFileItem(file.Name, text));
         }
     }
 
