@@ -547,27 +547,78 @@ namespace Nlnet.Avalonia.Svg
                 orient = SvgMarkerOrient.Default;
                 return false;
             }
-       
         }
 
         public static RefX ToRefX(this string valueString)
         {
-            return Enum.Parse<RefX>(valueString.Replace("-", "_"));
+            switch (valueString)
+            {
+                case "left":
+                    return new RefX() { Mode = RefXMode.left };
+                case "center":
+                    return new RefX() { Mode = RefXMode.center };
+                case "right":
+                    return new RefX() { Mode = RefXMode.right };
+                default:
+                    if (valueString.EndsWith("%"))
+                    {
+                        return new RefX() { Mode = RefXMode.percentage, Value = double.Parse(valueString[..^1]) / 100 };
+                    }
+                    else
+                    {
+                        return new RefX() { Mode = RefXMode.number, Value = double.Parse(valueString) };
+                    }
+            }
         }
 
-        public static bool TryToRefX(this string valueString, out RefX gradientUnit)
+        public static bool TryToRefX(this string valueString, out RefX refX)
         {
-            return Enum.TryParse<RefX>(valueString.Replace("-", "_"), out gradientUnit);
+            try
+            {
+                refX = ToRefX(valueString);
+                return true;
+            }
+            catch
+            {
+                refX = RefX.Default;
+                return false;
+            }
         }
 
         public static RefY ToRefY(this string valueString)
         {
-            return Enum.Parse<RefY>(valueString.Replace("-", "_"));
+            switch (valueString)
+            {
+                case "top":
+                    return new RefY() { Mode = RefYMode.top };
+                case "center":
+                    return new RefY() { Mode = RefYMode.center };
+                case "bottom":
+                    return new RefY() { Mode = RefYMode.bottom };
+                default:
+                    if (valueString.EndsWith("%"))
+                    {
+                        return new RefY() { Mode = RefYMode.percentage, Value = double.Parse(valueString[..^1]) / 100 };
+                    }
+                    else
+                    {
+                        return new RefY() { Mode = RefYMode.number, Value = double.Parse(valueString) };
+                    }
+            }
         }
 
-        public static bool TryToRefY(this string valueString, out RefY gradientUnit)
+        public static bool TryToRefY(this string valueString, out RefY refY)
         {
-            return Enum.TryParse<RefY>(valueString.Replace("-", "_"), out gradientUnit);
+            try
+            {
+                refY = ToRefY(valueString);
+                return true;
+            }
+            catch
+            {
+                refY = RefY.Default;
+                return false;
+            }
         }
 
         public static ViewBox? ToViewBox(this string valueString)

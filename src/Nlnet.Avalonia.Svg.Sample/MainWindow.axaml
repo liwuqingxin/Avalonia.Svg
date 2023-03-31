@@ -15,6 +15,32 @@
     <Design.DataContext>
         <sample:MainWindowViewModel />
     </Design.DataContext>
+    <Window.Styles>
+        <Style Selector="CheckBox">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="微软雅黑" />
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="微软雅黑" />
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontFamily" Value="微软雅黑" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+        </Style>
+        <Style Selector="TextBlock.h">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="DarkGray" />
+            <Setter Property="FontFamily" Value="微软雅黑" />
+        </Style>
+        <Style Selector="TextBlock.content">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontFamily" Value="微软雅黑" />
+        </Style>
+    </Window.Styles>
     <Grid ColumnDefinitions="Auto,Auto,*,Auto">
 
         <!-- List & Display -->
@@ -71,37 +97,12 @@
                 BorderBrush="LightGray"
                 BorderThickness="1"
                 TextElement.FontFamily="微软雅黑">
-            <Border.Styles>
-                <Style Selector="CheckBox">
-                    <Setter Property="FontSize" Value="12" />
-                    <Setter Property="FontFamily" Value="微软雅黑" />
-                </Style>
-                <Style Selector="ComboBox">
-                    <Setter Property="FontSize" Value="12" />
-                    <Setter Property="FontFamily" Value="微软雅黑" />
-                </Style>
-                <Style Selector="Button">
-                    <Setter Property="FontSize" Value="12" />
-                    <Setter Property="FontFamily" Value="微软雅黑" />
-                    <Setter Property="Margin" Value="0,8,0,0" />
-                </Style>
-                <Style Selector="TextBlock.h">
-                    <Setter Property="FontSize" Value="14" />
-                    <Setter Property="Foreground" Value="DarkGray" />
-                    <Setter Property="FontFamily" Value="微软雅黑" />
-                </Style>
-                <Style Selector="TextBlock.content">
-                    <Setter Property="FontSize" Value="12" />
-                    <Setter Property="FontWeight" Value="Bold" />
-                    <Setter Property="FontFamily" Value="微软雅黑" />
-                </Style>
-            </Border.Styles>
             <ScrollViewer>
                 <StackPanel Margin="12"
                             Orientation="Vertical"
                             Spacing="5">
 
-                    <Grid Grid.ColumnDefinitions="*,Auto">
+                    <Grid ColumnDefinitions="*,Auto">
                         <TextBlock Classes="h" Text="Loading Cost:" />
                         <TextBlock Grid.Column="1"
                                    HorizontalAlignment="Right"
@@ -109,7 +110,7 @@
                                    Foreground="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost), Converter={x:Static sample:CostToBrushCvt.Cvt}}"
                                    Text="{Binding ElementName=Icon, Path=(controls:Icon.LoadingCost).TotalMilliseconds, StringFormat={}{0:F2}}" />
                     </Grid>
-                    <Grid Grid.ColumnDefinitions="*,Auto">
+                    <Grid ColumnDefinitions="*,Auto">
                         <TextBlock Classes="h" Text="Rendering Cost:" />
                         <TextBlock Grid.Column="1"
                                    HorizontalAlignment="Right"
@@ -118,26 +119,12 @@
                                    Text="{Binding ElementName=Icon, Path=(controls:Icon.RenderCost).TotalMilliseconds, StringFormat={}{0:F2}}" />
                     </Grid>
 
-                    <Button HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            Command="{Binding Format}"
-                            Content="Format Code" />
-                    <Button HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            Command="{Binding Import}"
-                            Content="Import Svg" />
-                    <Button HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            Command="{Binding OpenInBrowser}"
-                            Content="Open in Browser" />
-                    <Button HorizontalAlignment="Stretch"
-                            HorizontalContentAlignment="Center"
-                            Command="{Binding Save}"
-                            Content="Save" />
-
-                    <TextBlock Classes="h" Text="Svg Stretch:" />
+                    <TextBlock VerticalAlignment="Center"
+                               Classes="h"
+                               Text="Stretch:" />
                     <ComboBox x:Name="Stretch"
                               HorizontalAlignment="Stretch"
+                              BorderThickness="0"
                               Items="{sample:Enum Stretch}"
                               SelectedIndex="2" />
 
@@ -202,7 +189,7 @@
                Margin="12" />
 
 
-        <!-- Information -->
+        <!-- Buttons -->
         <Border Grid.Column="3"
                 Margin="0,12,12,12"
                 BorderBrush="LightGray"
@@ -210,40 +197,78 @@
             <StackPanel Margin="12"
                         Orientation="Vertical"
                         Spacing="10">
-                <Button HorizontalAlignment="Stretch"
-                        Background="Transparent"
-                        Command="{Binding ViewGithub}">
+
+                <Button Command="{Binding Format}">
                     <Grid ColumnDefinitions="Auto,8,*">
                         <controls:Icon Width="24"
                                        Height="24"
-                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/github-fill.svg" />
+                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/xml.svg" />
                         <TextBlock Grid.Column="2"
                                    VerticalAlignment="Center"
-                                   Text="View it in Github" />
+                                   Text="Format code" />
                     </Grid>
                 </Button>
-                <Button HorizontalAlignment="Stretch"
-                        Background="Transparent"
-                        Command="{Binding BugReport}">
+                <Button Command="{Binding Import}">
                     <Grid ColumnDefinitions="Auto,8,*">
                         <controls:Icon Width="24"
                                        Height="24"
-                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/bug-fill.svg" />
+                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/import.svg" />
+                        <TextBlock Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   Text="Import svg" />
+                    </Grid>
+                </Button>
+                <Button Command="{Binding Save}">
+                    <Grid ColumnDefinitions="Auto,8,*">
+                        <controls:Icon Width="24"
+                                       Height="24"
+                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/save.svg" />
+                        <TextBlock Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   Text="Save as" />
+                    </Grid>
+                </Button>
+                <Button Command="{Binding OpenInBrowser}">
+                    <Grid ColumnDefinitions="Auto,8,*">
+                        <controls:Icon Width="24"
+                                       Height="24"
+                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/edge.svg" />
+                        <TextBlock Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   Text="View it in browser" />
+                    </Grid>
+                </Button>
+
+                <Separator Margin="12,6" Background="LightGray" />
+
+                <Button Command="{Binding ViewGithub}">
+                    <Grid ColumnDefinitions="Auto,8,*">
+                        <controls:Icon Width="24"
+                                       Height="24"
+                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/github.svg" />
+                        <TextBlock Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   Text="Repo" />
+                    </Grid>
+                </Button>
+                <Button Command="{Binding BugReport}">
+                    <Grid ColumnDefinitions="Auto,8,*">
+                        <controls:Icon Width="24"
+                                       Height="24"
+                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/bug.svg" />
                         <TextBlock Grid.Column="2"
                                    VerticalAlignment="Center"
                                    Text="Report an issue" />
                     </Grid>
                 </Button>
-                <Button HorizontalAlignment="Stretch"
-                        Background="Transparent"
-                        Command="{Binding ViewKnownIssues}">
+                <Button Command="{Binding ViewKnownIssues}">
                     <Grid ColumnDefinitions="Auto,8,*">
                         <controls:Icon Width="24"
                                        Height="24"
-                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/issue-fill.svg" />
+                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/info.svg" />
                         <TextBlock Grid.Column="2"
                                    VerticalAlignment="Center"
-                                   Text="View known issues" />
+                                   Text="Known issues" />
                     </Grid>
                 </Button>
             </StackPanel>

@@ -22,6 +22,8 @@ public static class SvgDefaultValues
     public const string SvgUnitObjectBoundingBox  = "global::Nlnet.Avalonia.Svg.SvgUnit.objectBoundingBox";
     public const string SvgMarkerUnitsStrokeWidth = "global::Nlnet.Avalonia.Svg.SvgMarkerUnits.strokeWidth";
     public const string SvgMarkerOrientAuto       = "global::Nlnet.Avalonia.Svg.SvgMarkerOrient.Default";
+    public const string RefXDefault               = "global::Nlnet.Avalonia.Svg.RefX.Default";
+    public const string RefYDefault               = "global::Nlnet.Avalonia.Svg.RefY.Default";
 }
 
 /// <summary>

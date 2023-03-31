@@ -2,9 +2,11 @@
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(typeof(RefX), SvgDefaultValues.Zero, false)]
-public class RefXSetter : AbstractEnumSetter<RefX>
+[SetterGenerator(typeof(RefX), SvgDefaultValues.RefXDefault, true)]
+public class RefXSetter : AbstractDeferredSetter
 {
+    private RefX? _value;
+
     public override void Set(ISvgTag tag)
     {
         if (tag is not IRefXSetter setter)
@@ -12,11 +14,11 @@ public class RefXSetter : AbstractEnumSetter<RefX>
             return;
         }
 
-        setter.RefX = Value;
+        setter.RefX = _value;
     }
 
     public override void InitializeValue(string setterValue)
     {
-        Value = setterValue.ToRefX();
+        _value = setterValue.ToRefX();
     }
 }

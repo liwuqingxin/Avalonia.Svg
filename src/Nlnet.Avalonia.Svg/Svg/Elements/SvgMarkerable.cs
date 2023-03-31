@@ -152,10 +152,58 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
         {
             using (dc.PushTransformContainer())
             {
-                var halfW = markerBounds.Width  / 2;
-                var halfH = markerBounds.Height / 2;
-                var mw    = marker.MarkerWidth;
-                var mh    = marker.MarkerHeight;
+                var halfW = 0d;
+                var halfH = 0d;
+
+                if (marker.RefX != null)
+                {
+                    switch (marker.RefX.Mode)
+                    {
+                        case RefXMode.left:
+                            halfW = 0;
+                            break;
+                        case RefXMode.center:
+                            halfW = markerBounds.Width / 2;
+                            break;
+                        case RefXMode.right:
+                            halfW = markerBounds.Width;
+                            break;
+                        case RefXMode.number:
+                            halfW = marker.RefX.Value;
+                            break;
+                        case RefXMode.percentage:
+                            halfW = markerBounds.Width * marker.RefX.Value;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+                if (marker.RefY != null)
+                {
+                    switch (marker.RefY.Mode)
+                    {
+                        case RefYMode.top:
+                            halfH = 0;
+                            break;
+                        case RefYMode.center:
+                            halfH = markerBounds.Height / 2;
+                            break;
+                        case RefYMode.bottom:
+                            halfH = markerBounds.Height;
+                            break;
+                        case RefYMode.number:
+                            halfH = marker.RefY.Value;
+                            break;
+                        case RefYMode.percentage:
+                            halfH = markerBounds.Height * marker.RefY.Value;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+
+                var mw = marker.MarkerWidth;
+                var mh = marker.MarkerHeight;
                 if (mw != null && mh != null)
                 {
                     if (marker.MarkerUnits == SvgMarkerUnits.strokeWidth)
