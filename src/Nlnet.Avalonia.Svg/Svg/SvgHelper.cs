@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Media;
+using Nlnet.Avalonia.Svg.Utils;
 
 namespace Nlnet.Avalonia.Svg
 {
@@ -163,6 +164,79 @@ namespace Nlnet.Avalonia.Svg
             scale   = fill ? Math.Max(scaleX, scaleY) : Math.Min(scaleX, scaleY);
             offsetX = (parentSize.Width  - childSize.Width  * scale) / 2;
             offsetY = (parentSize.Height - childSize.Height * scale) / 2;
+        }
+
+        /// <summary>
+        /// Push a ViewBox if it exists without pushing transform container.
+        /// </summary>
+        /// <param name="viewBoxSetter"></param>
+        /// <param name="stack"></param>
+        /// <param name="dc"></param>
+        /// <param name="availableSize"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        internal static void PushViewBox(this IViewBoxSetter viewBoxSetter, StateStack stack, DrawingContext dc, Size availableSize)
+        {
+            var viewBox = viewBoxSetter.ViewBox;
+            if (viewBox == null)
+            {
+                return;
+            }
+
+            stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(-viewBox.X, -viewBox.Y)));
+
+            var viewBoxSize = new Size(viewBox.Width, viewBox.Height);
+            var ratio = (viewBoxSetter as IPreserveAspectRatioSetter)?.PreserveAspectRatio;
+            ratio ??= new PreserveAspectRatio(PreserveAspectRatioAlign.xMidYMid, PreserveAspectRatioMeetOrSlice.meet);
+
+            if (ratio.Align == PreserveAspectRatioAlign.none)
+            {
+                SvgHelper.GetFillFactors(availableSize, viewBoxSize, out var scaleX, out var scaleY);
+                stack.Push(dc.PushPostTransform(Matrix.CreateScale(scaleX, scaleY)));
+            }
+            else
+            {
+                var isSlice = ratio.MeetOrSlice == PreserveAspectRatioMeetOrSlice.slice;
+                SvgHelper.GetUniformFactors(availableSize, viewBoxSize, isSlice, out var scale, out var offsetX, out var offsetY);
+                switch (ratio.Align)
+                {
+                    case PreserveAspectRatioAlign.xMinYMin:
+                        offsetX = 0;
+                        offsetY = 0;
+                        break;
+                    case PreserveAspectRatioAlign.xMidYMin:
+                        offsetY = 0;
+                        break;
+                    case PreserveAspectRatioAlign.xMaxYMin:
+                        offsetX *= 2;
+                        offsetY = 0;
+                        break;
+                    case PreserveAspectRatioAlign.xMinYMid:
+                        offsetX = 0;
+                        break;
+                    case PreserveAspectRatioAlign.xMidYMid:
+                        break;
+                    case PreserveAspectRatioAlign.xMaxYMid:
+                        offsetX *= 2;
+                        break;
+                    case PreserveAspectRatioAlign.xMinYMax:
+                        offsetX = 0;
+                        offsetY *= 2;
+                        break;
+                    case PreserveAspectRatioAlign.xMidYMax:
+                        offsetY *= 2;
+                        break;
+                    case PreserveAspectRatioAlign.xMaxYMax:
+                        offsetX *= 2;
+                        offsetY *= 2;
+                        break;
+                    case PreserveAspectRatioAlign.none:
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                stack.Push(dc.PushPostTransform(Matrix.CreateScale(scale, scale)));
+                stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(offsetX, offsetY)));
+            }
         }
     }
 }

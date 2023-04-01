@@ -142,7 +142,7 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
 
     private void RenderMarkerOnPoint(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPoint point, double radians)
     {
-        var stack = new Stack<DrawingContext.PushedState>();
+        using var stack = new StateStack();
 
         // 1. Move to point and rotate it.
         var x = point.X;
@@ -185,12 +185,6 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
         foreach (var child in marker.Children!.OfType<ISvgRenderable>())
         {
             child.Render(dc, ctx);
-        }
-
-        while (stack.Count > 0)
-        {
-            var v = stack.Pop() as IDisposable;
-            v.Dispose();
         }
     }
 

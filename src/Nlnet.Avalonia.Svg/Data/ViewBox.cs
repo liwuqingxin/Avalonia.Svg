@@ -25,20 +25,23 @@ namespace Nlnet.Avalonia.Svg
     [TypeConverter(typeof(ViewBoxConverter))]
     public class ViewBox
     {
-        public Point  Origin { get; }
-        public double Width  { get; }
+        public double X { get; }
+
+        public double Y { get; }
+
+        public double Width { get; }
+
         public double Height { get; }
 
-        public ViewBox(Point origin, double width, double height)
-        {
-            Origin = origin;
-            Width  = width;
-            Height = height;
-        }
+        public Size Size => new(Width, Height);
 
-        public ViewBox(double x, double y, double width, double height)
+        public Rect Bounds => new(X, Y, Width, Height);
+
+        private ViewBox(double x, double y, double width, double height)
         {
-            Origin = new Point(x, y);
+            X = x;
+            Y = y;
+
             Width  = width;
             Height = height;
         }
