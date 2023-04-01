@@ -1,6 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.CompileGenerator;
+using System.Drawing;
+using Point = Avalonia.Point;
 
 namespace Nlnet.Avalonia.Svg;
 
@@ -31,9 +33,12 @@ public class SvgLine : SvgMarkerable, ISvgShape, ISvgGraphic, ISvgRenderable, IS
     {
         if (OriginalGeometry is LineGeometry line)
         {
-            var point  = line.StartPoint;
-            var radian = CalculateRadian(line.StartPoint, line.EndPoint);
-            RenderMarkerOnPoint(dc, ctx, marker, point, radian, true);
+            var point1  = line.StartPoint;
+            var point2 = line.EndPoint;
+            EnsureTransform(ref point1);
+            EnsureTransform(ref point2);
+            var radian = CalculateRadian(point1, point2);
+            RenderMarkerOnPoint(dc, ctx, marker, point1, radian, true);
         }
     }
 
@@ -41,9 +46,12 @@ public class SvgLine : SvgMarkerable, ISvgShape, ISvgGraphic, ISvgRenderable, IS
     {
         if (OriginalGeometry is LineGeometry line)
         {
-            var point   = line.EndPoint;
-            var radian = CalculateRadian(line.StartPoint, line.EndPoint);
-            RenderMarkerOnPoint(dc, ctx, marker, point, radian, false);
+            var point1 = line.StartPoint;
+            var point2 = line.EndPoint;
+            EnsureTransform(ref point1);
+            EnsureTransform(ref point2);
+            var radian = CalculateRadian(point1, point2);
+            RenderMarkerOnPoint(dc, ctx, marker, point2, radian, true);
         }
     }
 

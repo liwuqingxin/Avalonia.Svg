@@ -40,6 +40,14 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
         return (angle1 + angle2) / 2;
     }
 
+    protected void EnsureTransform(ref Point point)
+    {
+        if (Transform != null)
+        {
+            point = Transform.Value.Transform(point);
+        }
+    }
+
     private static void WithOrientMode(IMarkerOrientSetter orientSetter, bool isFirstPoint, ref double radian)
     {
         if (orientSetter.MarkerOrient?.Mode == SvgMarkerOrientMode.auto_start_reverse && isFirstPoint)
