@@ -113,42 +113,29 @@ namespace Nlnet.Avalonia.Svg
                 dc.DrawGeometry(fill, GetPen(), RenderGeometry);
 
                 // Render Markers
-                if (this is ISvgMarkerable markerable && TryGetRenderedGeometryEffectivePath(RenderGeometry, out var path) && path != null)
+                if (this is ISvgMarkerable markerable)
                 {
                     var marker = this.GetPropertyValue<IMarkerSetter, string>();
 
                     var markerStart = this.GetPropertyValue<IMarkerStartSetter, string>() ?? marker;
                     if (TryGetMarker(markerStart, ctx, out var marker1))
                     {
-                        markerable.RenderMarkerStart(dc, ctx, marker1!, path);
+                        markerable.RenderMarkerStart(dc, ctx, marker1!);
                     }
 
                     var markerMid = this.GetPropertyValue<IMarkerMidSetter, string>() ?? marker;
                     if (TryGetMarker(markerMid, ctx, out var marker2))
                     {
-                        markerable.RenderMarkerMid(dc, ctx, marker2!, path);
+                        markerable.RenderMarkerMid(dc, ctx, marker2!);
                     }
 
                     var markerEnd = this.GetPropertyValue<IMarkerEndSetter, string>() ?? marker;
                     if (TryGetMarker(markerEnd, ctx, out var marker3))
                     {
-                        markerable.RenderMarkerEnd(dc, ctx, marker3!, path);
+                        markerable.RenderMarkerEnd(dc, ctx, marker3!);
                     }
                 }
             }
-        }
-
-        private static bool TryGetRenderedGeometryEffectivePath(Geometry geometry, out SKPath? path)
-        {
-            var propEffectivePath = geometry.PlatformImpl?.GetType().GetProperty("EffectivePath", BindingFlags.Instance | BindingFlags.Public);
-            if (propEffectivePath == null)
-            {
-                path = null;
-                return false;
-            }
-
-            path = propEffectivePath.GetValue(geometry!.PlatformImpl) as SKPath;
-            return true;
         }
 
         private bool TryGetMarker(string? href, ISvgContext ctx, out SvgMarker? marker)

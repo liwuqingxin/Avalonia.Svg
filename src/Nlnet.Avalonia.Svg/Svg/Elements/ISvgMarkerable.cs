@@ -13,10 +13,10 @@ namespace Nlnet.Avalonia.Svg
     /// </summary>
     public interface ISvgMarkerable : IMarkerStartSetter, IMarkerEndSetter, IMarkerMidSetter, IMarkerSetter
     {
-        public void RenderMarkerStart(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath);
+        public void RenderMarkerStart(DrawingContext dc, ISvgContext ctx, SvgMarker marker);
         
-        public void RenderMarkerEnd(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath);
+        public void RenderMarkerEnd(DrawingContext dc, ISvgContext ctx, SvgMarker marker);
 
-        public void RenderMarkerMid(DrawingContext dc, ISvgContext ctx, SvgMarker marker, SKPath effectivePath);
+        public void RenderMarkerMid(DrawingContext dc, ISvgContext ctx, SvgMarker marker);
     }
 }
