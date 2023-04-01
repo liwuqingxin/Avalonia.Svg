@@ -3,6 +3,7 @@ using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using SkiaSharp;
 using System.Reflection;
+using Nlnet.Avalonia.Svg.Utils;
 
 namespace Nlnet.Avalonia.Svg
 {
@@ -27,11 +28,6 @@ namespace Nlnet.Avalonia.Svg
 
                 _renderGeometry = new GeometryGroup();
                 _renderGeometry.Children.Add(OriginalGeometry);
-
-                if (Transform != null)
-                {
-                    _renderGeometry.Transform = Transform;
-                }
 
                 var fillRule = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
 
@@ -108,32 +104,40 @@ namespace Nlnet.Avalonia.Svg
             ApplyBrushOpacity(fill, fillOpacity);
             ApplyBrushTransform(fill);
 
-            using (dc.PushOpacity(Opacity ?? 1d))
+            using var stack = new StateStack();
+            if (Opacity != null)
             {
-                dc.DrawGeometry(fill, GetPen(), RenderGeometry);
+                stack.Push(dc.PushOpacity(Opacity.Value));
+            }
+            if (Transform != null)
+            {
+                stack.Push(dc.PushPostTransform(Transform.Value));
+                stack.Push(dc.PushTransformContainer());
+            }
 
-                // Render Markers
-                if (this is ISvgMarkerable markerable)
+            dc.DrawGeometry(fill, GetPen(), RenderGeometry);
+
+            // Render Markers
+            if (this is ISvgMarkerable markerable)
+            {
+                var marker = this.GetPropertyValue<IMarkerSetter, string>();
+
+                var markerStart = this.GetPropertyValue<IMarkerStartSetter, string>() ?? marker;
+                if (TryGetMarker(markerStart, ctx, out var marker1))
                 {
-                    var marker = this.GetPropertyValue<IMarkerSetter, string>();
+                    markerable.RenderMarkerStart(dc, ctx, marker1!);
+                }
 
-                    var markerStart = this.GetPropertyValue<IMarkerStartSetter, string>() ?? marker;
-                    if (TryGetMarker(markerStart, ctx, out var marker1))
-                    {
-                        markerable.RenderMarkerStart(dc, ctx, marker1!);
-                    }
+                var markerMid = this.GetPropertyValue<IMarkerMidSetter, string>() ?? marker;
+                if (TryGetMarker(markerMid, ctx, out var marker2))
+                {
+                    markerable.RenderMarkerMid(dc, ctx, marker2!);
+                }
 
-                    var markerMid = this.GetPropertyValue<IMarkerMidSetter, string>() ?? marker;
-                    if (TryGetMarker(markerMid, ctx, out var marker2))
-                    {
-                        markerable.RenderMarkerMid(dc, ctx, marker2!);
-                    }
-
-                    var markerEnd = this.GetPropertyValue<IMarkerEndSetter, string>() ?? marker;
-                    if (TryGetMarker(markerEnd, ctx, out var marker3))
-                    {
-                        markerable.RenderMarkerEnd(dc, ctx, marker3!);
-                    }
+                var markerEnd = this.GetPropertyValue<IMarkerEndSetter, string>() ?? marker;
+                if (TryGetMarker(markerEnd, ctx, out var marker3))
+                {
+                    markerable.RenderMarkerEnd(dc, ctx, marker3!);
                 }
             }
         }
