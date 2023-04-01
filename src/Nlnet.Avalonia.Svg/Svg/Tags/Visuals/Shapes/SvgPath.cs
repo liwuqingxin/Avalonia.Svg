@@ -21,6 +21,7 @@ public class SvgPath : SvgMarkerable, ISvgShape, ISvgGraphic, ISvgRenderable, IS
         {
             var figure = path.Figures[0];
             var point  = figure.StartPoint;
+            EnsureTransform(ref point);
             var radian = 0d;
             
             RenderMarkerOnPoint(dc, ctx, marker, point, radian, true);

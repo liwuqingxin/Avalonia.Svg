@@ -71,7 +71,7 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
         var y = point.Y;
         stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(x, y)));
         stack.Push(dc.PushTransformContainer());
-        stack.Push(dc.PushPostTransform(MatrixUtil.CreateRotationRadians(radian)));
+        stack.Push(dc.PushPostTransform(MatrixUtil.CreateRotationRadian(radian)));
         stack.Push(dc.PushTransformContainer());
 
         // 2. Apply unit.

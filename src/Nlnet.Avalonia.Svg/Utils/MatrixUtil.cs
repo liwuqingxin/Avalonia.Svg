@@ -16,25 +16,25 @@ namespace Nlnet.Avalonia.Svg.Utils
         }
 
 
-        public static double AngleToRadians(double angle)
+        public static double AngleToRadian(double angle)
         {
             return angle * Math.PI / 180;
         }
 
-        public static double RadiansToAngle(double radians)
+        public static double RadianToAngle(double radian)
         {
-            return radians * 180 / Math.PI;
+            return radian * 180 / Math.PI;
         }
 
-        public static Matrix CreateRotationRadians(double radians)
+        public static Matrix CreateRotationRadian(double radian)
         {
-            return CreateRotationRadians(radians, 0.0, 0.0);
+            return CreateRotationRadian(radian, 0.0, 0.0);
         }
 
-        public static Matrix CreateRotationRadians(double radians, double centerX, double centerY)
+        public static Matrix CreateRotationRadian(double radian, double centerX, double centerY)
         {
-            var m12     = Math.Sin(radians);
-            var num     = Math.Cos(radians);
+            var m12     = Math.Sin(radian);
+            var num     = Math.Cos(radian);
             var offsetX = centerX * (1.0 - num) + centerY * m12;
             var offsetY = centerY * (1.0 - num) - centerX * m12;
 
@@ -51,7 +51,7 @@ namespace Nlnet.Avalonia.Svg.Utils
             return new Matrix(scaleX, 0.0, 0.0, scaleY, 0.0, 0.0);
         }
 
-        public static Matrix CreateSkewRadians(double skewX, double skewY)
+        public static Matrix CreateSkewRadian(double skewX, double skewY)
         {
             return new Matrix(1.0, Math.Tan(skewY), Math.Tan(skewX), 1.0, 0.0, 0.0);
         }
