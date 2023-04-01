@@ -160,11 +160,10 @@ namespace Nlnet.Avalonia.Svg
 
         public static Transform ToTransform(this string valueString)
         {
-            //TODO 支持空格间隔
-            var regex = new Regex("(translate\\(.*?\\s*?[,\\s]\\s*?.*?\\))|(scale\\(.*?\\s*?[,\\s]\\s*?.*?\\))|(rotate\\(.*?\\))|(matrix\\(.*?\\))");
-            var matches = regex.Matches(valueString);
-
+            var regex     = new Regex("(translate\\(.*?\\s*?[,\\s]\\s*?.*?\\))|(scale\\(.*?\\s*?[,\\s]\\s*?.*?\\))|(rotate\\(.*?\\))|(matrix\\(.*?\\))");
+            var matches   = regex.Matches(valueString);
             var transform = new TransformGroup();
+
             foreach (Match match in matches)
             {
                 if (match.Value.StartsWith("translate"))
@@ -177,33 +176,25 @@ namespace Nlnet.Avalonia.Svg
                     var x = double.Parse(translateStrings[0]);
                     var y = double.Parse(translateStrings[1]);
 
-                    // Coordinate system of Avalonia is not affected by rotation and scaling, but svg's does.
-                    // So the translate transform should be inserted before all existed transforms.
                     transform.Children.Insert(0, new TranslateTransform(x, y));
                 }
                 else if (match.Value.StartsWith("rotate"))
                 {
-                    var rotateStrings = match.Value[7..^1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    var rotateStrings = match.Value[7..^1].Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     var angle         = double.Parse(rotateStrings[0]);
 
-                    // Default center point is the offset point of transform.
-                    var centerX = transform.Value.M31;
-                    var centerY = transform.Value.M32;
+                    var centerX = 0d;
+                    var centerY = 0d;
                     if (rotateStrings.Length > 1)
                     {
-                        centerX += double.Parse(rotateStrings[1]);
+                        centerX = double.Parse(rotateStrings[1]);
                     }
                     if (rotateStrings.Length > 2)
                     {
-                        centerY += double.Parse(rotateStrings[2]);
+                        centerY = double.Parse(rotateStrings[2]);
                     }
 
-                    // If scale transform changed the face of the geometry, reverse rotation.
-                    if (transform.Value.M11 * transform.Value.M22 < 0)
-                    {
-                        angle = -angle;
-                    }
-                    transform.Children.Add(new RotateTransform(angle, centerX, centerY));
+                    transform.Children.Insert(0, new RotateTransform(angle, centerX, centerY));
                 }
                 else if (match.Value.StartsWith("scale"))
                 {
@@ -213,18 +204,9 @@ namespace Nlnet.Avalonia.Svg
                         continue;
                     }
 
-                    var centerX = transform.Value.M31;
-                    var centerY = transform.Value.M32;
-
-                    // Move to the (0,0) to perform scaling.
-                    transform.Children.Add(new TranslateTransform(-centerX, -centerY));
-                    {
-                        var x = double.Parse(scaleStrings[0]);
-                        var y = double.Parse(scaleStrings[1]);
-                        transform.Children.Add(new ScaleTransform(x, y));
-                    }
-                    // Restore the translate transform.
-                    transform.Children.Add(new TranslateTransform(centerX, centerY));
+                    var x = double.Parse(scaleStrings[0]);
+                    var y = double.Parse(scaleStrings[1]);
+                    transform.Children.Insert(0, new ScaleTransform(x, y));
                 }
                 else if (match.Value.StartsWith("matrix"))
                 {
@@ -241,7 +223,7 @@ namespace Nlnet.Avalonia.Svg
                     var e = double.Parse(matrixStrings[4]);
                     var f = double.Parse(matrixStrings[5]);
 
-                    transform.Children.Add(new MatrixTransform(new Matrix(a, b, c, d, e, f)));
+                    transform.Children.Insert(0, new MatrixTransform(new Matrix(a, b, c, d, e, f)));
                 }
             }
 
