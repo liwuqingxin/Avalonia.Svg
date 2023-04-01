@@ -1,8 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
-using SkiaSharp;
-using System.Reflection;
 using Nlnet.Avalonia.Svg.Utils;
 
 namespace Nlnet.Avalonia.Svg
@@ -11,31 +9,7 @@ namespace Nlnet.Avalonia.Svg
     {
         #region ISvgShape
 
-        private GeometryGroup? _renderGeometry;
-
         public Geometry? OriginalGeometry { get; private set; }
-
-        public GeometryGroup? RenderGeometry => EnsureRenderGeometry();
-
-        private GeometryGroup? EnsureRenderGeometry()
-        {
-            if (_renderGeometry == null)
-            {
-                if (OriginalGeometry == null)
-                {
-                    return null;
-                }
-
-                _renderGeometry = new GeometryGroup();
-                _renderGeometry.Children.Add(OriginalGeometry);
-
-                var fillRule = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
-
-                _renderGeometry.FillRule = fillRule;
-            }
-
-            return _renderGeometry;
-        }
 
         #endregion
 
@@ -71,10 +45,6 @@ namespace Nlnet.Avalonia.Svg
 
         public override Rect Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;
 
-        public override Rect RenderBounds => RenderGeometry?.Bounds ?? Rect.Empty;
-
-
-
         public sealed override void OnPropertiesFetched()
         {
             OriginalGeometry = OnCreateOriginalGeometry();
@@ -93,7 +63,7 @@ namespace Nlnet.Avalonia.Svg
         /// <param name="ctx"></param>
         protected override void RenderCore(DrawingContext dc, ISvgContext ctx)
         {
-            if (OriginalGeometry == null || RenderGeometry == null)
+            if (OriginalGeometry == null)
             {
                 return;
             }
@@ -115,7 +85,7 @@ namespace Nlnet.Avalonia.Svg
                 stack.Push(dc.PushTransformContainer());
             }
 
-            dc.DrawGeometry(fill, GetPen(), RenderGeometry);
+            dc.DrawGeometry(fill, GetPen(), OriginalGeometry);
 
             // Render Markers
             if (this is ISvgMarkerable markerable)
@@ -155,7 +125,6 @@ namespace Nlnet.Avalonia.Svg
             if (clone is SvgShape shape)
             {
                 shape.OriginalGeometry = this.OriginalGeometry;
-                shape._renderGeometry = this.RenderGeometry;
                 shape._pen = this._pen;
             }
 

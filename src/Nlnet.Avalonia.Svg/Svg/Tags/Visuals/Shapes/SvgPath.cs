@@ -12,6 +12,12 @@ public class SvgPath : SvgMarkerable, ISvgShape, ISvgGraphic, ISvgRenderable, IS
 
     protected override Geometry? OnCreateOriginalGeometry()
     {
+        var fillRule = this.GetPropertyStructValue<IFillRuleSetter, FillRule>();
+        if (Data is PathGeometry path)
+        {
+            path.FillRule = fillRule;
+        }
+
         return Data;
     }
 

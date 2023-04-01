@@ -24,9 +24,4 @@ public interface ISvgShape : ISvgTag,
     /// The original geometry that the svg describes.
     /// </summary>
     public Geometry? OriginalGeometry { get; }
-
-    /// <summary>
-    /// The geometry to render, which applied some transforms.
-    /// </summary>
-    public GeometryGroup? RenderGeometry { get; }
 }

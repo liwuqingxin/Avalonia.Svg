@@ -33,8 +33,6 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
 
     public virtual Rect Bounds => Rect.Empty;
 
-    public virtual Rect RenderBounds => Rect.Empty;
-
     /// <summary>
     /// Render the <see cref="ISvgRenderable"/>.
     /// </summary>
@@ -52,9 +50,9 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
                 var geometryGroup = new GeometryGroup();
                 foreach (var svgShape in clipPath.Children.OfType<ISvgShape>())
                 {
-                    if (svgShape.RenderGeometry != null)
+                    if (svgShape.OriginalGeometry != null)
                     {
-                        geometryGroup.Children.Add(svgShape.RenderGeometry);
+                        geometryGroup.Children.Add(svgShape.OriginalGeometry);
                     }
                 }
                 
@@ -126,7 +124,7 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
 
     private bool RenderWithMaskElement(DrawingContext dc, ISvgContext ctx, ISvgShape svgShape)
     {
-        if (svgShape.RenderGeometry == null)
+        if (svgShape.OriginalGeometry == null)
         {
             return false;
         }
@@ -148,9 +146,9 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
         }
 
         fill.Opacity = fillOpacity;
-        using (dc.PushGeometryClip(svgShape.RenderGeometry))
+        using (dc.PushGeometryClip(svgShape.OriginalGeometry))
         {
-            using (dc.PushOpacityMask(fill, svgShape.RenderGeometry.Bounds))
+            using (dc.PushOpacityMask(fill, svgShape.OriginalGeometry.Bounds))
             {
                 RenderCore(dc, ctx);
             }

@@ -26,11 +26,6 @@ namespace Nlnet.Avalonia.Svg
         public Rect Bounds { get; }
 
         /// <summary>
-        /// Rendered bounds of the <see cref="ISvgRenderable"/>. It takes stroke into account.
-        /// </summary>
-        public Rect RenderBounds { get; }
-
-        /// <summary>
         /// Render the <see cref="ISvgRenderable"/>.
         /// </summary>
         /// <param name="dc"></param>
