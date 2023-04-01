@@ -112,13 +112,16 @@ namespace Nlnet.Avalonia.Svg
                 matrix *= Matrix.CreateTranslation(xSetter.X ?? 0, ySetter.Y ?? 0);
             }
 
-            using (dc.PushPostTransform(matrix))
+            using (dc.PushOpacity(this.Opacity ?? 1))
             {
-                using (dc.PushTransformContainer())
+                using (dc.PushPostTransform(matrix))
                 {
-                    foreach (var child in Children.OfType<ISvgRenderable>())
+                    using (dc.PushTransformContainer())
                     {
-                        child.Render(dc, ctx);
+                        foreach (var child in Children.OfType<ISvgRenderable>())
+                        {
+                            child.Render(dc, ctx);
+                        }
                     }
                 }
             }
