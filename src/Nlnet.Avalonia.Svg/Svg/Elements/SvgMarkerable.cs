@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection.Metadata;
 using Avalonia;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.Utils;
@@ -15,26 +16,47 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
 
     protected static double CalculateRadian(Point p1, Point p2)
     {
+        // in second quadrant
         var angle = Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
         if (p2.X < p1.X)
         {
+            // in third quadrant && first quadrant
             angle += Math.PI;
+        }
+        if (p2.X > p1.X & p2.Y < p1.Y)
+        {
+            // in first quadrant
+            angle += Math.PI * 2;
         }
         return angle;
     }
 
     protected static double CalculateRadian(Point p1, Point p2, Point p3)
     {
+        // in second quadrant
         var angle1 = Math.Atan((p2.Y - p1.Y) / (p2.X - p1.X));
         if (p2.X < p1.X)
         {
+            // in third quadrant && first quadrant
             angle1 += Math.PI;
         }
+        if (p2.X > p1.X & p2.Y < p1.Y)
+        {
+            // in first quadrant
+            angle1 += Math.PI * 2;
+        }
 
+        // in second quadrant
         var angle2 = Math.Atan((p3.Y - p2.Y) / (p3.X - p2.X));
         if (p3.X < p2.X)
         {
+            // in third quadrant && first quadrant
             angle2 += Math.PI;
+        }
+        if (p3.X > p2.X & p3.Y < p2.Y)
+        {
+            // in first quadrant
+            angle2 += Math.PI * 2;
         }
 
         return (angle1 + angle2) / 2;
