@@ -1,4 +1,6 @@
-﻿namespace Nlnet.Avalonia.Svg;
+﻿using System;
+
+namespace Nlnet.Avalonia.Svg;
 
 public enum RefXMode
 {
@@ -16,4 +18,17 @@ public class RefX
     public RefXMode Mode { get; set; } = RefXMode.number;
 
     public double Value { get; set; }
+
+    public double Get(double width)
+    {
+        return Mode switch
+        {
+            RefXMode.left => 0,
+            RefXMode.center => width / 2,
+            RefXMode.right => width,
+            RefXMode.number => Value,
+            RefXMode.percentage => Value * width,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+    }
 }

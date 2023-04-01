@@ -144,101 +144,53 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
     {
         var stack = new Stack<DrawingContext.PushedState>();
 
-        var markerBounds = marker.RenderBounds;
-        var x            = point.X;
-        var y            = point.Y;
+        // 1. Move to point and rotate it.
+        var x = point.X;
+        var y = point.Y;
+        stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(x, y)));
+        stack.Push(dc.PushTransformContainer());
+        stack.Push(dc.PushPostTransform(MatrixUtil.CreateRotationRadians(radians)));
+        stack.Push(dc.PushTransformContainer());
 
-        using (dc.PushPostTransform(Matrix.CreateTranslation(x, y)))
+        // 2. Apply unit.
+        if (marker.MarkerUnits == SvgMarkerUnits.strokeWidth)
         {
-            using (dc.PushTransformContainer())
-            {
-                var halfW = 0d;
-                var halfH = 0d;
+            var strokeWidth = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
+            stack.Push(dc.PushPostTransform(Matrix.CreateScale(strokeWidth, strokeWidth)));
+            stack.Push(dc.PushTransformContainer());
+        }
 
-                if (marker.RefX != null)
-                {
-                    switch (marker.RefX.Mode)
-                    {
-                        case RefXMode.left:
-                            halfW = 0;
-                            break;
-                        case RefXMode.center:
-                            halfW = markerBounds.Width / 2;
-                            break;
-                        case RefXMode.right:
-                            halfW = markerBounds.Width;
-                            break;
-                        case RefXMode.number:
-                            halfW = marker.RefX.Value;
-                            break;
-                        case RefXMode.percentage:
-                            halfW = markerBounds.Width * marker.RefX.Value;
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-                if (marker.RefY != null)
-                {
-                    switch (marker.RefY.Mode)
-                    {
-                        case RefYMode.top:
-                            halfH = 0;
-                            break;
-                        case RefYMode.center:
-                            halfH = markerBounds.Height / 2;
-                            break;
-                        case RefYMode.bottom:
-                            halfH = markerBounds.Height;
-                            break;
-                        case RefYMode.number:
-                            halfH = marker.RefY.Value;
-                            break;
-                        case RefYMode.percentage:
-                            halfH = markerBounds.Height * marker.RefY.Value;
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
+        // 3. Get the real size of marker.
+        var markerWidth  = marker.MarkerWidth  ?? 3;
+        var markerHeight = marker.MarkerHeight ?? 3;
 
-                var mw = marker.MarkerWidth;
-                var mh = marker.MarkerHeight;
-                if (mw != null && mh != null)
-                {
-                    if (marker.MarkerUnits == SvgMarkerUnits.strokeWidth)
-                    {
-                        var strokeWidth = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
-                        mw *= strokeWidth;
-                        mh *= strokeWidth;
-                    }
-                    SvgHelper.GetUniformFactors(new Size(mw.Value, mh.Value), marker.RenderBounds.Size, false, out var scale, out var offsetX, out var offsetY);
+        // 4. Clip it.
+        //stack.Push(dc.PushClip(new Rect(new Size(markerWidth, markerHeight))));
 
-                    halfW *= scale;
-                    halfH *= scale;
-                    stack.Push(dc.PushPostTransform(Matrix.CreateScale(scale, scale)));
-                    stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(-halfW, -halfH)));
-                    stack.Push(dc.PushTransformContainer());
-                }
+        // 5. Scale the ViewBox.
+        if (marker.ViewBox != null)
+        {
+            SvgHelper.GetUniformFactors(new Size(markerWidth, markerHeight), new Size(marker.ViewBox.Width, marker.ViewBox.Height), false, out var scale, out var offsetX, out var offsetY);
+            stack.Push(dc.PushPostTransform(Matrix.CreateScale(scale, scale)));
+            stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(-offsetX, -offsetY)));
+            stack.Push(dc.PushTransformContainer());
+        }
 
-                
-                if (radians != 0)
-                {
-                    stack.Push(dc.PushPostTransform(MatrixUtil.CreateRotationRadians(radians, markerBounds.Width / 2, markerBounds.Height / 2)));
-                    stack.Push(dc.PushTransformContainer());
-                }
+        // 6. Move by RefX and RefY.
+        var refX = marker.RefX?.Get(markerWidth)  ?? 0;
+        var refY = marker.RefY?.Get(markerHeight) ?? 0;
+        stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(-refX, -refY)));
+        stack.Push(dc.PushTransformContainer());
 
-                foreach (var child in marker.Children!.OfType<ISvgRenderable>())
-                {
-                    child.Render(dc, ctx);
-                }
+        foreach (var child in marker.Children!.OfType<ISvgRenderable>())
+        {
+            child.Render(dc, ctx);
+        }
 
-                while (stack.Count > 0)
-                {
-                    var v = stack.Pop() as IDisposable;
-                    v.Dispose();
-                }
-            }
+        while (stack.Count > 0)
+        {
+            var v = stack.Pop() as IDisposable;
+            v.Dispose();
         }
     }
 
