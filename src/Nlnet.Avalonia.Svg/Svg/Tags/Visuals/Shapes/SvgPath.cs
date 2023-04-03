@@ -1,7 +1,9 @@
-﻿using System.Linq;
-using Avalonia;
+﻿using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.CompileGenerator;
+using Point = Avalonia.Point;
 
 namespace Nlnet.Avalonia.Svg;
 
@@ -32,31 +34,20 @@ public class SvgPath : SvgMarkerable, ISvgShape, ISvgGraphic, ISvgRenderable, IS
 
             if (figure.Segments is { Count: > 0 })
             {
-                var segment = figure.Segments[0];
-                radian = segment switch
-                {
-                    ArcSegment s1 => CalculateRadian(point, s1.Point),
-                    LineSegment s2 => CalculateRadian(point, s2.Point),
-                    PolyLineSegment s3 => CalculateRadian(point, s3.Points[0]),
-                    BezierSegment s4 => CalculateRadian(point, s4.Point1),
-                    QuadraticBezierSegment s5 => CalculateRadian(point, s5.Point1),
-                    _ => radian
-                };
+                var segment   = figure.Segments[0];
+                var nextPoint = GetFirstPoint(segment);
+                radian = CalculateRadian(point, nextPoint);
 
                 if (figure.IsClosed)
                 {
-                    var lastSegment = figure.Segments.Last();
-                    var radian2 = lastSegment switch
-                    {
-                        ArcSegment s1 => CalculateRadian(s1.Point, point),
-                        LineSegment s2 => CalculateRadian(s2.Point, point),
-                        PolyLineSegment s3 => CalculateRadian(s3.Points.Last(), point),
-                        BezierSegment s4 => CalculateRadian(s4.Point3, point),
-                        QuadraticBezierSegment s5 => CalculateRadian(s5.Point2, point),
-                        _ => radian
-                    };
+                    var lastSegment   = figure.Segments.Last();
+                    var previousPoint = GetLastPoint(lastSegment);
+                    var radian2       = CalculateRadian(previousPoint, point);
 
-                    radian = (radian2 + radian) / 2;
+                    if (double.IsNaN(radian2) == false)
+                    {
+                        radian = (radian2 + radian) / 2;
+                    }
                 }
             }
 
@@ -66,12 +57,103 @@ public class SvgPath : SvgMarkerable, ISvgShape, ISvgGraphic, ISvgRenderable, IS
 
     public override void RenderMarkerEnd(DrawingContext dc, ISvgContext ctx, SvgMarker marker)
     {
-        这里
-        // TODO
+        if (OriginalGeometry is PathGeometry { Figures.Count: > 0 } path)
+        {
+            var figure     = path.Figures.Last();
+            var firstPoint = figure.StartPoint;
+            var radian     = 0d;
+
+            if (figure.Segments is { Count: > 0 })
+            {
+                var segment = figure.Segments.Last();
+                var previousSegment = figure.Segments.Count > 1 ? figure.Segments[^2] : null;
+                var lastPoint = GetLastPoint(segment);
+
+                Point? previousPoint = null;
+                switch (segment)
+                {
+                    case ArcSegment s1:
+                        if (previousSegment != null)
+                        {
+                            previousPoint = GetLastPoint(previousSegment);
+                        }
+                        break;
+                    case LineSegment s2:
+                        if (previousSegment != null)
+                        {
+                            previousPoint = GetLastPoint(previousSegment);
+                        }
+                        break;
+                    case PolyLineSegment s3:
+                        if (s3.Points.Count > 1)
+                        {
+                            previousPoint = s3.Points[^2];
+                        }
+                        else
+                        {
+                            if (previousSegment != null)
+                            {
+                                previousPoint = GetLastPoint(previousSegment);
+                            }
+                        }
+                        break;
+                    case BezierSegment s4:
+                        previousPoint = s4.Point2;
+                        break;
+                    case QuadraticBezierSegment s5:
+                        previousPoint = s5.Point1;
+                        break;
+                }
+
+                if (previousPoint != null)
+                {
+                    radian = CalculateRadian(previousPoint.Value, lastPoint);
+                }
+
+                if (figure.IsClosed)
+                {
+                    var radian2 = CalculateRadian(lastPoint, firstPoint);
+                    if (double.IsNaN(radian2) == false)
+                    {
+                        radian = (radian2 + radian) / 2;
+                    }
+                }
+
+                RenderMarkerOnPoint(dc, ctx, marker, lastPoint, radian, true);
+            }
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Point GetFirstPoint(PathSegment segment)
+    {
+        return segment switch
+        {
+            ArcSegment s => s.Point,
+            LineSegment s => s.Point,
+            PolyLineSegment s => s.Points.First(),
+            BezierSegment s => s.Point1,
+            QuadraticBezierSegment s => s.Point1,
+            _ => throw new ArgumentOutOfRangeException(nameof(segment), segment, null)
+        };
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Point GetLastPoint(PathSegment segment)
+    {
+        return segment switch
+        {
+            ArcSegment s => s.Point,
+            LineSegment s => s.Point,
+            PolyLineSegment s => s.Points.Last(),
+            BezierSegment s => s.Point3,
+            QuadraticBezierSegment s => s.Point2,
+            _ => throw new ArgumentOutOfRangeException(nameof(segment), segment, null)
+        };
     }
 
     public override void RenderMarkerMid(DrawingContext dc, ISvgContext ctx, SvgMarker marker)
     {
-        // TODO
+        // TODO Implement this later.
     }
 }
