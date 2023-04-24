@@ -84,6 +84,11 @@ namespace Nlnet.Avalonia.Svg
                 stack.Push(dc.PushPostTransform(Transform.Value));
                 stack.Push(dc.PushTransformContainer());
             }
+            if (GetExtraTransform() is { } matrix)
+            {
+                stack.Push(dc.PushPostTransform(matrix));
+                stack.Push(dc.PushTransformContainer());
+            }
 
             dc.DrawGeometry(fill, GetPen(), OriginalGeometry);
 
@@ -110,6 +115,11 @@ namespace Nlnet.Avalonia.Svg
                     markerable.RenderMarkerEnd(dc, ctx, marker3!);
                 }
             }
+        }
+
+        protected virtual Matrix? GetExtraTransform()
+        {
+            return null;
         }
 
         private bool TryGetMarker(string? href, ISvgContext ctx, out SvgMarker? marker)
@@ -180,6 +190,7 @@ namespace Nlnet.Avalonia.Svg
 
         private void ApplyBrushTransform(LightBrush? lightBrush)
         {
+            return;
             if (lightBrush is not LightGradientBrush gradientBrush)
             {
                 return;

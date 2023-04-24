@@ -28,4 +28,13 @@ public class SvgCircle : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
 
         return null;
     }
+
+    protected override Matrix? GetExtraTransform()
+    {
+        if (R == null)
+        {
+            return null;
+        }
+        return Matrix.CreateTranslation(-R??0, -R??0);
+    }
 }

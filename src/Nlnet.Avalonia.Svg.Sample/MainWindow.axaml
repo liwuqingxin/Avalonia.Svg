@@ -71,7 +71,8 @@
                                        RenderTransformOrigin="0%,0%"
                                        ShowDiagnosis="{Binding #ShowDiagnosis.IsChecked}">
                             <controls:Icon.RenderTransform>
-                                <ScaleTransform ScaleX="{Binding ElementName=ZoomInSlider, Path=Value}" ScaleY="{Binding ElementName=ZoomInSlider, Path=Value}" />
+                                <ScaleTransform ScaleX="{Binding ElementName=ZoomInSlider, Path=Value}"
+                                                ScaleY="{Binding ElementName=ZoomInSlider, Path=Value}" />
                             </controls:Icon.RenderTransform>
                         </controls:Icon>
                     </Panel>
@@ -83,7 +84,8 @@
                          SelectedItem="{Binding Path=SelectedSvg}">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="sample:SvgFileItem">
-                            <TextBlock Text="{Binding Path=SvgFileName}" TextTrimming="{x:Static TextTrimming.CharacterEllipsis}" />
+                            <TextBlock Text="{Binding Path=SvgFileName}"
+                                       TextTrimming="{x:Static TextTrimming.CharacterEllipsis}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
@@ -101,6 +103,15 @@
                 <StackPanel Margin="12"
                             Orientation="Vertical"
                             Spacing="5">
+                    
+                    <Ellipse Width="100" Height="100">
+                        <Ellipse.Fill>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="100,0">
+                                <GradientStop Color="Red" Offset="0"/>
+                                <GradientStop Color="Green" Offset="100"/>
+                            </LinearGradientBrush>
+                        </Ellipse.Fill>
+                    </Ellipse>
 
                     <Grid ColumnDefinitions="*,Auto">
                         <TextBlock Classes="h" Text="Loading Cost:" />
