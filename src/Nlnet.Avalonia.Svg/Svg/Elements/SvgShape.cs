@@ -68,7 +68,7 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            var fill = this.GetPropertyValue<IFillSetter, LightBrush>()?.Clone();
+            var fill        = this.GetPropertyValue<IFillSetter, LightBrush>()?.Clone();
             var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
 
             ApplyBrushOpacity(fill, fillOpacity);
@@ -82,11 +82,6 @@ namespace Nlnet.Avalonia.Svg
             if (Transform != null)
             {
                 stack.Push(dc.PushPostTransform(Transform.Value));
-                stack.Push(dc.PushTransformContainer());
-            }
-            if (GetExtraTransform() is { } matrix)
-            {
-                stack.Push(dc.PushPostTransform(matrix));
                 stack.Push(dc.PushTransformContainer());
             }
 
@@ -117,11 +112,6 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        protected virtual Matrix? GetExtraTransform()
-        {
-            return null;
-        }
-
         private bool TryGetMarker(string? href, ISvgContext ctx, out SvgMarker? marker)
         {
             marker = null;
@@ -135,7 +125,7 @@ namespace Nlnet.Avalonia.Svg
             if (clone is SvgShape shape)
             {
                 shape.OriginalGeometry = this.OriginalGeometry;
-                shape._pen = this._pen;
+                shape._pen             = this._pen;
             }
 
             return clone;
@@ -190,7 +180,6 @@ namespace Nlnet.Avalonia.Svg
 
         private void ApplyBrushTransform(LightBrush? lightBrush)
         {
-            return;
             if (lightBrush is not LightGradientBrush gradientBrush)
             {
                 return;

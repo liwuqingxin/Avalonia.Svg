@@ -28,12 +28,11 @@ public class SvgRect : SvgShape, ISvgShape, ISvgGraphic, ISvgRenderable,
         {
             return null;
         }
-        return new RectangleGeometry(new Rect(0, 0, Width.Value, Height.Value));
-    }
 
-    protected override Matrix? GetExtraTransform()
-    {
-        return Matrix.CreateTranslation(X ?? 0, Y ?? 0);
+        var x = X ?? 0;
+        var y = Y ?? 0;
+
+        return new RectangleGeometry(new Rect(x, y, Width.Value, Height.Value));
     }
 
     //protected override ImmutableTransform? GetBrushTransform()
