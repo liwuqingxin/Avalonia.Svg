@@ -108,11 +108,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
                 return;
             }
 
-
             var xDocument  = LoadWithoutNamespace(code);
 
             var       builder = new StringBuilder();
-            using var writer  = GetXmlWriter(builder);
+            using var writer  = GetXmlWriter(builder, false);
             xDocument.WriteTo(writer);
             writer.Flush();
 
@@ -124,12 +123,37 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    private static XmlWriter GetXmlWriter(StringBuilder builder)
+    public void FormatWithNewLine()
+    {
+        try
+        {
+            var code = EditableSvgData;
+            if (code == null)
+            {
+                return;
+            }
+
+            var xDocument = LoadWithoutNamespace(code);
+
+            var       builder = new StringBuilder();
+            using var writer  = GetXmlWriter(builder, true);
+            xDocument.WriteTo(writer);
+            writer.Flush();
+
+            EditableSvgData = builder.ToString();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
+    }
+
+    private static XmlWriter GetXmlWriter(StringBuilder builder, bool newLineOnAttributes)
     {
         var writer = XmlWriter.Create(builder, new XmlWriterSettings()
         {
             DoNotEscapeUriAttributes = true,
-            NewLineOnAttributes      = true,
+            NewLineOnAttributes      = newLineOnAttributes,
             OmitXmlDeclaration       = true,
             Indent                   = true,
             IndentChars              = "    ",

@@ -218,6 +218,16 @@
                                    Text="Format code" />
                     </Grid>
                 </Button>
+                <Button Command="{Binding FormatWithNewLine}">
+                    <Grid ColumnDefinitions="Auto,8,*">
+                        <controls:Icon Width="24"
+                                       Height="24"
+                                       IconSvg="avares://Nlnet.Avalonia.Svg.Sample/Assets/xml.svg" />
+                        <TextBlock Grid.Column="2"
+                                   VerticalAlignment="Center"
+                                   Text="Format code with new line" />
+                    </Grid>
+                </Button>
                 <Button Command="{Binding Import}">
                     <Grid ColumnDefinitions="Auto,8,*">
                         <controls:Icon Width="24"
