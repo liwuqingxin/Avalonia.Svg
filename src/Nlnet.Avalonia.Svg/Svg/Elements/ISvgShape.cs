@@ -7,7 +7,7 @@ namespace Nlnet.Avalonia.Svg;
 /// Specifically: ‘circle’, ‘ellipse’, ‘line’, ‘path’, ‘polygon’, ‘polyline’ and ‘rect’.
 /// </summary>
 /// https://www.w3.org/TR/SVG2/shapes.html#TermShapeElement
-public interface ISvgShape : ISvgTag,
+public interface ISvgShape : ISvgTag, ISvgRenderable,
     IFillSetter,
     IFillRuleSetter,
     IFillOpacitySetter,

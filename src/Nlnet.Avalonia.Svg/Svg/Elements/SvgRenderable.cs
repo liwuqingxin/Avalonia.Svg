@@ -50,10 +50,16 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
                 var geometryGroup = new GeometryGroup();
                 foreach (var svgShape in clipPath.Children.OfType<ISvgShape>())
                 {
-                    if (svgShape.OriginalGeometry != null)
+                    if (svgShape.OriginalGeometry == null)
                     {
-                        geometryGroup.Children.Add(svgShape.OriginalGeometry);
+                        continue;
                     }
+                    var clone = svgShape.OriginalGeometry.Clone();
+                    if (svgShape.Transform != null)
+                    {
+                        clone.Transform = svgShape.Transform;
+                    }
+                    geometryGroup.Children.Add(clone);
                 }
                 
                 if (geometryGroup.Children.Count > 0)
