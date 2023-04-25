@@ -2,8 +2,7 @@
 using Avalonia;
 using Avalonia.Media;
 using System.Linq;
-using Avalonia.Rendering;
-using System.Threading.Tasks;
+using Nlnet.Avalonia.Svg.Utils;
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace Nlnet.Avalonia.Svg;
@@ -11,11 +10,7 @@ namespace Nlnet.Avalonia.Svg;
 /// <summary>
 /// Base class for all svg renderable tags that implements the <see cref="ISvgRenderable"/>
 /// </summary>
-public abstract class SvgRenderable : SvgTagBase, ISvgRenderable, 
-    IOpacitySetter, 
-    ITransformSetter,
-    IClipPathSetter,
-    IMaskSetter
+public abstract class SvgRenderable : SvgTagBase, ISvgRenderable
 {
     protected SvgRenderable()
     {
@@ -39,39 +34,15 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
     /// <param name="dc"></param>
     /// <param name="ctx"></param>
     public void Render(DrawingContext dc, ISvgContext ctx)
-    {
-        DrawingContext.PushedState? clipPathPushedState = null;
-
+    { 
+        using var stack = new StateStack();
+        
         // ClipPath
-        if (this.ClipPath != null && this.ClipPath.TryParseUrl(out var clipPathId, out _))
-        {
-            if (ctx.ClipPaths.TryGetValue(clipPathId, out var clipPath) && clipPath.Children != null)
-            {
-                var geometryGroup = new GeometryGroup();
-                foreach (var svgShape in clipPath.Children.OfType<ISvgShape>())
-                {
-                    if (svgShape.OriginalGeometry == null)
-                    {
-                        continue;
-                    }
-                    var clone = svgShape.OriginalGeometry.Clone();
-                    if (svgShape.Transform != null)
-                    {
-                        clone.Transform = svgShape.Transform;
-                    }
-                    geometryGroup.Children.Add(clone);
-                }
-                
-                if (geometryGroup.Children.Count > 0)
-                {
-                    geometryGroup.Transform = clipPath.Transform;
-                    geometryGroup.FillRule  = FillRule.NonZero;
-                    clipPathPushedState     = dc.PushGeometryClip(geometryGroup);
-                }
-            }
-        }
+        PushClipPath(dc, ctx, stack);
 
         // Mask
+        PushMask(dc, ctx, stack);
+        
         var rendered = false;
         if (this.Mask != null && this.Mask.TryParseUrl(out var maskId, out _))
         {
@@ -85,11 +56,57 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable,
         {
             RenderCore(dc, ctx);
         }
+    }
 
-        if (clipPathPushedState is IDisposable disposable3)
+    private void PushClipPath(DrawingContext dc, ISvgContext ctx, StateStack stack)
+    {
+        if (this.ClipPath == null || !this.ClipPath.TryParseUrl(out var clipPathId, out _))
         {
-            disposable3.Dispose();
+            return;
         }
+        if (!ctx.ClipPaths.TryGetValue(clipPathId, out var clipPath) || clipPath.Children == null)
+        {
+            return;
+        }
+        
+        var geometryGroup = new GeometryGroup();
+        foreach (var svgShape in clipPath.Children.OfType<ISvgShape>())
+        {
+            if (svgShape.OriginalGeometry == null)
+            {
+                continue;
+            }
+            var clone = svgShape.OriginalGeometry.Clone();
+            if (svgShape.Transform != null)
+            {
+                clone.Transform = svgShape.Transform;
+            }
+            geometryGroup.Children.Add(clone);
+        }
+
+        if (geometryGroup.Children.Count <= 0)
+        {
+            return;
+        }
+        geometryGroup.Transform = clipPath.Transform;
+        geometryGroup.FillRule  = FillRule.NonZero;
+                    
+        stack.Push(dc.PushGeometryClip(geometryGroup));
+    }
+
+    private void PushMask(DrawingContext dc, ISvgContext ctx, StateStack stack)
+    {
+        if (this.Mask == null || !this.Mask.TryParseUrl(out var maskId, out _))
+        {
+            return;
+        }
+        
+        if (!ctx.Masks.TryGetValue(maskId, out var mask) || mask.Children != null)
+        {
+            return;
+        }
+        
+        rendered = RenderWithMaskElementGroup(dc, ctx, mask);
     }
 
     private bool RenderWithMaskElementGroup(DrawingContext dc, ISvgContext ctx, ISvgContainer container)
