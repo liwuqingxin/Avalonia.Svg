@@ -106,23 +106,21 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable
             return;
         }
         
-        rendered = RenderWithMaskElementGroup(dc, ctx, mask);
+        PushMaskElement(dc, ctx, stack, mask);
     }
 
-    private bool RenderWithMaskElementGroup(DrawingContext dc, ISvgContext ctx, ISvgContainer container)
+    private void PushMaskElement(DrawingContext dc, ISvgContext ctx, StateStack stack, ISvgRenderable maskElement)
     {
-        if (container.Children == null)
+        if (maskElement.Children == null)
         {
-            return false;
+            return;
         }
-
-        var rendered = false;
-
-        using (dc.PushPostTransform(container.Transform?.Value ?? Matrix.Identity))
+        
+        using (dc.PushPostTransform(maskElement.Transform?.Value ?? Matrix.Identity))
         {
-            using (dc.PushOpacity(container.Opacity ?? 1))
+            using (dc.PushOpacity(maskElement.Opacity ?? 1))
             {
-                foreach (var renderable in container.Children.OfType<ISvgRenderable>())
+                foreach (var renderable in maskElement.Children.OfType<ISvgRenderable>())
                 {
                     if (renderable is ISvgShape shape)
                     {
