@@ -178,11 +178,11 @@ namespace Nlnet.Avalonia.Svg
 
             if (double.IsNaN(width) || double.IsInfinity(width))
             {
-                return Size.Empty;
+                return new Size();
             }
             if (double.IsNaN(height) || double.IsInfinity(height))
             {
-                return Size.Empty;
+                return new Size();
             }
 
             return new Size(width, height);

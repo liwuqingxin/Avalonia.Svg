@@ -1,5 +1,4 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -14,12 +13,8 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Input.Platform;
-using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Platform.Storage.FileIO;
-using JetBrains.Annotations;
 
 namespace Nlnet.Avalonia.Svg.Sample;
 
@@ -198,6 +193,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             _importInitDirectory = await File.ReadAllTextAsync(applicationCache);
         }
 
+        var startFolder = await _mainWindow.StorageProvider.TryGetFolderFromPathAsync(_importInitDirectory ?? "./");
         var storage = await _mainWindow.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions()
         {
             Title = "Import files",
@@ -212,7 +208,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
                     },
                 }
             },
-            SuggestedStartLocation = new BclStorageFolder(_importInitDirectory ?? "./"),
+            SuggestedStartLocation = startFolder,
         });
 
         var dir = $"./resources/import";
@@ -220,10 +216,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
         foreach (var file in storage)
         {
-            if (file.TryGetUri(out var uri))
-            {
-                _importInitDirectory = Path.GetDirectoryName(uri.AbsolutePath);
-            }
+            _importInitDirectory = Path.GetDirectoryName(file.Path.AbsolutePath);
 
             await using var stream = await file.OpenReadAsync();
             var reader = new StreamReader(stream);
@@ -290,14 +283,15 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
                 _saveInitDirectory = await File.ReadAllTextAsync(applicationCache);
             }
 
-            var svg = EditableSvgData;
+            var svg         = EditableSvgData;
+            var startFolder = await _mainWindow.StorageProvider.TryGetFolderFromPathAsync(_saveInitDirectory ?? "./");
             var storage = await _mainWindow.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
             {
                 Title                  = "Áí´æÎª",
                 DefaultExtension       = "svg",
                 ShowOverwritePrompt    = true,
                 SuggestedFileName      = SelectedSvg?.SvgFileName ?? "untitled",
-                SuggestedStartLocation = new BclStorageFolder(_saveInitDirectory ?? "./"),
+                SuggestedStartLocation = startFolder,
             });
 
             if (storage != null)
@@ -306,12 +300,9 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
                 stream.Write(Encoding.UTF8.GetBytes(svg));
                 await stream.FlushAsync();
 
-                if (storage.TryGetUri(out var uri))
-                {
-                    _saveInitDirectory = Path.GetDirectoryName(uri.AbsolutePath);
-                    Directory.CreateDirectory("./tmp");
-                    await File.WriteAllTextAsync(applicationCache, _saveInitDirectory);
-                }
+                _saveInitDirectory = Path.GetDirectoryName(storage.Path.AbsolutePath);
+                Directory.CreateDirectory("./tmp");
+                await File.WriteAllTextAsync(applicationCache, _saveInitDirectory);
             }
         }
         catch (Exception e)
@@ -346,7 +337,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     {
         try
         {
-            var clipboard = Application.Current?.Clipboard;
+            var clipboard = _mainWindow.Clipboard;
             if (clipboard == null)
             {
                 return;
@@ -399,7 +390,6 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    [NotifyPropertyChangedInvocator]
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

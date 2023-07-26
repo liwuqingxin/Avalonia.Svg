@@ -43,7 +43,7 @@ namespace Nlnet.Avalonia.Svg
 
 
 
-        public override Rect Bounds => OriginalGeometry?.Bounds ?? Rect.Empty;
+        public override Rect Bounds => OriginalGeometry?.Bounds ?? new Rect();
 
         public sealed override void OnPropertiesFetched()
         {
@@ -165,7 +165,7 @@ namespace Nlnet.Avalonia.Svg
             ApplyBrushOpacity(stroke, strokeOpacity);
             ApplyBrushTransform(stroke);
 
-            return _pen = new ImmutablePen(stroke, strokeWidth, dashStyle, lineCap, lineJoin, miterLimit);
+            return _pen = new Pen(stroke, strokeWidth, dashStyle, lineCap, lineJoin, miterLimit);
         }
 
         private void ApplyBrushOpacity(LightBrush? lightBrush, double opacity)

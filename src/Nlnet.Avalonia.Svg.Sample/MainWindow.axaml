@@ -57,7 +57,7 @@
                        IsVisible="{Binding #EditorVisible.IsChecked}"
                        ZIndex="100">
                     <Panel x:Name="IconComponent">
-                        <sample:Mesh Background="black"
+                        <sample:Mesh BlockBrush="black"
                                      BlockOpacity="1"
                                      Opacity="{Binding #BackGroundOpacity.Value}"
                                      UseMesh="{Binding #UseMeshBackground.IsChecked}" />
@@ -80,7 +80,7 @@
 
                 <ListBox Grid.Row="1"
                          Width="300"
-                         Items="{Binding Path=SvgList}"
+                         ItemsSource="{Binding Path=SvgList}"
                          SelectedItem="{Binding Path=SelectedSvg}">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="sample:SvgFileItem">
@@ -135,7 +135,7 @@
                                Text="Stretch:" />
                     <ComboBox x:Name="Stretch"
                               HorizontalAlignment="Stretch"
-                              Items="{sample:Enum Stretch}"
+                              ItemsSource="{sample:Enum Stretch}"
                               SelectedIndex="2" />
 
                     <CheckBox Content="Window Topmost" IsChecked="{Binding $parent[Window].Topmost}" />

@@ -26,7 +26,7 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable
 
     public string? Mask { get; set; }
 
-    public virtual Rect Bounds => Rect.Empty;
+    public virtual Rect Bounds { get; } = new Rect();
 
     /// <summary>
     /// Render the <see cref="ISvgRenderable"/>.

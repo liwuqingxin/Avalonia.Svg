@@ -17,8 +17,6 @@ namespace Nlnet.Avalonia.Svg.Test
 
         private static AppBuilder BuildAvaloniaAppCore()
         {
-            AvaloniaLocator.Current.GetService<AvaloniaNativePlatformOptions>();
-
             return AppBuilder.Configure<AvaloniaApp>()
                 .UsePlatformDetect()
                 .LogToTrace()

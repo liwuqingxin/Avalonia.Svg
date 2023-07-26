@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using Avalonia;
@@ -206,13 +205,13 @@ namespace Nlnet.Avalonia.Svg.Controls
         static Icon()
         {
             AffectsRender<Icon>(
-                IconProperty, 
-                IconFamilyProperty, 
-                IconSizeProperty, 
-                IconBrushProperty, 
-                IconStretchProperty, 
-                IconDataProperty, 
-                IconImageProperty, 
+                IconProperty,
+                IconFamilyProperty,
+                IconSizeProperty,
+                IconBrushProperty,
+                IconStretchProperty,
+                IconDataProperty,
+                IconImageProperty,
                 IconSvgDataProperty,
                 IconSvgProperty,
                 CheckedIconProperty,
@@ -287,14 +286,9 @@ namespace Nlnet.Avalonia.Svg.Controls
                 {
                     return;
                 }
-                var assetLoader = AvaloniaLocator.Current.GetService<IAssetLoader>();
-                using var stream = assetLoader?.Open(uri);
-                if (stream == null)
-                {
-                    return;
-                }
-                var reader = new StreamReader(stream);
-                var data = reader.ReadToEnd();
+                using var stream = AssetLoader.Open(uri);
+                var       reader = new StreamReader(stream);
+                var       data   = reader.ReadToEnd();
 
                 icon._svg = string.IsNullOrWhiteSpace(data) ? null : icon.LoadSvg(data);
                 icon.InvalidateVisual();
@@ -404,7 +398,7 @@ namespace Nlnet.Avalonia.Svg.Controls
 
         private static void GetStretchMetrics(Stretch mode, double strokeThickness, Size availableSize, Rect geometryBounds, out double xScale, out double yScale, out double dX, out double dY, out Size stretchedSize)
         {
-            if (!geometryBounds.IsEmpty)
+            if (geometryBounds != default)
             {
                 var num = strokeThickness / 2.0;
                 var flag = false;
@@ -458,7 +452,7 @@ namespace Nlnet.Avalonia.Svg.Controls
 
         private static bool SizeIsInvalidOrEmpty(Size size)
         {
-            return double.IsNaN(size.Width) || double.IsNaN(size.Height) || size.IsDefault;
+            return double.IsNaN(size.Width) || double.IsNaN(size.Height) || size == default;
         }
 
         private Size GetNaturalSize()
@@ -466,7 +460,7 @@ namespace Nlnet.Avalonia.Svg.Controls
             var geometry = GetIconData(this);
             if (geometry == null)
             {
-                return Size.Empty;
+                return new Size();
             }
 
             var renderBounds = geometry.GetRenderBounds(null);
@@ -479,7 +473,7 @@ namespace Nlnet.Avalonia.Svg.Controls
             var geometry = GetIconData(this);
             if (geometry == null)
             {
-                return Rect.Empty;
+                return new Rect();
             }
 
             return geometry.Bounds;
@@ -498,7 +492,7 @@ namespace Nlnet.Avalonia.Svg.Controls
             var size = GetIconSize(this);
             if (image == null)
             {
-                return Size.Empty;
+                return new Size();
             }
 
             switch (stretch)
@@ -574,7 +568,7 @@ namespace Nlnet.Avalonia.Svg.Controls
             var image = GetIconImage(this);
             if (image != null)
             {
-                if (GetIsTrulyEnabled())
+                if (this.IsEffectivelyEnabled)
                 {
                     drawingContext.DrawImage(image, new Rect(GetImageStretchedSize()));
                 }
@@ -625,25 +619,6 @@ namespace Nlnet.Avalonia.Svg.Controls
                 var start = DateTime.Now;
                 _svg.Render(drawingContext, this.Bounds.Size, GetIconStretch(this), Icon.GetShowDiagnosis(this));
                 Dispatcher.UIThread.Post(() => SetRenderCost(this, DateTime.Now - start));
-            }
-        }
-
-        private bool GetIsTrulyEnabled()
-        {
-            // In avalonia 11.0.0-preview4, the IsEnabled property is not inherited from ancestors even the control is truly disabled.
-
-            IControl? selfOrAncestor = this;
-            while (true)
-            {
-                if (selfOrAncestor == null)
-                {
-                    return true;
-                }
-                if (selfOrAncestor.IsEnabled == false)
-                {
-                    return false;
-                }
-                selfOrAncestor = selfOrAncestor.Parent;
             }
         }
 
@@ -710,7 +685,7 @@ namespace Nlnet.Avalonia.Svg.Controls
         {
             if (_svg == null)
             {
-                return Size.Empty;
+                return new Size();
             }
             return _svg.GetDesiredSize(availableSize);
         }
@@ -791,7 +766,7 @@ namespace Nlnet.Avalonia.Svg.Controls
         {
             if (_svg == null)
             {
-                return Size.Empty;
+                return new Size();
             }
             return _svg.GetDesiredSize(finalSize);
         }

@@ -7,7 +7,7 @@ using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg.Sample
 {
-    public class Mesh : Border
+    public class Mesh : Decorator
     {
         public double BlockSize
         {
@@ -17,13 +17,13 @@ namespace Nlnet.Avalonia.Svg.Sample
         public static readonly StyledProperty<double> BlockSizeProperty = AvaloniaProperty
             .Register<Mesh, double>(nameof(BlockSize), 10d);
 
-        public Color BlockColor
+        public IBrush? BlockBrush
         {
-            get { return GetValue(BlockColorProperty); }
-            set { SetValue(BlockColorProperty, value); }
+            get { return GetValue(BlockBrushProperty); }
+            set { SetValue(BlockBrushProperty, value); }
         }
-        public static readonly StyledProperty<Color> BlockColorProperty = AvaloniaProperty
-            .Register<Mesh, Color>(nameof(BlockColor), Colors.DarkGray);
+        public static readonly StyledProperty<IBrush?> BlockBrushProperty = AvaloniaProperty
+            .Register<Mesh, IBrush?>(nameof(BlockBrush), Brushes.DarkGray);
 
         public double BlockOpacity
         {
@@ -32,13 +32,13 @@ namespace Nlnet.Avalonia.Svg.Sample
         }
         public static readonly StyledProperty<double> BlockOpacityProperty = AvaloniaProperty
             .Register<Mesh, double>(nameof(BlockOpacity), 0.2d, false, BindingMode.Default, null, CoerceBlockOpacity);
-        private static double CoerceBlockOpacity(IAvaloniaObject sender, double baseValue)
+        private static double CoerceBlockOpacity(AvaloniaObject sender, double baseValue)
         {
             return baseValue switch
             {
                 > 1 => 1,
                 < 0 => 0,
-                _   => baseValue
+                _ => baseValue
             };
         }
 
@@ -50,39 +50,50 @@ namespace Nlnet.Avalonia.Svg.Sample
         public static readonly StyledProperty<bool> UseMeshProperty = AvaloniaProperty
             .Register<Mesh, bool>(nameof(UseMesh), true);
 
+        public IBrush? BorderBrush
+        {
+            get { return GetValue(BorderBrushProperty); }
+            set { SetValue(BorderBrushProperty, value); }
+        }
+        public static readonly StyledProperty<IBrush?> BorderBrushProperty = AvaloniaProperty
+            .Register<Mesh, IBrush?>(nameof(BorderBrush));
+
+        public Thickness BorderThickness
+        {
+            get { return GetValue(BorderThicknessProperty); }
+            set { SetValue(BorderThicknessProperty, value); }
+        }
+        public static readonly StyledProperty<Thickness> BorderThicknessProperty = AvaloniaProperty
+            .Register<Mesh, Thickness>(nameof(BorderThickness));
+
 
 
         static Mesh()
         {
-            AffectsRender<Mesh>(UseMeshProperty);
             AffectsRender<Mesh>(BlockSizeProperty);
-            AffectsRender<Mesh>(BlockColorProperty);
+            AffectsRender<Mesh>(BlockBrushProperty);
             AffectsRender<Mesh>(BlockOpacityProperty);
-
-            BackgroundProperty.Changed.AddClassHandler<Mesh>((grid, args) =>
-            {
-                if (args.NewValue is SolidColorBrush brush)
-                {
-                    grid.BlockColor = brush.Color;
-                }
-            });
+            AffectsRender<Mesh>(UseMeshProperty);
         }
 
         public override void Render(DrawingContext context)
         {
-            base.Render(context);
-
-            if (UseMesh == false)
+            if (UseMesh)
             {
-                return;
+                var data = GetPath(BlockSize, this.Bounds.Width, this.Bounds.Height);
+                var brush = BlockBrush;
+                using (context.PushOpacity(BlockOpacity))
+                {
+                    context.DrawGeometry(brush, null, data);
+                }
+
+                if (BorderBrush != null)
+                {
+                    context.DrawRectangle(null, new Pen(BorderBrush, BorderThickness.Top), this.Bounds);
+                }
             }
 
-            var data = GetPath(BlockSize, this.Bounds.Width, this.Bounds.Height);
-            
-            context.DrawGeometry(new SolidColorBrush(BlockColor)
-            {
-                Opacity = BlockOpacity,
-            }, null, data);
+            base.Render(context);
         }
 
         private static Geometry GetPath(double dpi, double width, double height)
@@ -96,7 +107,7 @@ namespace Nlnet.Avalonia.Svg.Sample
             {
                 for (var c = 0; c < xCount; c++)
                 {
-                    if (r % 2 != 0) 
+                    if (r % 2 != 0)
                     {
                         c++;
                     }
