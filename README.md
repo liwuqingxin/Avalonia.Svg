@@ -1,24 +1,24 @@
 <div align="left">
   <a href="https://www.w3.org/TR/SVG2/">
-    <img src="https://img.shields.io/badge/-SVG2-blue?style=for-the-badge">
+    <img src="https://img.shields.io/badge/-SVG2-blue">
   </a>
   <a href="https://github.com/microsoft/dotnet">
-    <img src="https://img.shields.io/badge/-.NET-red?style=for-the-badge">
+    <img src="https://img.shields.io/badge/-.NET-red">
   </a>
   <a href="https://avaloniaui.net/">
-    <img src="https://img.shields.io/badge/Avalonia-8245A9?style=for-the-badge">
+    <img src="https://img.shields.io/badge/Avalonia-8245A9">
   </a>
   <a href="https://dotnet.microsoft.com/zh-cn/languages/csharp">
-    <img src="https://img.shields.io/badge/-C%23-yellow?style=for-the-badge">
+    <img src="https://img.shields.io/badge/-C%23-yellow">
   </a>
-  <a href="http://www.gnu.org/licenses/agpl-3.0.en.html">
-    <img src="https://img.shields.io/badge/License-APGL 3.0-green?style=for-the-badge">
+  <a href="http://www.gnu.org/licenses/mit.en.html">
+    <img src="https://img.shields.io/badge/License-MIT-green">
   </a>
   <a href="https://www.cnblogs.com/liwuqingxin/">
-    <img src="https://img.shields.io/badge/Blog-NLNet-orange?style=for-the-badge">
+    <img src="https://img.shields.io/badge/Blog-NLNet-orange">
   </a>
   <a href="https://github.com/liwuqingxin">
-    <img src="https://img.shields.io/badge/Github-Liwuqingxin-blue?style=for-the-badge&logo=GitHub">
+    <img src="https://img.shields.io/badge/Github-Liwuqingxin-blue?logo=GitHub">
   </a>
 </div>
 
@@ -33,7 +33,7 @@
 
 # License
 
-This library is distributed under the AGPL 3.0 license. See the [LICENSE](http://www.gnu.org/licenses/agpl-3.0.en.html) for more information.
+This library is distributed under the MIT license.
 
 # About
 
