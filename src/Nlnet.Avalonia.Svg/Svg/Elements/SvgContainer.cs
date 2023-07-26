@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Avalonia;
 using Avalonia.Media;
 
@@ -8,8 +6,6 @@ namespace Nlnet.Avalonia.Svg
 {
     public class SvgContainer : SvgRenderable, ISvgContainer
     {
-        private Rect? _rect;
-
         public IBrush? Fill
         {
             get;
@@ -88,16 +84,12 @@ namespace Nlnet.Avalonia.Svg
             }
 
             using (dc.PushOpacity(this.Opacity ?? 1))
+            using (dc.PushTransform(matrix))
+            using (dc.PushTransform(Matrix.Identity)) // TODO 测试是否必要
             {
-                using (dc.PushPostTransform(matrix))
+                foreach (var child in Children.OfType<ISvgRenderable>())
                 {
-                    using (dc.PushTransformContainer())
-                    {
-                        foreach (var child in Children.OfType<ISvgRenderable>())
-                        {
-                            child.Render(dc, ctx);
-                        }
-                    }
+                    child.Render(dc, ctx);
                 }
             }
         }

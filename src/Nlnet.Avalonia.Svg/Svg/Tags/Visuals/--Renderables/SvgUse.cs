@@ -66,9 +66,9 @@ public class SvgUse : SvgRenderable, ISvgRenderable,
             matrix = Transform.Value * matrix;
         }
 
-        using (dc.PushPostTransform(matrix))
+        using (dc.PushTransform(matrix))
         {
-            using (dc.PushTransformContainer())
+            //using (dc.PushTransformContainer())
             {
                 ReferencedElement.Render(dc, ctx);
             }

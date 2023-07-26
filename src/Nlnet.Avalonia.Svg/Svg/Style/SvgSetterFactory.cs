@@ -8,9 +8,9 @@ namespace Nlnet.Avalonia.Svg;
 /// <summary>
 /// Svg static factory for building svg style setter.
 /// </summary>
-public static class SvgSetterFactory
+internal static class SvgSetterFactory
 {
-    internal static readonly Dictionary<string, ISvgSetterFactory> SvgSetterFactories;
+    public static Dictionary<string, ISvgSetterFactory> SvgSetterFactories { get; }
 
     /// <summary>
     /// Pre-load all svg style setter factories.

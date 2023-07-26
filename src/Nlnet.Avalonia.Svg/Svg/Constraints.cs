@@ -13,7 +13,7 @@ public static class SvgDefaultValues
     public const string One                       = "1d";
     public const string Three                     = "3d";
     public const string Four                      = "4d";
-    public const string BrushBlack                = "new LightSolidColorBrush(Colors.Black)";
+    public const string BrushBlack                = "Brushes.Black";
     public const string BrushTransparent          = "Brushes.Transparent";
     public const string FillRuleNonZero           = "global::Avalonia.Media.FillRule.NonZero";
     public const string PenLineCapNonZero         = "global::Avalonia.Media.PenLineCap.Flat";

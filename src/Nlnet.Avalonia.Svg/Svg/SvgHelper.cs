@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Media;
@@ -98,7 +97,7 @@ namespace Nlnet.Avalonia.Svg
             //
             // url example : "url(#linearGradient-1)" or "url(#linearGradient-1) blue"
             //
-            var match = Regex.Match(original, "url\\(\\#(.*)\\)\\s*(.*)");
+            var match = Regex.Match(original, "url\\s*\\(\\s*\\#(.*)\\s*\\)\\s*(.*)");
             if (match.Success)
             {
                 url = match.Groups[1].Value;
@@ -182,7 +181,7 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(-viewBox.X, -viewBox.Y)));
+            stack.Push(dc.PushTransform(Matrix.CreateTranslation(-viewBox.X, -viewBox.Y)));
 
             var viewBoxSize = new Size(viewBox.Width, viewBox.Height);
             var ratio = (viewBoxSetter as IPreserveAspectRatioSetter)?.PreserveAspectRatio;
@@ -191,7 +190,7 @@ namespace Nlnet.Avalonia.Svg
             if (ratio.Align == PreserveAspectRatioAlign.none)
             {
                 SvgHelper.GetFillFactors(availableSize, viewBoxSize, out var scaleX, out var scaleY);
-                stack.Push(dc.PushPostTransform(Matrix.CreateScale(scaleX, scaleY)));
+                stack.Push(dc.PushTransform(Matrix.CreateScale(scaleX, scaleY)));
             }
             else
             {
@@ -234,8 +233,9 @@ namespace Nlnet.Avalonia.Svg
                         throw new ArgumentOutOfRangeException();
                 }
 
-                stack.Push(dc.PushPostTransform(Matrix.CreateScale(scale, scale)));
-                stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(offsetX, offsetY)));
+                // TODO 检查这里Push的顺序
+                stack.Push(dc.PushTransform(Matrix.CreateScale(scale, scale)));
+                stack.Push(dc.PushTransform(Matrix.CreateTranslation(offsetX, offsetY)));
             }
         }
     }

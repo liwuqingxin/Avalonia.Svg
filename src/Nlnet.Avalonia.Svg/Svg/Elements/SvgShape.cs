@@ -180,7 +180,7 @@ namespace Nlnet.Avalonia.Svg
 
         private void ApplyBrushTransform(IBrush? brush)
         {
-            if (brush is not LightGradientBrush gradientBrush)
+            if (brush is not GradientBrush gradientBrush)
             {
                 return;
             }

@@ -15,7 +15,7 @@ public abstract class AbstractDeferredSetter : ISvgSetter
 
     public virtual void InitializeDeferredValue(ISvgContext context, string deferredSetterValue)
     {
-        throw new NotImplementedException($"Initializing deferred value for {this.GetType()} is not implemented");
+        throw new NotImplementedException($"Initializing deferred value for {this.GetType()} is not implemented.");
     }
 
     public void AddDeferredValueString(string valueString)

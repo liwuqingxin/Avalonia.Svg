@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection.Metadata;
 using Avalonia;
 using Avalonia.Media;
 using Nlnet.Avalonia.Svg.Utils;
@@ -74,17 +73,17 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
         // 1. Move to point and rotate it.
         var x = point.X;
         var y = point.Y;
-        stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(x, y)));
-        stack.Push(dc.PushTransformContainer());
-        stack.Push(dc.PushPostTransform(MatrixUtil.CreateRotationRadian(radian)));
-        stack.Push(dc.PushTransformContainer());
+        stack.Push(dc.PushTransform(Matrix.CreateTranslation(x, y)));
+        //stack.Push(dc.PushTransformContainer());
+        stack.Push(dc.PushTransform(MatrixUtil.CreateRotationRadian(radian)));
+        //stack.Push(dc.PushTransformContainer());
 
         // 2. Apply unit.
         if (marker.MarkerUnits == SvgMarkerUnits.strokeWidth)
         {
             var strokeWidth = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
-            stack.Push(dc.PushPostTransform(Matrix.CreateScale(strokeWidth, strokeWidth)));
-            stack.Push(dc.PushTransformContainer());
+            stack.Push(dc.PushTransform(Matrix.CreateScale(strokeWidth, strokeWidth)));
+            //stack.Push(dc.PushTransformContainer());
         }
 
         // 3. Get the real size of marker.
@@ -98,16 +97,16 @@ public abstract class SvgMarkerable : SvgShape, ISvgMarkerable
         if (marker.ViewBox != null)
         {
             SvgHelper.GetUniformFactors(new Size(markerWidth, markerHeight), new Size(marker.ViewBox.Width, marker.ViewBox.Height), false, out var scale, out var offsetX, out var offsetY);
-            stack.Push(dc.PushPostTransform(Matrix.CreateScale(scale, scale)));
-            stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(-offsetX, -offsetY)));
-            stack.Push(dc.PushTransformContainer());
+            stack.Push(dc.PushTransform(Matrix.CreateScale(scale, scale)));
+            stack.Push(dc.PushTransform(Matrix.CreateTranslation(-offsetX, -offsetY)));
+            //stack.Push(dc.PushTransformContainer());
         }
 
         // 6. Move by RefX and RefY.
         var refX = marker.RefX?.Get(markerWidth)  ?? 0;
         var refY = marker.RefY?.Get(markerHeight) ?? 0;
-        stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(-refX, -refY)));
-        stack.Push(dc.PushTransformContainer());
+        stack.Push(dc.PushTransform(Matrix.CreateTranslation(-refX, -refY)));
+        //stack.Push(dc.PushTransformContainer());
 
         foreach (var child in marker.Children!.OfType<ISvgRenderable>())
         {

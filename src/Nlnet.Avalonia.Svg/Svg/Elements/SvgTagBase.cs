@@ -40,6 +40,8 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
             return _tagName;
         }
 
+        // TODO Performance
+
         var factoryType = this.GetType().Assembly.GetType($"{this.GetType().FullName}Factory");
         if (factoryType == null)
         {
@@ -165,13 +167,13 @@ public abstract class SvgTagBase : ISvgTag, IDeferredAdder
                 return value;
             }
 
+            if (owner.CanInherit && this.Parent is TPropertyOwner)
+            {
+                return this.Parent.GetPropertyStructValue<TPropertyOwner, TValue>();
+            }
+
             if (owner.DefaultValue is TValue defaultValue)
             {
-                if (this.Parent is TPropertyOwner && owner.CanInherit)
-                {
-                    return this.Parent.GetPropertyStructValue<TPropertyOwner, TValue>();
-                }
-
                 return defaultValue;
             }
             else

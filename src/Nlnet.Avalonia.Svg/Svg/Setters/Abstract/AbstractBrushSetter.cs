@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg;
 
@@ -21,7 +20,10 @@ public abstract class AbstractBrushSetter : AbstractDeferredSetter
         // https://www.w3.org/TR/SVG2/painting.html#SpecifyingPaint
         // url example : "url(#linearGradient-1)" or "url(#linearGradient-1) blue"
         //
-        deferredSetterValue.TryParseUrl(out var id, out var defaultToken);
+        if (deferredSetterValue.TryParseUrl(out var id, out var defaultToken) == false)
+        {
+            return;
+        }
         context.Brushes.TryGetValue(id, out Value);
         if (Value == null && string.IsNullOrEmpty(defaultToken) == false)
         {

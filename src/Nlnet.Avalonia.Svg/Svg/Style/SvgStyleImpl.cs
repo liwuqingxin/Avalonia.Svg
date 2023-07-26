@@ -34,7 +34,7 @@ public class SvgStyleImpl : ISvgStyle
             return false;
         }
 
-        return _selectors.Any(s => s.Match(tag));
+        return _selectors.All(s => s.Match(tag));
     }
 
     public static ISvgStyle? Parse(string? selectorsString, string? settersString)
@@ -46,7 +46,7 @@ public class SvgStyleImpl : ISvgStyle
 
         var selectors = GetSelectorsFromString(selectorsString);
         var setters   = GetSettersFromStyleString(settersString);
-        if (setters != null)
+        if (selectors != null && setters != null)
         {
             return new SvgStyleImpl(selectors, setters);
         }

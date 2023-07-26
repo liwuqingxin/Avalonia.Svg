@@ -129,7 +129,11 @@ namespace Nlnet.Avalonia.Svg
             var width  = _svgTag.Width  ?? 0;
             var height = _svgTag.Height ?? 0;
 
-            if (width != 0 && height != 0 && stretch != Stretch.None)
+            if (width == 0 || height == 0 || stretch == Stretch.None)
+            {
+                _svgTag.Render(dc, this);
+            }
+            else
             {
                 var childSize = new Size(width, height);
                 var scaleX    = 0d;
@@ -156,18 +160,15 @@ namespace Nlnet.Avalonia.Svg
                         scaleY = scale;
                         break;
                     }
+                    case Stretch.None:
                     default:
                         throw new ArgumentOutOfRangeException(nameof(stretch), stretch, null);
                 }
 
-                using (dc.PushPostTransform(Matrix.CreateScale(scaleX, scaleY)))
-                using (dc.PushPostTransform(Matrix.CreateTranslation(offsetX, offsetY)))
-                using (dc.PushTransformContainer())
+                using (dc.PushTransform(Matrix.CreateScale(scaleX, scaleY)))
+                using (dc.PushTransform(Matrix.CreateTranslation(offsetX, offsetY)))
+                using (dc.PushTransformContainer()) // TODO 测试是否有必要
                     _svgTag.Render(dc, this);
-            }
-            else
-            {
-                _svgTag.Render(dc, this);
             }
         }
 

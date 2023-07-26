@@ -42,21 +42,9 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable
 
         // Mask
         PushMask(dc, ctx, stack);
-        
-        var rendered = false;
-        if (this.Mask != null && this.Mask.TryParseUrl(out var maskId, out _))
-        {
-            if (ctx.Masks.TryGetValue(maskId, out var mask) && mask.Children != null)
-            {
-                // TODO Upgrade comment it.
-                //rendered = RenderWithMaskElementGroup(dc, ctx, mask);
-            }
-        }
-        
-        if(rendered == false)
-        {
-            RenderCore(dc, ctx);
-        }
+
+        // Render
+        RenderCore(dc, ctx);
     }
 
     private void PushClipPath(DrawingContext dc, ISvgContext ctx, StateStack stack)
@@ -110,39 +98,40 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable
         PushMaskElement(dc, ctx, stack, mask);
     }
 
-    private void PushMaskElement(DrawingContext dc, ISvgContext ctx, StateStack stack, ISvgRenderable maskElement)
+    private bool PushMaskElement(DrawingContext dc, ISvgContext ctx, StateStack stack, ISvgRenderable maskElement)
     {
         if (maskElement.Children == null)
         {
-            return;
+            return false;
         }
 
-        // TODO Upgrade comment it.
-        //using (dc.PushPostTransform(maskElement.Transform?.Value ?? Matrix.Identity))
-        //{
-        //    using (dc.PushOpacity(maskElement.Opacity ?? 1))
-        //    {
-        //        foreach (var renderable in maskElement.Children.OfType<ISvgRenderable>())
-        //        {
-        //            if (renderable is ISvgShape shape)
-        //            {
-        //                if (RenderWithMaskElement(dc, ctx, shape))
-        //                {
-        //                    rendered = true;
-        //                }
-        //            }
-        //            else if (renderable is ISvgContainer c)
-        //            {
-        //                if (RenderWithMaskElementGroup(dc, ctx, c))
-        //                {
-        //                    rendered = true;
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+        var rendered = false;
 
-        //return rendered;
+        using (dc.PushTransform(maskElement.Transform?.Value ?? Matrix.Identity))
+        {
+            using (dc.PushOpacity(maskElement.Opacity ?? 1))
+            {
+                foreach (var renderable in maskElement.Children.OfType<ISvgRenderable>())
+                {
+                    if (renderable is ISvgShape shape)
+                    {
+                        if (RenderWithMaskElement(dc, ctx, shape))
+                        {
+                            rendered = true;
+                        }
+                    }
+                    else if (renderable is ISvgContainer c)
+                    {
+                        if (RenderWithMaskElementGroup(dc, ctx, c))
+                        {
+                            rendered = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return rendered;
     }
 
     private bool RenderWithMaskElement(DrawingContext dc, ISvgContext ctx, ISvgShape svgShape)
@@ -178,6 +167,26 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable
         }
 
         return true;
+    }
+
+    private bool RenderWithMaskElementGroup(DrawingContext dc, ISvgContext ctx, ISvgContainer svgContainer)
+    {
+        if (svgContainer.Children == null)
+        {
+            return false;
+        }
+
+        var rendered = false;
+
+        foreach (var child in svgContainer.Children.OfType<ISvgShape>())
+        {
+            if (RenderWithMaskElement(dc, ctx, child))
+            {
+                rendered = true;
+            }
+        }
+
+        return rendered;
     }
 
     /// <summary>

@@ -110,11 +110,11 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
     {
         using var stack = new StateStack();
 
-        stack.Push(dc.PushPostTransform(Matrix.CreateTranslation(X ?? 0, Y ?? 0)));
-        stack.Push(dc.PushTransformContainer());
+        stack.Push(dc.PushTransform(Matrix.CreateTranslation(X ?? 0, Y ?? 0)));
+        //stack.Push(dc.PushTransformContainer());
 
         this.PushViewBox(stack, dc, availableSize);
-        stack.Push(dc.PushTransformContainer());
+        //stack.Push(dc.PushTransformContainer());
 
         RenderChildren(dc, ctx);
 
@@ -124,8 +124,6 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
             dc.DrawRectangle(new Pen(Brushes.Green, 1, new DashStyle(new double[] { 5, 5 }, 0)), ViewBox.Bounds);
         }
     }
-
-    
 
     private void RenderChildren(DrawingContext dc, ISvgContext ctx)
     {
@@ -142,15 +140,11 @@ public class SvgSvg : SvgContainer, ISvgContainer, ISvgRenderable,
             matrix *= Transform.Value;
         }
 
-        using (dc.PushPostTransform(matrix))
-        {
-            using (dc.PushTransformContainer())
+        using (dc.PushTransform(matrix))
+            //using (dc.PushTransformContainer())
+            foreach (var child in Children.OfType<ISvgRenderable>())
             {
-                foreach (var child in Children.OfType<ISvgRenderable>())
-                {
-                    child.Render(dc, ctx);
-                }
+                child.Render(dc, ctx);
             }
-        }
     }
 }
