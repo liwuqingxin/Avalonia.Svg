@@ -48,7 +48,8 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable
         {
             if (ctx.Masks.TryGetValue(maskId, out var mask) && mask.Children != null)
             {
-                rendered = RenderWithMaskElementGroup(dc, ctx, mask);
+                // TODO Upgrade comment it.
+                //rendered = RenderWithMaskElementGroup(dc, ctx, mask);
             }
         }
         
@@ -115,32 +116,33 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable
         {
             return;
         }
-        
-        using (dc.PushPostTransform(maskElement.Transform?.Value ?? Matrix.Identity))
-        {
-            using (dc.PushOpacity(maskElement.Opacity ?? 1))
-            {
-                foreach (var renderable in maskElement.Children.OfType<ISvgRenderable>())
-                {
-                    if (renderable is ISvgShape shape)
-                    {
-                        if (RenderWithMaskElement(dc, ctx, shape))
-                        {
-                            rendered = true;
-                        }
-                    }
-                    else if (renderable is ISvgContainer c)
-                    {
-                        if (RenderWithMaskElementGroup(dc, ctx, c))
-                        {
-                            rendered = true;
-                        }
-                    }
-                }
-            }
-        }
 
-        return rendered;
+        // TODO Upgrade comment it.
+        //using (dc.PushPostTransform(maskElement.Transform?.Value ?? Matrix.Identity))
+        //{
+        //    using (dc.PushOpacity(maskElement.Opacity ?? 1))
+        //    {
+        //        foreach (var renderable in maskElement.Children.OfType<ISvgRenderable>())
+        //        {
+        //            if (renderable is ISvgShape shape)
+        //            {
+        //                if (RenderWithMaskElement(dc, ctx, shape))
+        //                {
+        //                    rendered = true;
+        //                }
+        //            }
+        //            else if (renderable is ISvgContainer c)
+        //            {
+        //                if (RenderWithMaskElementGroup(dc, ctx, c))
+        //                {
+        //                    rendered = true;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        //return rendered;
     }
 
     private bool RenderWithMaskElement(DrawingContext dc, ISvgContext ctx, ISvgShape svgShape)
