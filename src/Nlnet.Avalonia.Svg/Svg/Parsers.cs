@@ -51,21 +51,21 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        public static LightBrush ToLightBrush(this string valueString)
+        public static IBrush ToBrush(this string valueString)
         {
             if (valueString == "none")
             {
-                return new LightSolidColorBrush(Colors.Transparent);
+                return new ImmutableSolidColorBrush(Colors.Transparent);
             }
 
-            return new LightSolidColorBrush(Color.Parse(valueString));
+            return new ImmutableSolidColorBrush(Color.Parse(valueString));
         }
 
-        public static bool TryToLightBrush(this string valueString, out LightBrush? brush)
+        public static bool TryToBrush(this string valueString, out IBrush? brush)
         {
             try
             {
-                brush = ToLightBrush(valueString);
+                brush = ToBrush(valueString);
                 return true;
             }
             catch

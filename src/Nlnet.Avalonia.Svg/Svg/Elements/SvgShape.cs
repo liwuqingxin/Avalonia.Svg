@@ -17,13 +17,13 @@ namespace Nlnet.Avalonia.Svg
 
         #region Svg Properties
 
-        LightBrush? IFillSetter.Fill { get; set; }
+        IBrush? IFillSetter.Fill { get; set; }
 
         FillRule? IFillRuleSetter.FillRule { get; set; }
 
         double? IFillOpacitySetter.FillOpacity { get; set; }
 
-        LightBrush? IStrokeSetter.Stroke { get; set; }
+        IBrush? IStrokeSetter.Stroke { get; set; }
 
         double? IStrokeOpacitySetter.StrokeOpacity { get; set; }
 
@@ -68,7 +68,7 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            var fill        = this.GetPropertyValue<IFillSetter, LightBrush>()?.Clone();
+            var fill        = this.GetPropertyValue<IFillSetter, IBrush>()?.Clone();
             var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
 
             ApplyBrushOpacity(fill, fillOpacity);
@@ -141,7 +141,7 @@ namespace Nlnet.Avalonia.Svg
                 return _pen;
             }
 
-            var stroke        = this.GetPropertyValue<IStrokeSetter, LightBrush>()?.Clone();
+            var stroke        = this.GetPropertyValue<IStrokeSetter, IBrush>()?.Clone();
             var strokeOpacity = this.GetPropertyStructValue<IStrokeOpacitySetter, double>();
             var strokeWidth   = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
             var lineCap       = this.GetPropertyStructValue<IStrokeLineCapSetter, PenLineCap>();
@@ -168,19 +168,19 @@ namespace Nlnet.Avalonia.Svg
             return _pen = new Pen(stroke, strokeWidth, dashStyle, lineCap, lineJoin, miterLimit);
         }
 
-        private void ApplyBrushOpacity(LightBrush? lightBrush, double opacity)
+        private void ApplyBrushOpacity(IBrush? brush, double opacity)
         {
-            if (lightBrush == null)
+            if (brush == null)
             {
                 return;
             }
 
-            lightBrush.Opacity = opacity;
+            brush.Opacity = opacity;
         }
 
-        private void ApplyBrushTransform(LightBrush? lightBrush)
+        private void ApplyBrushTransform(IBrush? brush)
         {
-            if (lightBrush is not LightGradientBrush gradientBrush)
+            if (brush is not LightGradientBrush gradientBrush)
             {
                 return;
             }
@@ -191,13 +191,13 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            if (lightBrush.Transform != null)
+            if (brush.Transform != null)
             {
                 // Transform must be immutable, or the element rendered will be flickering.
-                immutableTransform = new ImmutableTransform(lightBrush.Transform.Value * immutableTransform.Value);
+                immutableTransform = new ImmutableTransform(brush.Transform.Value * immutableTransform.Value);
             }
 
-            lightBrush.Transform = immutableTransform;
+            brush.Transform = immutableTransform;
         }
 
         /// <summary>

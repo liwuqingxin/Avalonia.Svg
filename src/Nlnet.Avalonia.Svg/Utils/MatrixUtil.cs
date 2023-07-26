@@ -26,12 +26,7 @@ namespace Nlnet.Avalonia.Svg.Utils
             return radian * 180 / Math.PI;
         }
 
-        public static Matrix CreateRotationRadian(double radian)
-        {
-            return CreateRotationRadian(radian, 0.0, 0.0);
-        }
-
-        public static Matrix CreateRotationRadian(double radian, double centerX, double centerY)
+        public static Matrix CreateRotationRadian(double radian, double centerX = 0d, double centerY = 0d)
         {
             var m12     = Math.Sin(radian);
             var num     = Math.Cos(radian);

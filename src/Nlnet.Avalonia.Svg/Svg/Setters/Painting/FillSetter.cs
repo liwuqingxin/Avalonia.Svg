@@ -3,7 +3,7 @@ using Nlnet.Avalonia.Svg.CompileGenerator;
 
 namespace Nlnet.Avalonia.Svg;
 
-[SetterGenerator(typeof(LightBrush), SvgDefaultValues.BrushBlack)]
+[SetterGenerator(typeof(IBrush), SvgDefaultValues.BrushBlack)]
 public class FillSetter : AbstractBrushSetter
 {
     public override void Set(ISvgTag tag)

@@ -10,7 +10,7 @@ namespace Nlnet.Avalonia.Svg
     {
         private Rect? _rect;
 
-        public LightBrush? Fill
+        public IBrush? Fill
         {
             get;
             set;
@@ -25,7 +25,7 @@ namespace Nlnet.Avalonia.Svg
             get;
             set;
         }
-        public LightBrush? Stroke
+        public IBrush? Stroke
         {
             get;
             set;

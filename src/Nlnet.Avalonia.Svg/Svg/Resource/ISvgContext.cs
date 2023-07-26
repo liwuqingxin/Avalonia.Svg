@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Avalonia;
+using Avalonia.Media;
 
 namespace Nlnet.Avalonia.Svg;
 
@@ -26,7 +27,7 @@ public interface ISvgContext
     /// <summary>
     /// All brushes.
     /// </summary>
-    public IReadOnlyDictionary<string, LightBrush> Brushes { get; }
+    public IReadOnlyDictionary<string, IBrush> Brushes { get; }
 
     /// <summary>
     /// All clip paths.

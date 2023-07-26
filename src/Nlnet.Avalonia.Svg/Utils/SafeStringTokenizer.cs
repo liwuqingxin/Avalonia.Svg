@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Avalonia.Media;
+using Avalonia.Media.Immutable;
 
 namespace Nlnet.Avalonia.Svg.Utils
 {
@@ -155,7 +156,7 @@ namespace Nlnet.Avalonia.Svg.Utils
             return false;
         }
 
-        public bool TryReadBrush(out LightBrush? brush)
+        public bool TryReadBrush(out IBrush? brush)
         {
             if (_results.Length <= _index)
             {
@@ -165,7 +166,7 @@ namespace Nlnet.Avalonia.Svg.Utils
 
             try
             {
-                brush = new LightSolidColorBrush(Color.Parse(_results[_index]));
+                brush = new ImmutableSolidColorBrush(Color.Parse(_results[_index]));
                 _index++;
                 return true;
             }

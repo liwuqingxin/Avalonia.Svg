@@ -32,7 +32,7 @@ namespace Nlnet.Avalonia.Svg
         #region ISvgContext
 
         private readonly List<ISvgStyle>                 _styles      = new();
-        private readonly Dictionary<string, LightBrush>  _brushes     = new();
+        private readonly Dictionary<string, IBrush>      _brushes     = new();
         private readonly Dictionary<string, SvgClipPath> _clipPaths   = new();
         private readonly Dictionary<string, SvgMask>     _masks       = new();
         private readonly Dictionary<string, SvgMarker>   _markers     = new();
@@ -45,7 +45,7 @@ namespace Nlnet.Avalonia.Svg
         
         IReadOnlyList<ISvgStyle> ISvgContext.Styles => this._styles;
 
-        IReadOnlyDictionary<string, LightBrush> ISvgContext.Brushes => this._brushes;
+        IReadOnlyDictionary<string, IBrush> ISvgContext.Brushes => this._brushes;
 
         IReadOnlyDictionary<string, SvgClipPath> ISvgContext.ClipPaths => this._clipPaths;
 

@@ -152,7 +152,7 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable
             return false;
         }
 
-        var fill = svgShape.GetPropertyValue<IFillSetter, LightBrush>()?.Clone();
+        var fill        = svgShape.GetPropertyValue<IFillSetter, IBrush>()?.Clone();
         var fillOpacity = svgShape.GetPropertyStructValue<IFillOpacitySetter, double>();
         if (fill == null)
         {

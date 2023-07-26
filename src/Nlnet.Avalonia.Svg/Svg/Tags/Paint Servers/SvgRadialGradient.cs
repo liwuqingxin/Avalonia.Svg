@@ -21,7 +21,7 @@ public class SvgRadialGradient : SvgPaintServer, ISvgPaintServer, ISvgBrushProvi
     IHrefSetter,
     IXHrefSetter
 {
-    private LightBrush? _brush;
+    private IBrush? _brush;
 
     public double? CX
     {
@@ -125,7 +125,7 @@ public class SvgRadialGradient : SvgPaintServer, ISvgPaintServer, ISvgBrushProvi
         set => ((IIdSetter)this).Id = value;
     }
 
-    LightBrush ISvgBrushProvider.GetBrush(ISvgContext context)
+    IBrush ISvgBrushProvider.GetBrush(ISvgContext context)
     {
         if (_brush != null)
         {
@@ -189,17 +189,18 @@ public class SvgRadialGradient : SvgPaintServer, ISvgPaintServer, ISvgBrushProvi
         }
 
         // ref https://www.w3.org/TR/SVG2/pservers.html#LinearGradientElementX1Attribute
-        var gradientBrush = new LightRadialGradientBrush(
+        var gradientBrush = new ImmutableRadialGradientBrush(
             gradientStops: gradientStops,
             opacity: 1,
-            transform: GradientTransform,
+            transform: GradientTransform?.ToImmutable(),
             transformOrigin: null,
             spreadMethod: spreadMethod,
             center: new RelativePoint(cx, cy, relativeUnit),
             gradientOrigin: new RelativePoint(rx, ry, relativeUnit),
             radius:r)
         {
-            GradientUnit = GradientUnits ?? SvgUnit.objectBoundingBox,
+            // TODO 升级遗漏
+            //GradientUnit = GradientUnits ?? SvgUnit.objectBoundingBox,
         };
 
         return _brush = gradientBrush;
