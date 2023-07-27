@@ -141,7 +141,7 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable
             return false;
         }
 
-        var fill        = svgShape.GetPropertyValue<IFillSetter, IBrush>()?.Clone();
+        var fill        = svgShape.GetPropertyValue<IFillSetter, IBrush>();
         var fillOpacity = svgShape.GetPropertyStructValue<IFillOpacitySetter, double>();
         if (fill == null)
         {
@@ -157,13 +157,11 @@ public abstract class SvgRenderable : SvgTagBase, ISvgRenderable
             fillOpacity *= opacitySetter.Opacity ?? 1;
         }
 
-        fill.Opacity = fillOpacity;
+        using(dc.PushOpacity(fillOpacity))
         using (dc.PushGeometryClip(svgShape.OriginalGeometry))
+        using (dc.PushOpacityMask(fill, svgShape.OriginalGeometry.Bounds))
         {
-            using (dc.PushOpacityMask(fill, svgShape.OriginalGeometry.Bounds))
-            {
-                RenderCore(dc, ctx);
-            }
+            RenderCore(dc, ctx);
         }
 
         return true;

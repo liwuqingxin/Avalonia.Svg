@@ -51,7 +51,7 @@ namespace Nlnet.Avalonia.Svg
             }
         }
 
-        public static IBrush ToBrush(this string valueString)
+        public static IBrush ToIBrush(this string valueString)
         {
             if (valueString == "none")
             {
@@ -61,11 +61,11 @@ namespace Nlnet.Avalonia.Svg
             return new ImmutableSolidColorBrush(Color.Parse(valueString));
         }
 
-        public static bool TryToBrush(this string valueString, out IBrush? brush)
+        public static bool TryToIBrush(this string valueString, out IBrush? brush)
         {
             try
             {
-                brush = ToBrush(valueString);
+                brush = ToIBrush(valueString);
                 return true;
             }
             catch

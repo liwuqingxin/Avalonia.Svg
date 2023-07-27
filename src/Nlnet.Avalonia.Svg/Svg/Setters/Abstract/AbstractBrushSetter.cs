@@ -11,7 +11,7 @@ public abstract class AbstractBrushSetter : AbstractDeferredSetter
 
     public override void InitializeValue(string setterValue)
     {
-        Value = setterValue.ToBrush();
+        Value = setterValue.ToIBrush();
     }
 
     public override void InitializeDeferredValue(ISvgContext context, string deferredSetterValue)
@@ -27,7 +27,7 @@ public abstract class AbstractBrushSetter : AbstractDeferredSetter
         context.Brushes.TryGetValue(id, out Value);
         if (Value == null && string.IsNullOrEmpty(defaultToken) == false)
         {
-            defaultToken.TryToBrush(out Value);
+            defaultToken.TryToIBrush(out Value);
         }
     }
 }

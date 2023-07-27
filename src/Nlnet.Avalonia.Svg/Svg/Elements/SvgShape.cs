@@ -68,7 +68,7 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            var fill        = this.GetPropertyValue<IFillSetter, IBrush>()?.Clone();
+            var fill        = this.GetPropertyValue<IFillSetter, IBrush>();
             var fillOpacity = this.GetPropertyStructValue<IFillOpacitySetter, double>();
 
             ApplyBrushOpacity(fill, fillOpacity);
@@ -81,8 +81,8 @@ namespace Nlnet.Avalonia.Svg
             }
             if (Transform != null)
             {
-                stack.Push(dc.PushPostTransform(Transform.Value));
-                stack.Push(dc.PushTransformContainer());
+                stack.Push(dc.PushTransform(Transform.Value));
+                //stack.Push(dc.PushTransformContainer());
             }
 
             dc.DrawGeometry(fill, GetPen(), OriginalGeometry);
@@ -141,7 +141,7 @@ namespace Nlnet.Avalonia.Svg
                 return _pen;
             }
 
-            var stroke        = this.GetPropertyValue<IStrokeSetter, IBrush>()?.Clone();
+            var stroke        = this.GetPropertyValue<IStrokeSetter, IBrush>();
             var strokeOpacity = this.GetPropertyStructValue<IStrokeOpacitySetter, double>();
             var strokeWidth   = this.GetPropertyStructValue<IStrokeWidthSetter, double>();
             var lineCap       = this.GetPropertyStructValue<IStrokeLineCapSetter, PenLineCap>();
@@ -174,8 +174,9 @@ namespace Nlnet.Avalonia.Svg
             {
                 return;
             }
-
-            brush.Opacity = opacity;
+            
+            // TODO Upgrade check
+            //brush.Opacity = opacity;
         }
 
         private void ApplyBrushTransform(IBrush? brush)
@@ -185,19 +186,20 @@ namespace Nlnet.Avalonia.Svg
                 return;
             }
 
-            var immutableTransform = GetBrushTransform(gradientBrush.GradientUnit);
-            if (immutableTransform == null)
-            {
-                return;
-            }
+            //var immutableTransform = GetBrushTransform(gradientBrush.GradientUnit);
+            //if (immutableTransform == null)
+            //{
+            //    return;
+            //}
 
-            if (brush.Transform != null)
-            {
-                // Transform must be immutable, or the element rendered will be flickering.
-                immutableTransform = new ImmutableTransform(brush.Transform.Value * immutableTransform.Value);
-            }
+            //if (brush.Transform != null)
+            //{
+            //    // Transform must be immutable, or the element rendered will be flickering.
+            //    immutableTransform = new ImmutableTransform(brush.Transform.Value * immutableTransform.Value);
+            //}
 
-            brush.Transform = immutableTransform;
+            // TODO Upgrade check
+            //brush.Transform = immutableTransform;
         }
 
         /// <summary>
